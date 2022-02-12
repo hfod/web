@@ -24,3 +24,7 @@ deploy:
 		-e 'ssh -p $(PORT)' \
 		$(USER_AT_HOST):$(DIR_SERVER)
 	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX $(DIR_SERVER)
+
+.PHONY: install_deps
+install_deps:
+	raco pkg install gregor
