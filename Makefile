@@ -1,7 +1,7 @@
 MAKEFLAGS := --no-builtin-rules
 
 USER         := xand
-HOST         := hackfreeordie.club
+HOST         := hackfreeordie.org
 PORT         := 22
 USER_AT_HOST := $(USER)@$(HOST)
 
