@@ -5,10 +5,13 @@ HOST         := hackfreeordie.org
 PORT         := 22
 USER_AT_HOST := $(USER)@$(HOST)
 
+DIR_LOCAL  := dist
+DIR_SERVER := /var/www
+
 .PHONY: generate
 generate:
-	mkdir -p dist
-	./generate.rkt
+	mkdir -p $(DIR_LOCAL)
+	./generate.rkt -o $(DIR_LOCAL)
 
 .PHONY: deploy
 deploy:
@@ -17,7 +20,7 @@ deploy:
 		--delete \
 		--omit-dir-times \
 		--copy-links \
-		./dist/* \
+		./$(DIR_LOCAL)/* \
 		-e 'ssh -p $(PORT)' \
-		$(USER_AT_HOST):/var/www
-	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX /var/www
+		$(USER_AT_HOST):$(DIR_SERVER)
+	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX $(DIR_SERVER)
