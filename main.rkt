@@ -4,6 +4,90 @@
 
 (require (prefix-in xml: xml))
 
+(require (prefix-in g: gregor)
+         (prefix-in g: gregor/time))
+
+(struct/contract Addr
+                 ([building string?]
+                  [street string?]
+                  [room string?]
+                  [town string?]
+                  [state "NH"]
+                  [zipcode string?]
+                  [country "USA"]))
+
+(struct/contract Host
+                 ([name string?]
+                  [addr Addr?]
+                  [url string?]  ; TODO Use url type?
+                  ))
+
+(struct/contract Meeting
+                 ([date g:date?]
+                  [time g:time?]
+                  [host Host?])
+                 #:transparent)
+
+(define/contract addr-raven-labs
+  Addr?
+  (Addr "913"
+        "Elm St"
+        "Suite 405"
+        "Manchester"
+        "NH"
+        "03101"
+        "USA"))
+
+(define/contract host-raven-labs
+  Host?
+  (Host "Raven Labs"
+        addr-raven-labs
+        "https://www.ravenlabsnh.com/"))
+
+(define/contract meetings
+  (listof Meeting?)
+  (sort (list (Meeting (g:date 2022 02 10)
+                       (g:time 18)
+                       host-raven-labs)
+              (Meeting (g:date 2022 04 14)
+                       (g:time 18)
+                       host-raven-labs)
+              (Meeting (g:date 2022 03 10)
+                       (g:time 18)
+                       host-raven-labs))
+        (λ (a b) (g:date<? (Meeting-date a)
+                           (Meeting-date b)))))
+
+(define/contract next-meeting
+  Meeting?
+  (let* ([today (g:today)]
+         [future
+           (filter (λ (m) (g:date>? (Meeting-date m) today)) meetings)])
+    (if (empty? future)
+        #f
+        (first future))))
+
+(define/contract x-next-meeting
+  xml:xexpr/c
+  (match next-meeting
+    [#f ""]
+    [m
+      (let* ([d (Meeting-date m)]
+             [t (Meeting-time m)]
+             [dt (g:datetime (g:->year d)
+                             (g:->month d)
+                             (g:->day d)
+                             (g:->hours t)
+                             (g:->minutes t))]
+             [date (g:~t dt "EEEE, MMMM d, y")]
+             [time (g:~t dt "HH:mm")]
+             [h (Meeting-host m)]
+             [host-town (Addr-town (Host-addr h))]
+             ; TODO Link to local info page about host/location?
+             [host-link `(a ([href ,(Host-url h)]) ,(Host-name h))])
+        `(p ([class "lead"])
+          ,date (br) ,time " at " ,host-link " in " ,host-town))]))
+
 (define/contract bootstrap-css path-string? "_lib/bs/css/bootstrap.min.css")
 (define/contract bootstrap-js  path-string? "_lib/bs/js/bootstrap.bundle.min.js")
 (define/contract local-css     path-string? "_lib/style.css")
@@ -54,13 +138,7 @@
       (p ([class "lead"])
          "After the presentations we hangout and discuss whatever.")
       (h3 "Next meeting")
-      (p ([class "lead"])
-         "Thursday, March 10th, 2022 at 18:00 in Manchester.")
-      (p ([class "lead"])
-         "Graciously hosted by "
-         (a ([href "https://www.ravenlabsnh.com/"])
-            "Raven Labs")
-         ".")
+      ,x-next-meeting
       (p ([class "lead"])
          (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
              [href ,(file->string "snip/join-us-button-mailto.txt")])
