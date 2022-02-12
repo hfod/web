@@ -96,9 +96,13 @@
 (define/contract bootstrap-js  path-string? "_lib/bs/js/bootstrap.bundle.min.js")
 (define/contract local-css     path-string? "_lib/style.css")
 
+(define/contract (include file)
+  (-> path-string? string?)
+  (file->string (build-path "inc" file)))
+
 (define/contract enable-tooltips
   xml:xexpr/c
-  `(script ,(file->string "snip/bs-enable-tooltips.js")))
+  `(script ,(include "bs-enable-tooltips.js")))
 
 (define/contract (page main-content)
   (-> (listof xml:xexpr/c) xml:xexpr/c)
@@ -145,7 +149,7 @@
       ,x-next-meeting
       (p ([class "lead"])
          (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
-             [href ,(file->string "snip/join-us-button-mailto.txt")])
+             [href ,(include "join-us-button-mailto.txt")])
             "Join us"))
       ,enable-tooltips))
   (page main-content))
