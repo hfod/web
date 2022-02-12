@@ -28,9 +28,6 @@
                   [host Host?])
                  #:transparent)
 
-(define d g:date)
-(define t g:time)
-
 (define/contract addr-raven-labs
   Addr?
   (Addr "913"
@@ -49,23 +46,26 @@
 
 (define/contract meetings
   (listof Meeting?)
-  (sort (list (Meeting (d 2022 02 10)
-                       (t 18 00)
-                       host-raven-labs)
-              (Meeting (d 2022 04 14)
-                       (t 18 00)
-                       host-raven-labs)
-              (Meeting (d 2022 03 10)
-                       (t 18 00)
-                       host-raven-labs))
-        (λ (a b) (g:date<? (Meeting-date a)
-                           (Meeting-date b)))))
+  (let ([d g:date]
+        [t g:time])
+    (list (Meeting (d 2022 02 10)
+                   (t 18 00)
+                   host-raven-labs)
+          (Meeting (d 2022 04 14)
+                   (t 18 00)
+                   host-raven-labs)
+          (Meeting (d 2022 03 10)
+                   (t 18 00)
+                   host-raven-labs))))
 
 (define/contract next-meeting
   Meeting?
   (let* ([today (g:today)]
          [future
-           (filter (λ (m) (g:date>? (Meeting-date m) today)) meetings)])
+           (filter (λ (m) (g:date>? (Meeting-date m) today))
+                   (sort meetings
+                         (λ (a b) (g:date<? (Meeting-date a)
+                                            (Meeting-date b)))))])
     (if (empty? future)
         #f
         (first future))))
