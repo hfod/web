@@ -166,6 +166,7 @@
 
 (module+ main
   (let ([out-dir "./dist"])
+    ; TODO Add option to generate indented output, for debugging diffs.
     (command-line
       #:program (find-system-path 'run-file)
       #:once-each
