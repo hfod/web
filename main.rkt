@@ -10,12 +10,7 @@
 
 (define/contract enable-tooltips
   xml:xexpr/c
-  ; TODO Snippets like this maybe better to read from disk.
-  '(script
-    "var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle=\"tooltip\"]'))
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-              return new bootstrap.Tooltip(tooltipTriggerEl)
-            })"))
+  `(script ,(file->string "snip/bs-enable-tooltips.js")))
 
 (define/contract (page main-content)
   (-> (listof xml:xexpr/c) xml:xexpr/c)
@@ -68,15 +63,7 @@
          ".")
       (p ([class "lead"])
          (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
-             [href "mailto:siraaj@khandkar.net?subject=I want to present at Hack Free Or Die&body=
-# Hack name or short description%0A%0A%0A
-# Hack full description%0A%0A%0A
-# Project source URL (required)%0A%0A%0A
-# Project website URL (optional)%0A%0A%0A
-# Special requests? (e.g. audio, whiteboard, etc.)%0A%0A%0A
-# Your name for attribution (required, but unverified - i.e. call yourself whatever you want)%0A%0A%0A
-# Your email for attribution (optional)%0A%0A%0A
-# Your website for attribution (optional)%0A%0A%0A"])
+             [href ,(file->string "snip/join-us-button-mailto.txt")])
             "Join us"))
       ,enable-tooltips))
   (page main-content))
