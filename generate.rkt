@@ -89,6 +89,7 @@
              ; TODO Link to local info page about host/location?
              [host-link `(a ([href ,(Host-url h)]) ,(Host-name h))])
         `(p ([class "lead"])
+          ; TODO Google maps link
           ,date (br) ,time " at " ,host-link " in " ,host-town))]))
 
 (define/contract bootstrap-css path-string? "_lib/bs/css/bootstrap.min.css")
