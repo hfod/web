@@ -5,10 +5,10 @@ HOST         := hackfreeordie.org
 PORT         := 22
 USER_AT_HOST := $(USER)@$(HOST)
 
-.PHONY: dist
-dist:
+.PHONY: generate
+generate:
 	mkdir -p dist
-	./main.rkt
+	./generate.rkt
 
 .PHONY: deploy
 deploy:
