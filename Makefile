@@ -5,6 +5,11 @@ HOST         := hackfreeordie.club
 PORT         := 22
 USER_AT_HOST := $(USER)@$(HOST)
 
+.PHONY: dist
+dist:
+	mkdir -p dist
+	./main.rkt
+
 .PHONY: deploy
 deploy:
 	rsync \
