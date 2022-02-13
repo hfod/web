@@ -1,9 +1,10 @@
-mailto:siraaj@khandkar.net?subject=I want to present at Hack Free Or Die&body=
-# Hack name or short description%0A%0A%0A
-# Hack full description%0A%0A%0A
-# Project source URL (required)%0A%0A%0A
-# Project website URL (optional)%0A%0A%0A
-# Special requests? (e.g. audio, whiteboard, etc.)%0A%0A%0A
-# Your name for attribution (required, but unverified - i.e. call yourself whatever you want)%0A%0A%0A
-# Your email for attribution (optional)%0A%0A%0A
-# Your website for attribution (optional)%0A%0A%0A
+mailto:siraaj@khandkar.net?subject=[hack-free-or-die] I want to present my hack!&body=
+## Hack Title (REQUIRED)%0A%0A%0A
+## Hack Description (REQUIRED)%0A%0A%0A
+## Hack Source URL (REQUIRED)%0A%0A%0A
+## Hack Website URL (optional)%0A%0A%0A
+## Special requests? (optional. e.g. audio, whiteboard, etc.)%0A%0A%0A
+## Your name for attribution (REQUIRED)%0A
+(required, but unverified - i.e. call yourself whatever you want)%0A%0A%0A
+## Your email for attribution (optional)%0A%0A%0A
+## Your website for attribution (optional)%0A%0A%0A
