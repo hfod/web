@@ -2,7 +2,8 @@
 
 #lang racket
 
-(require (prefix-in xml: xml))
+(require (prefix-in url: net/url)
+         (prefix-in xml: xml))
 
 (require (prefix-in g: gregor)
          (prefix-in g: gregor/time))
@@ -19,53 +20,114 @@
 (struct/contract Host
                  ([name string?]
                   [addr Addr?]
-                  [url string?]  ; TODO Use url type?
+                  [url url:url?]
+                  ))
+
+(struct/contract Presenter
+                 ([name string?]
+                  [email string?]
+                  [home (or/c #f url:url?)]
+                  [links (listof url:url?)]))
+
+(struct/contract Talk
+                 ([presenter Presenter?]
+                  [title string?]
+                  [description string]
+                  [source url:url?]
+                  [home (or/c #f url:url?)]
+                  [references (listof (cons/c string? string?))]
                   ))
 
 (struct/contract Meeting
-                 ([date g:date?]
+                 ; TODO notes?
+                 ; TODO description?
+                 ; TODO recap?
+                 ([seq nonnegative-integer?]
+                  [codename string?]
+                  [date g:date?]
                   [time g:time?]
-                  [host Host?])
+                  [host Host?]
+                  [talks (listof Talk?)])
                  #:transparent)
 
-(define/contract addr-raven-labs
-  Addr?
-  (Addr "913"
-        "Elm St"
-        "Suite 405"
-        "Manchester"
-        "NH"
-        "03101"
-        "USA"))
+(define (M #:seq seq
+           #:codename codename
+           #:date date
+           #:time time
+           #:host host
+           #:talks talks)
+  (Meeting seq codename date time host talks))
 
-(define/contract host-raven-labs
-  Host?
+(define host-raven-labs
   (Host "Raven Labs"
-        addr-raven-labs
-        "https://www.ravenlabsnh.com/"))
+        (Addr "913"
+              "Elm St"
+              "Suite 405"
+              "Manchester"
+              "NH"
+              "03101"
+              "USA")
+        (url:string->url "https://www.ravenlabsnh.com")))
+
+(define host-manch-maker-space
+  (Host "Manchester Makerspace"
+        (Addr "36"
+              "Old Granite St"
+              ""
+              "Manchester"
+              "NH"
+              "0301"
+              "USA")
+        (url:string->url "https://manchestermakerspace.org")))
 
 (define/contract meetings
   (listof Meeting?)
   (let ([d g:date]
         [t g:time])
-    (list (Meeting (d 2022 02 10)
-                   (t 18 00)
-                   host-raven-labs)
-          (Meeting (d 2022 03 10)
-                   (t 18 00)
-                   host-raven-labs))))
+    (list (M #:seq 0
+             #:codename "Ground Zero"
+             #:date (d 2022 01 10)
+             #:time (t 18 00)
+             #:host host-raven-labs
+             #:talks '())
+
+          (M #:seq 1
+             #:codename "Genesis"
+             #:date (d 2022 02 10)
+             #:time (t 18 00)
+             #:host host-raven-labs
+             #:talks '())  ; TODO Add talks.
+
+          (M #:seq 2
+             #:codename "TBD"
+             #:date (d 2022 03 10)
+             #:time (t 18 00)
+             #:host host-raven-labs
+             #:talks '())
+          )))
+
+(define/contract (meetings-filter-by-date compares?)
+  (-> (-> g:date? g:date? boolean?) (listof Meeting?))
+  (let ([today (g:today)])
+    (filter (λ (m) (compares? (Meeting-date m)
+                              today))
+            meetings)))
+
+(define/contract meetings-past
+  (listof Meeting?)
+  (meetings-filter-by-date g:date<?))
+
+(define/contract meetings-future
+  (listof Meeting?)
+  (meetings-filter-by-date g:date>?))
 
 (define/contract next-meeting
   Meeting?
-  (let* ([today (g:today)]
-         [future
-           (filter (λ (m) (g:date>? (Meeting-date m) today))
-                   (sort meetings
-                         (λ (a b) (g:date<? (Meeting-date a)
-                                            (Meeting-date b)))))])
-    (if (empty? future)
-        #f
-        (first future))))
+  (match meetings-future
+    ['() #f]
+    [ms
+      (first (sort ms (λ (m1 m2) (g:date<? (Meeting-date m1)
+                                           (Meeting-date m2)))))]))
 
 (define/contract x-next-meeting
   xml:xexpr/c
@@ -84,7 +146,7 @@
              [h (Meeting-host m)]
              [host-town (Addr-town (Host-addr h))]
              ; TODO Link to local info page about host/location?
-             [host-link `(a ([href ,(Host-url h)]) ,(Host-name h))])
+             [host-link `(a ([href ,(url:url->string (Host-url h))]) ,(Host-name h))])
         `(p ([class "lead"])
           ; TODO Google maps link
           ,date (br) ,time " at " ,host-link " in " ,host-town))]))
@@ -101,9 +163,23 @@
   xml:xexpr/c
   `(script ,(include "bs-enable-tooltips.js")))
 
-(define/contract (page main-content)
-  (-> (listof xml:xexpr/c) xml:xexpr/c)
-  `(html (head (title "Hack Free Or Die")
+(define/contract (page title content)
+  (-> string? (listof xml:xexpr/c) xml:xexpr/c)
+  (define nav-links
+    (map (λ (pair)
+            (match-define (cons name file) pair)
+            (define attributes
+              (if (string=? title name)
+                  '([class "nav-link active"]
+                    [aria-current "page"])
+                  '([class "nav-link"])))
+            `(a (,@(cons `(href ,file) attributes))
+              ,name))
+         '(["home" . "index.html"]
+           ["log"  . "log.html"])))
+  `(html (head (title ,title " @ Hack Free Or Die")
+               (meta ([name "generator"]
+                      [content "https://racket-lang.org/"]))
                (meta ([charset "utf-8"]))
                (meta ([name="viewport"]
                       [content "width=device-width, initial-scale=1"]))
@@ -116,18 +192,48 @@
                       [rel "stylesheet"])))
     (body ([class "d-flex h-100 text-center text-white bg-dark"])
           (div ([class "hfod-container d-flex w-100 h-100 p-3 mx-auto flex-column"])
-               (header ([class "mb-auto"]))
+               (header ([class "mb-auto"])
+                       ; TODO Generate nav smarter.
+                       (div
+                         ; TODO Do we want this logoish thing here?
+                         ;(h3 ([class "float-md-start mb-0"]) "hack && tell")
+                         (nav ([class "nav nav-masthead justify-content-center float-md-end"])
+                              ,@nav-links)))
                (main ([class "px-3"])
-                     ,@main-content)
+                     ,@content)
                (footer ([class "mt-auto text-white-50"])
                        (p "Inspired by "
                           (a ([href "https://hackandtell.org/"]
                               [class "text-white"])
                              "NYC Hack && Tell")))))))
 
+(define/contract (page-log)
+  (-> xml:xexpr/c)
+  (define title "log")
+  (page title
+        `((h1 ,title)
+          (table ([class "table table-dark table-striped table-hover"])
+                 (thead
+                   (tr (th ([scope "col"]) "#")
+                       (th ([scope "col"]) "date")
+                       (th ([scope "col"]) "codename")
+                       (th ([scope "col"]) "host")))
+                 (tbody
+                   ,@(map (λ (m)
+                             (define h (Meeting-host m))
+                             `(tr
+                               (th ([scope "row"]) ,(number->string (Meeting-seq m)))
+                               (td ,(g:~t (Meeting-date m) "yyyy MMM dd"))
+                               (td ,(Meeting-codename m))
+                               (td (a ([href ,(url:url->string (Host-url h))]) ,(Host-name h)))))
+                          (sort meetings-past
+                                (λ (a b) (> (Meeting-seq a)
+                                            (Meeting-seq b))))))
+                 ))))
+
 (define/contract (page-home)
   (-> xml:xexpr/c)
-  (define main-content
+  (define content
     `((h1 "Hack Free Or Die")
       (p ([class "lead"])
          "A show and tell for and by "
@@ -149,11 +255,12 @@
              [href ,(include "join-us-button-mailto.txt")])
             "Join us"))
       ,enable-tooltips))
-  (page main-content))
+  (page "home" content))
 
 (define/contract (pages)
   (-> (listof (cons/c path-string? xml:xexpr/c)))
-  `(("index.html" . ,(page-home))))
+  `(["index.html" . ,(page-home)]
+    ["log.html"   . ,(page-log)]))
 
 (define/contract (main out-dir)
   (-> path-string? void)
