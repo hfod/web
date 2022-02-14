@@ -429,11 +429,15 @@
             ;      ; TODO Tweak colors to match site theme.
             )
          (p  ([class "card-text text-start"])
-            ,(Talk-description t)
-            (ul ([class "text-start"])
-                ,@(map (λ (r)
-                          `(li (a ([href ,(url:url->string (Ref-url r))]) ,(Ref-name r))))
-                       (Talk-references t)))))
+            ,(Talk-description t))
+         ,(if (empty? (Talk-references t))
+              ""
+              `(p  ([class "card-text text-start"])
+                (strong "references:")
+                (ul ([class "text-start"])
+                    ,@(map (λ (r)
+                              `(li (a ([href ,(url:url->string (Ref-url r))]) ,(Ref-name r))))
+                           (Talk-references t))))))
     (div ([class "card-footer"])
          (a  ([class "btn btn-primary"] [href ,(url:url->string (Talk-source t))]) "source"))))
 
