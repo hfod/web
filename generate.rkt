@@ -39,7 +39,7 @@
                  ([presenter Presenter?]
                   [title string?]
                   [description string?]
-                  [source (or/c #f url:url?)] ; XXX We really should not allow this to be #f
+                  [sources (listof url:url?)] ; XXX We really should not allow this to be empty.
                   [website (or/c #f url:url?)]
                   [references (listof Ref?)]
                   [photos (listof path?)]
@@ -66,11 +66,11 @@
 (define (T #:presenter presenter
            #:title title
            #:description description
-           #:source source
+           #:sources sources
            #:website website
            #:references references
            #:photos photos)
-  (Talk presenter title description source website references photos))
+  (Talk presenter title description sources website references photos))
 
 (define (M #:seq seq
            #:codename codename
@@ -178,7 +178,7 @@
              (list (T #:presenter presenter-kyle-robertson
                       #:title "Mathematical Programming and Optimization with Python and Pyomo"
                       #:description "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem."
-                      #:source (u "https://github.com/kwrobert/pyomo-presentation")
+                      #:sources (list (u "https://github.com/kwrobert/pyomo-presentation"))
                       #:website #f
                       #:references
                       '()
@@ -187,7 +187,7 @@
                    (T #:presenter presenter-jeff-nelson
                       #:title "RaspiBLitz w/ pay server"
                       #:description "Raspberry pi setup running raspiblitz with other services like pay server and exlplorers."
-                      #:source (u "https://github.com/rootzoll/raspiblitz")
+                      #:sources (list (u "https://github.com/rootzoll/raspiblitz"))
                       #:website #f
                       #:references
                       '() ; TODO Links to all component sources.
@@ -196,7 +196,7 @@
                    (T #:presenter presenter-zach-taylor
                       #:title "DIY mechanical split keyboard from cardboard!"
                       #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring."
-                      #:source #f ; TODO Need source link.
+                      #:sources '() ; TODO Need source links.
                       #:website #f
                       #:references
                       '() ; TODO Need some links to component sources.
@@ -205,7 +205,7 @@
                    (T #:presenter presenter-siraaj-khandkar
                       #:title "pista: a hacker's status bar"
                       #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar. After a TTL without updates, a slot is cleared."
-                      #:source (u "https://github.com/xandkar/pista")
+                      #:sources (list (u "https://github.com/xandkar/pista"))
                       #:website #f
                       #:references
                       (list
@@ -218,7 +218,7 @@
                    ;(T #:presenter presenter-bob-peret
                    ;   #:title ""
                    ;   #:description ""
-                   ;   #:source #f
+                   ;   #:sources (list (u ""))
                    ;   #:website #f
                    ;   #:references
                    ;   '()
@@ -227,7 +227,7 @@
                    (T #:presenter presenter-kyle-roucis
                       #:title "Lojban: the logical language for nerds"
                       #:description "Lojban is an “open source” logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
-                      #:source (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u")
+                      #:sources (list (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u"))
                       #:website (u "Lojban.org")
                       #:references
                       (list (Ref "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
@@ -238,7 +238,7 @@
                    ;(T #:presenter presenter-grant-peret
                    ;   #:title ""
                    ;   #:description ""
-                   ;   #:source (u "")
+                   ;   #:sources (list (u ""))
                    ;   #:website #f
                    ;   #:references
                    ;   '()
@@ -414,8 +414,7 @@
 (define/contract (talk->card t)
   (-> Talk? xml:xexpr/c)
   (define p (Talk-presenter t))
-  `(div ([class "card h-100 bg-dark text-light"]
-         [style "width: 18rem;"])
+  `(div ([class "card h-100 bg-dark text-light"])
     ;(img ([class "card-img-top"]
     ;      [src ""]
     ;      [alt ""]))
@@ -433,8 +432,18 @@
             ;      (send (pict:pict->bitmap (pict:text email)) save-file filename 'png)
             ;      ; TODO Tweak colors to match site theme.
             )
-         (p  ([class "card-text text-start"])
+         ; XXX "lead" seems semantically not ideal here, but seems to work OK.
+         (p  ([class "card-text text-start lead"])
             ,(Talk-description t))
+         ,(if (empty? (Talk-sources t))
+              ""
+              `(p  ([class "card-text text-start"])
+                (strong "artifacts:") ; TODO Rename Talk-sources to Talk-artifacts?
+                (ul ([class "text-start"])
+                    ,@(map (λ (s)
+                              (define url (url:url->string s))
+                              `(li (a ([href ,url]) ,url)))
+                           (Talk-sources t)))))
          ,(if (empty? (Talk-references t))
               ""
               `(p  ([class "card-text text-start"])
@@ -443,10 +452,7 @@
                     ,@(map (λ (r)
                               `(li (a ([href ,(url:url->string (Ref-url r))]) ,(Ref-name r))))
                            (Talk-references t))))))
-    (div ([class "card-footer"])
-         ,(if (Talk-source t)
-            `(a  ([class "btn btn-primary"] [href ,(url:url->string (Talk-source t))]) "source")
-            `(a  ([class "btn btn-secondary"] [href "#"]) "source")))))
+    (div ([class "card-footer"]) "")))
 
 (define/contract (page-meeting m)
   (-> Meeting? xml:xexpr/c)
@@ -459,7 +465,7 @@
     `((h1 ,title)
       (p ([class "lead"])
          ,(Meeting-recap m))
-      (div ([class "row row-cols-1 row-cols-md-2 g-4"]) ,@cols))))
+      (div ([class "row row-cols-1 row-cols-md-1 g-4"]) ,@cols))))
 
 (define/contract (pages)
   (-> (listof (cons/c path-string? xml:xexpr/c)))
