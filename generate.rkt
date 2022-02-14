@@ -421,7 +421,13 @@
             "by "
             ,(if (Presenter-website p)
                  `(a ([href ,(url:url->string (Presenter-website p))]) ,(Presenter-name p))
-                 (Presenter-name p)))
+                 (Presenter-name p))
+            ; TODO Render email addr as text:
+            ;      (define email (Presenter-email p))
+            ;      (define filename (string-append email ".png"))
+            ;      (send (pict:pict->bitmap (pict:text email)) save-file filename 'png)
+            ;      ; TODO Tweak colors to match site theme.
+            )
          (p  ([class "card-text text-start"])
             ,(Talk-description t)
             (ul ,@(map (λ (r)
