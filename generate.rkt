@@ -39,7 +39,7 @@
                  ([presenter Presenter?]
                   [title string?]
                   [description string?]
-                  [source url:url?]
+                  [source (or/c #f url:url?)] ; XXX We really should not allow this to be #f
                   [website (or/c #f url:url?)]
                   [references (listof Ref?)]
                   [photos (listof path?)]
@@ -196,7 +196,7 @@
                    (T #:presenter presenter-zach-taylor
                       #:title "DIY mechanical split keyboard from cardboard!"
                       #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring."
-                      #:source (u "") ; TODO Need source link.
+                      #:source #f ; TODO Need source link.
                       #:website #f
                       #:references
                       '() ; TODO Need some links to component sources.
@@ -218,7 +218,7 @@
                    ;(T #:presenter presenter-bob-peret
                    ;   #:title ""
                    ;   #:description ""
-                   ;   #:source (u "")
+                   ;   #:source #f
                    ;   #:website #f
                    ;   #:references
                    ;   '()
@@ -444,7 +444,9 @@
                               `(li (a ([href ,(url:url->string (Ref-url r))]) ,(Ref-name r))))
                            (Talk-references t))))))
     (div ([class "card-footer"])
-         (a  ([class "btn btn-primary"] [href ,(url:url->string (Talk-source t))]) "source"))))
+         ,(if (Talk-source t)
+            `(a  ([class "btn btn-primary"] [href ,(url:url->string (Talk-source t))]) "source")
+            `(a  ([class "btn btn-secondary"] [href "#"]) "source")))))
 
 (define/contract (page-meeting m)
   (-> Meeting? xml:xexpr/c)
