@@ -226,7 +226,7 @@
 
                    (T #:presenter presenter-kyle-roucis
                       #:title "Lojban: the logical language for nerds"
-                      #:description "Lojban is an “open source” logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
+                      #:description "Lojban is an \"open source\" logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
                       #:sources (list (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u"))
                       #:website (u "Lojban.org")
                       #:references
