@@ -422,7 +422,7 @@
             ,(if (Presenter-website p)
                  `(a ([href ,(url:url->string (Presenter-website p))]) ,(Presenter-name p))
                  (Presenter-name p))
-            ; TODO Render email addr as text:
+            ; TODO Render email addr text as image:
             ;      (define email (Presenter-email p))
             ;      (define filename (string-append email ".png"))
             ;      (send (pict:pict->bitmap (pict:text email)) save-file filename 'png)
