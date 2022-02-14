@@ -195,7 +195,7 @@
 
                    (T #:presenter presenter-zach-taylor
                       #:title "DIY mechanical split keyboard from cardboard!"
-                      #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiemnets with cardboard and handwiring."
+                      #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring."
                       #:source (u "") ; TODO Need source link.
                       #:website #f
                       #:references
