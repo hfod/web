@@ -208,7 +208,10 @@
                       #:source (u "https://github.com/xandkar/pista")
                       #:website #f
                       #:references
-                      '()
+                      (list
+                        (Ref "dwm" (u "https://dwm.suckless.org/"))
+                        (Ref "ii" (u "https://tools.suckless.org/ii/"))
+                        (Ref "status experiments" (u "https://github.com/xandkar/khatus/")))
                       #:photos '())
 
                    ; TODO Get details from Bob.
