@@ -452,7 +452,8 @@
                     ,@(map (λ (r)
                               `(li (a ([href ,(url:url->string (Ref-url r))]) ,(Ref-name r))))
                            (Talk-references t))))))
-    (div ([class "card-footer"]) "")))
+    ;(div ([class "card-footer"]) "")
+    ))
 
 (define/contract (page-meeting m)
   (-> Meeting? xml:xexpr/c)
