@@ -8,6 +8,8 @@
 (require (prefix-in g: gregor)
          (prefix-in g: gregor/time))
 
+(define u url:string->url)
+
 (struct/contract Addr
                  ([building string?]
                   [street string?]
@@ -79,13 +81,13 @@
            #:recap recap)
   (Meeting seq codename date time host talks recap))
 
-(define/contract url-raven-labs url:url? (url:string->url "ravenlabsnh.com"))
+(define/contract url-raven-labs url:url? (u "ravenlabsnh.com"))
 
 (define presenter-kyle-robertson
   (P #:name "Kyle Robertson"
      #:email "kyle.wesley@me.com"
      #:website #f
-     #:affiliated-links (list (url:string->url "https://github.com/kwrobert")
+     #:affiliated-links (list (u "https://github.com/kwrobert")
                               url-raven-labs)))
 
 (define presenter-jeff-nelson
@@ -98,13 +100,13 @@
   (P #:name "Zach Taylor"
      #:email "zach@taylorzr.com"
      #:website #f
-     #:affiliated-links (list (url:string->url "https://www.reddit.com/user/taylorzr"))))
+     #:affiliated-links (list (u "https://www.reddit.com/user/taylorzr"))))
 
 (define presenter-siraaj-khandkar
   (P #:name "Siraaj Khandkar"
      #:email "siraaj@khandkar.net"
-     #:website (url:string->url "https://xandkar.net")
-     #:affiliated-links (list (url:string->url "https://github.com/xandkar"))))
+     #:website (u "https://xandkar.net")
+     #:affiliated-links (list (u "https://github.com/xandkar"))))
 
 (define presenter-bob-peret
   (P #:name "Bob Peret"
@@ -115,8 +117,8 @@
 (define presenter-kyle-roucis
   (P #:name "Kyle Roucis"
      #:email "kyle@kyleroucis.com"
-     #:website (url:string->url "https://www.kyleroucis.com")
-     #:affiliated-links (list (url:string->url "https://github.com/kroucis"))))
+     #:website (u "https://www.kyleroucis.com")
+     #:affiliated-links (list (u "https://github.com/kroucis"))))
 
 (define presenter-grant-peret
   (P #:name "Grant Peret"
@@ -133,7 +135,7 @@
               "NH"
               "03101"
               "USA")
-        (url:string->url "https://www.ravenlabsnh.com")))
+        (u "https://www.ravenlabsnh.com")))
 
 (define host-manch-maker-space
   (Host "Manchester Makerspace"
@@ -144,7 +146,7 @@
               "NH"
               "0301"
               "USA")
-        (url:string->url "https://manchestermakerspace.org")))
+        (u "https://manchestermakerspace.org")))
 
 (define/contract meetings
   (listof Meeting?)
@@ -176,7 +178,7 @@
              (list (T #:presenter presenter-kyle-robertson
                       #:title "Mathematical Programming and Optimization with Python and Pyomo"
                       #:description "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem."
-                      #:source (url:string->url "https://github.com/kwrobert/pyomo-presentation")
+                      #:source (u "https://github.com/kwrobert/pyomo-presentation")
                       #:website #f
                       #:references
                       '()
@@ -185,7 +187,7 @@
                    (T #:presenter presenter-jeff-nelson
                       #:title "RaspiBLitz w/ pay server"
                       #:description "Raspberry pi setup running raspiblitz with other services like pay server and exlplorers."
-                      #:source (url:string->url "https://github.com/rootzoll/raspiblitz")
+                      #:source (u "https://github.com/rootzoll/raspiblitz")
                       #:website #f
                       #:references
                       '() ; TODO Links to all component sources.
@@ -194,7 +196,7 @@
                    (T #:presenter presenter-zach-taylor
                       #:title "DIY mechanical split keyboard from cardboard!"
                       #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiemnets with cardboard and handwiring."
-                      #:source (url:string->url "") ; TODO Need source link.
+                      #:source (u "") ; TODO Need source link.
                       #:website #f
                       #:references
                       '() ; TODO Need some links to component sources.
@@ -203,7 +205,7 @@
                    (T #:presenter presenter-siraaj-khandkar
                       #:title "pista: a hacker's status bar"
                       #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar. After a TTL without updates, a slot is cleared."
-                      #:source (url:string->url "https://github.com/xandkar/pista")
+                      #:source (u "https://github.com/xandkar/pista")
                       #:website #f
                       #:references
                       '()
@@ -213,7 +215,7 @@
                    ;(T #:presenter presenter-bob-peret
                    ;   #:title ""
                    ;   #:description ""
-                   ;   #:source (url:string->url "")
+                   ;   #:source (u "")
                    ;   #:website #f
                    ;   #:references
                    ;   '()
@@ -222,18 +224,18 @@
                    (T #:presenter presenter-kyle-roucis
                       #:title "Lojban: the logical language for nerds"
                       #:description "Lojban is an “open source” logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
-                      #:source (url:string->url "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u")
-                      #:website (url:string->url "Lojban.org")
+                      #:source (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u")
+                      #:website (u "Lojban.org")
                       #:references
-                      (list (Ref "book"       (url:string->url "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
-                            (Ref "dictionary" (url:string->url "https://la-lojban.github.io/sutysisku/lojban/index.html")))
+                      (list (Ref "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
+                            (Ref "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html")))
                       #:photos '())
 
                    ; TODO Get details from Grant.
                    ;(T #:presenter presenter-grant-peret
                    ;   #:title ""
                    ;   #:description ""
-                   ;   #:source (url:string->url "")
+                   ;   #:source (u "")
                    ;   #:website #f
                    ;   #:references
                    ;   '()
