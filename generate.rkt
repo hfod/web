@@ -5,285 +5,17 @@
 (require (prefix-in url: net/url)
          (prefix-in xml: xml))
 
-(require (prefix-in g: gregor)
-         (prefix-in g: gregor/time))
+(require (prefix-in g: gregor))
 
-(define u url:string->url)
-
-(struct/contract Addr
-                 ([building string?]
-                  [street string?]
-                  [room string?]
-                  [town string?]
-                  [state "NH"]
-                  [zipcode string?]
-                  [country "USA"]))
-
-(struct/contract Host
-                 ([name string?]
-                  [addr Addr?]
-                  [url url:url?]
-                  ))
-
-(struct/contract Presenter
-                 ([name string?]
-                  [email string?]
-                  [website (or/c #f url:url?)]
-                  [affiliated-links (listof url:url?)]))
-
-(struct/contract Ref
-                 ([name string?]
-                  [url url:url?]))
-
-(struct/contract Talk
-                 ([presenter Presenter?]
-                  [title string?]
-                  [description string?]
-                  [sources (listof url:url?)] ; XXX We really should not allow this to be empty.
-                  [website (or/c #f url:url?)]
-                  [references (listof Ref?)]
-                  [photos (listof path?)]
-                  ))
-
-(struct/contract Meeting
-                 ([seq nonnegative-integer?]
-                  [codename string?]
-                  [date g:date?]
-                  [time g:time?]
-                  [host Host?]
-                  [talks (listof Talk?)]
-                  [recap string?])
-                 #:transparent)
-
-;; TODO Can we automate making these keyworded constructors with a macro?
-
-(define (P #:name name
-           #:email email
-           #:website website
-           #:affiliated-links links)
-  (Presenter name (string-downcase email) website links))
-
-(define (T #:presenter presenter
-           #:title title
-           #:description description
-           #:sources sources
-           #:website website
-           #:references references
-           #:photos photos)
-  (Talk presenter title description sources website references photos))
-
-(define (M #:seq seq
-           #:codename codename
-           #:date date
-           #:time time
-           #:host host
-           #:talks talks
-           #:recap recap)
-  (Meeting seq codename date time host talks recap))
-
-(define/contract url-raven-labs url:url? (u "ravenlabsnh.com"))
-
-(define presenter-kyle-robertson
-  (P #:name "Kyle Robertson"
-     #:email "kyle.wesley@me.com"
-     #:website #f
-     #:affiliated-links (list (u "https://github.com/kwrobert")
-                              url-raven-labs)))
-
-(define presenter-jeff-nelson
-  (P #:name "Jeff Nelson"
-     #:email "jeff@ravenlabsnh.com"
-     #:website #f
-     #:affiliated-links (list url-raven-labs)))
-
-(define presenter-zach-taylor
-  (P #:name "Zach Taylor"
-     #:email "zach@taylorzr.com"
-     #:website #f
-     #:affiliated-links (list (u "https://www.reddit.com/user/taylorzr"))))
-
-(define presenter-siraaj-khandkar
-  (P #:name "Siraaj Khandkar"
-     #:email "siraaj@khandkar.net"
-     #:website (u "https://xandkar.net")
-     #:affiliated-links (list (u "https://github.com/xandkar"))))
-
-(define presenter-bob-peret
-  (P #:name "Bob Peret"
-     #:email ""
-     #:website #f
-     #:affiliated-links (list url-raven-labs)))
-
-(define presenter-kyle-roucis
-  (P #:name "Kyle Roucis"
-     #:email "kyle@kyleroucis.com"
-     #:website (u "https://www.kyleroucis.com")
-     #:affiliated-links (list (u "https://github.com/kroucis"))))
-
-(define presenter-grant-peret
-  (P #:name "Grant Peret"
-     #:email "grant@ravenlabsnh.com"
-     #:website #f
-     #:affiliated-links (list url-raven-labs)))
-
-(define host-raven-labs
-  (Host "Raven Labs"
-        (Addr "913"
-              "Elm St"
-              "Suite 405"
-              "Manchester"
-              "NH"
-              "03101"
-              "USA")
-        (u "https://www.ravenlabsnh.com")))
-
-(define host-manch-maker-space
-  (Host "Manchester Makerspace"
-        (Addr "36"
-              "Old Granite St"
-              ""
-              "Manchester"
-              "NH"
-              "0301"
-              "USA")
-        (u "https://manchestermakerspace.org")))
-
-(define/contract meetings
-  (listof Meeting?)
-  (let ([d g:date]
-        [t g:time])
-    (list (M #:seq 0
-             #:codename "Ground Zero"
-             #:date (d 2022 01 10)
-             #:time (t 18 00)
-             #:host host-raven-labs
-             #:recap ""
-             #:talks '())
-
-          (M #:seq 1
-             #:codename "Genesis"
-             #:date (d 2022 02 10)
-             #:time (t 18 00)
-             #:host host-raven-labs
-             #:recap ""
-             #:talks
-             ; TODO Talks:
-             ; - [x] Kyle Robertson: optimization
-             ; - [x] Jeff Nelson: BTC/Lightening POS on Raspberry Pi
-             ; - [x] Zach Taylor: DIY keyboard on a cardboard
-             ; - [x] Siraaj Khandkar: pista
-             ; - [ ] Bob Peret: interns making mirrors
-             ; - [x] Kyle Roucis: Lobjan
-             ; - [ ] Grant Peret: Cat Alley sign story
-             (list (T #:presenter presenter-kyle-robertson
-                      #:title "Mathematical Programming and Optimization with Python and Pyomo"
-                      #:description "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem."
-                      #:sources (list (u "https://github.com/kwrobert/pyomo-presentation"))
-                      #:website #f
-                      #:references
-                      '()
-                      #:photos '())
-
-                   (T #:presenter presenter-jeff-nelson
-                      #:title "RaspiBLitz w/ pay server"
-                      #:description "Raspberry pi setup running raspiblitz with other services like pay server and exlplorers."
-                      #:sources (list (u "https://github.com/rootzoll/raspiblitz"))
-                      #:website #f
-                      #:references
-                      '() ; TODO Links to all component sources.
-                      #:photos '())
-
-                   (T #:presenter presenter-zach-taylor
-                      #:title "DIY mechanical split keyboard from cardboard!"
-                      #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring."
-                      #:sources '() ; TODO Need source links.
-                      #:website #f
-                      #:references
-                      '() ; TODO Need some links to component sources.
-                      #:photos '())
-
-                   (T #:presenter presenter-siraaj-khandkar
-                      #:title "pista: a hacker's status bar"
-                      #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar."
-                      #:sources (list (u "https://github.com/xandkar/pista"))
-                      #:website #f
-                      #:references
-                      (list
-                        (Ref "dwm" (u "https://dwm.suckless.org/"))
-                        (Ref "ii" (u "https://tools.suckless.org/ii/"))
-                        (Ref "status experiments" (u "https://github.com/xandkar/khatus/")))
-                      #:photos '())
-
-                   ; TODO Get details from Bob.
-                   ;(T #:presenter presenter-bob-peret
-                   ;   #:title ""
-                   ;   #:description ""
-                   ;   #:sources (list (u ""))
-                   ;   #:website #f
-                   ;   #:references
-                   ;   '()
-                   ;   #:photos '())
-
-                   (T #:presenter presenter-kyle-roucis
-                      #:title "Lojban: the logical language for nerds"
-                      #:description "Lojban is an \"open source\" logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
-                      #:sources (list (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u"))
-                      #:website (u "Lojban.org")
-                      #:references
-                      (list (Ref "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
-                            (Ref "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html")))
-                      #:photos '())
-
-                   ; TODO Get details from Grant.
-                   ;(T #:presenter presenter-grant-peret
-                   ;   #:title ""
-                   ;   #:description ""
-                   ;   #:sources (list (u ""))
-                   ;   #:website #f
-                   ;   #:references
-                   ;   '()
-                   ;   #:photos '())
-                   ))
-
-          (M #:seq 2
-             #:codename "TBD"
-             #:date (d 2022 03 10)
-             #:time (t 18 00)
-             #:host host-raven-labs
-             #:recap ""
-             #:talks '())
-          )))
-
-(define/contract (meetings-filter-by-date compares?)
-  (-> (-> g:date? g:date? boolean?) (listof Meeting?))
-  (let ([today (g:today)])
-    (filter (λ (m) (compares? (Meeting-date m)
-                              today))
-            meetings)))
-
-(define/contract meetings-past
-  (listof Meeting?)
-  (meetings-filter-by-date g:date<?))
-
-(define/contract meetings-future
-  (listof Meeting?)
-  (meetings-filter-by-date g:date>?))
-
-(define/contract next-meeting
-  Meeting?
-  (match meetings-future
-    ['() #f]
-    [ms
-      (first (sort ms (λ (m1 m2) (g:date<? (Meeting-date m1)
-                                           (Meeting-date m2)))))]))
+(require (prefix-in data: "data.rkt"))
 
 (define/contract x-next-meeting
   xml:xexpr/c
-  (match next-meeting
+  (match data:next-meeting
     [#f ""]
     [m
-      (let* ([d (Meeting-date m)]
-             [t (Meeting-time m)]
+      (let* ([d (data:Meeting-date m)]
+             [t (data:Meeting-time m)]
              [dt (g:datetime (g:->year d)
                              (g:->month d)
                              (g:->day d)
@@ -291,10 +23,10 @@
                              (g:->minutes t))]
              [date (g:~t dt "EEEE, MMMM d, y")]
              [time (g:~t dt "HH:mm")]
-             [h (Meeting-host m)]
-             [host-town (Addr-town (Host-addr h))]
+             [h (data:Meeting-host m)]
+             [host-town (data:Addr-town (data:Host-addr h))]
              ; TODO Link to local info page about host/location?
-             [host-link `(a ([href ,(url:url->string (Host-url h))]) ,(Host-name h))])
+             [host-link `(a ([href ,(url:url->string (data:Host-url h))]) ,(data:Host-name h))])
         `(p ([class "lead"])
           ; TODO Google maps link
           ,date (br) ,time " at " ,host-link " in " ,host-town))]))
@@ -374,15 +106,15 @@
                        (th ([scope "col"]) "host")))
                  (tbody
                    ,@(map (λ (m)
-                             (define h (Meeting-host m))
+                             (define h (data:Meeting-host m))
                              `(tr
-                               (th ([scope "row"]) ,(number->string (Meeting-seq m)))
-                               (td ,(g:~t (Meeting-date m) "yyyy MMM dd"))
-                               (td (a ([href ,(format "meeting-~a.html" (Meeting-seq m))]) ,(Meeting-codename m)))
-                               (td (a ([href ,(url:url->string (Host-url h))]) ,(Host-name h)))))
-                          (sort meetings-past
-                                (λ (a b) (> (Meeting-seq a)
-                                            (Meeting-seq b))))))))))
+                               (th ([scope "row"]) ,(number->string (data:Meeting-seq m)))
+                               (td ,(g:~t (data:Meeting-date m) "yyyy MMM dd"))
+                               (td (a ([href ,(format "meeting-~a.html" (data:Meeting-seq m))]) ,(data:Meeting-codename m)))
+                               (td (a ([href ,(url:url->string (data:Host-url h))]) ,(data:Host-name h)))))
+                          (sort data:meetings-past
+                                (λ (a b) (> (data:Meeting-seq a)
+                                            (data:Meeting-seq b))))))))))
 
 (define/contract (page-home)
   (-> xml:xexpr/c)
@@ -412,30 +144,30 @@
   (page #:nav-section title #:title title content))
 
 (define/contract (talk->card t)
-  (-> Talk? xml:xexpr/c)
-  (define p (Talk-presenter t))
+  (-> data:Talk? xml:xexpr/c)
+  (define p (data:Talk-presenter t))
   `(div ([class "card h-100 bg-dark text-light"])
     ;(img ([class "card-img-top"]
     ;      [src ""]
     ;      [alt ""]))
     (div ([class "card-header"])
-         (h5 ([class "card-title text-center"]) ,(Talk-title t)))
+         (h5 ([class "card-title text-center"]) ,(data:Talk-title t)))
     (div ([class "card-body"])
          (p  ([class "card-title text-center"])
             "by "
-            ,(if (Presenter-website p)
-                 `(a ([href ,(url:url->string (Presenter-website p))]) ,(Presenter-name p))
-                 (Presenter-name p))
+            ,(if (data:Presenter-website p)
+                 `(a ([href ,(url:url->string (data:Presenter-website p))]) ,(data:Presenter-name p))
+                 (data:Presenter-name p))
             ; TODO Render email addr text as image:
-            ;      (define email (Presenter-email p))
+            ;      (define email (data:Presenter-email p))
             ;      (define filename (string-append email ".png"))
             ;      (send (pict:pict->bitmap (pict:text email)) save-file filename 'png)
             ;      ; TODO Tweak colors to match site theme.
             )
          ; XXX "lead" seems semantically not ideal here, but seems to work OK.
          (p  ([class "card-text text-start lead"])
-            ,(Talk-description t))
-         ,(if (empty? (Talk-sources t))
+            ,(data:Talk-description t))
+         ,(if (empty? (data:Talk-sources t))
               ""
               `(p  ([class "card-text text-start"])
                 (strong "artifacts:") ; TODO Rename Talk-sources to Talk-artifacts?
@@ -443,36 +175,36 @@
                     ,@(map (λ (s)
                               (define url (url:url->string s))
                               `(li (a ([href ,url]) ,url)))
-                           (Talk-sources t)))))
-         ,(if (empty? (Talk-references t))
+                           (data:Talk-sources t)))))
+         ,(if (empty? (data:Talk-references t))
               ""
               `(p  ([class "card-text text-start"])
                 (strong "references:")
                 (ul ([class "text-start"])
                     ,@(map (λ (r)
-                              `(li (a ([href ,(url:url->string (Ref-url r))]) ,(Ref-name r))))
-                           (Talk-references t))))))
+                              `(li (a ([href ,(url:url->string (data:Ref-url r))]) ,(data:Ref-name r))))
+                           (data:Talk-references t))))))
     ;(div ([class "card-footer"]) "")
     ))
 
 (define/contract (page-meeting m)
-  (-> Meeting? xml:xexpr/c)
-  (define title (format "~a: ~a" (Meeting-seq m) (Meeting-codename m)))
-  (define cards (map talk->card (Meeting-talks m)))
+  (-> data:Meeting? xml:xexpr/c)
+  (define title (format "~a: ~a" (data:Meeting-seq m) (data:Meeting-codename m)))
+  (define cards (map talk->card (data:Meeting-talks m)))
   (define cols (map (λ (c) `(div ([class "col"]) ,c)) cards))
   (page
     #:nav-section "log"
     #:title title
     `((h1 ,title)
       (p ([class "lead"])
-         ,(Meeting-recap m))
+         ,(data:Meeting-recap m))
       (div ([class "row row-cols-1 row-cols-md-1 g-4"]) ,@cols))))
 
 (define/contract (pages)
   (-> (listof (cons/c path-string? xml:xexpr/c)))
   `(["index.html" . ,(page-home)]
     ["log.html"   . ,(page-log)]
-    ,@(map (λ (m) `(,(format "meeting-~a.html" (Meeting-seq m)) . ,(page-meeting m))) meetings-past)))
+    ,@(map (λ (m) `(,(format "meeting-~a.html" (data:Meeting-seq m)) . ,(page-meeting m))) data:meetings-past)))
 
 (define/contract (main out-dir)
   (-> path-string? void)
