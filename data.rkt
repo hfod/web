@@ -10,6 +10,7 @@
   Meeting?
   Meeting-talks
   Meeting-recap
+  Meeting-registration-url
 
   Addr-town
 
@@ -79,7 +80,8 @@
                   [time g:time?]
                   [host Host?]
                   [talks (listof Talk?)]
-                  [recap string?])
+                  [recap string?]
+                  [registration-url url:url?])
                  #:transparent)
 
 ;; TODO Can we automate making these keyworded constructors with a macro?
@@ -105,8 +107,9 @@
            #:time time
            #:host host
            #:talks talks
-           #:recap recap)
-  (Meeting seq codename date time host talks recap))
+           #:recap recap
+           #:registration-url reg-url)
+  (Meeting seq codename date time host talks recap reg-url))
 
 (define u url:string->url)
 
@@ -177,6 +180,10 @@
               "USA")
         (u "https://manchestermakerspace.org")))
 
+(define/contract (inc file)
+  (-> path-string? string?)
+  (file->string (build-path "inc" file)))
+
 (define/contract meetings
   (listof Meeting?)
   (let ([d g:date]
@@ -186,6 +193,7 @@
              #:date (d 2022 01 10)
              #:time (t 18 00)
              #:host host-raven-labs
+             #:registration-url (u "")
              #:recap ""
              #:talks '())
 
@@ -194,6 +202,7 @@
              #:date (d 2022 02 10)
              #:time (t 18 00)
              #:host host-raven-labs
+             #:registration-url (u (inc "join-us-button-mailto.txt"))
              #:recap ""
              #:talks
              ; TODO Talks:
@@ -279,6 +288,7 @@
              #:date (d 2022 03 10)
              #:time (t 18 00)
              #:host host-raven-labs
+             #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
              #:recap ""
              #:talks '())
           )))

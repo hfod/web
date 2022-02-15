@@ -10,7 +10,7 @@
 (require (prefix-in data: "data.rkt"))
 
 (define/contract x-next-meeting
-  xml:xexpr/c
+  (listof xml:xexpr/c)
   (match data:next-meeting
     [#f ""]
     [m
@@ -27,21 +27,25 @@
              [host-town (data:Addr-town (data:Host-addr h))]
              ; TODO Link to local info page about host/location?
              [host-link `(a ([href ,(url:url->string (data:Host-url h))]) ,(data:Host-name h))])
-        `(p ([class "lead"])
-          ; TODO Google maps link
-          ,date (br) ,time " at " ,host-link " in " ,host-town))]))
+        `((p ([class "lead"])
+             ; TODO Google maps link
+             ,date (br) ,time " at " ,host-link " in " ,host-town)
+          (p ([class "lead"])
+             (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
+                 [href ,(url:url->string (data:Meeting-registration-url m))])
+                "Join us"))))]))
 
 (define/contract bootstrap-css path-string? "_lib/bs/css/bootstrap.min.css")
 (define/contract bootstrap-js  path-string? "_lib/bs/js/bootstrap.bundle.min.js")
 (define/contract local-css     path-string? "_lib/style.css")
 
-(define/contract (include file)
+(define/contract (inc file)
   (-> path-string? string?)
   (file->string (build-path "inc" file)))
 
 (define/contract enable-tooltips
   xml:xexpr/c
-  `(script ,(include "bs-enable-tooltips.js")))
+  `(script ,(inc "bs-enable-tooltips.js")))
 
 (define/contract (page #:nav-section nav-section
                        #:title title
@@ -136,11 +140,7 @@
       (p ([class "lead"])
          "After the presentations we hangout and discuss whatever.")
       (h3 "Next meeting")
-      ,x-next-meeting
-      (p ([class "lead"])
-         (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
-             [href "https://forms.gle/6hx8ujd56rtAuWwZ8"])
-            "Join us"))
+      ,@x-next-meeting
       ,enable-tooltips))
   (define title "home")
   (page #:nav-section title #:title title content))
