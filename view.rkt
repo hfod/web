@@ -137,7 +137,7 @@
       ,x-next-meeting
       (p ([class "lead"])
          (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
-             [href ,(include "join-us-button-mailto.txt")])
+             [href "https://forms.gle/6hx8ujd56rtAuWwZ8"])
             "Join us"))
       ,enable-tooltips))
   (define title "home")
