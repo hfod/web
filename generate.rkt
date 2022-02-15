@@ -204,7 +204,7 @@
 
                    (T #:presenter presenter-siraaj-khandkar
                       #:title "pista: a hacker's status bar"
-                      #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar. After a TTL without updates, a slot is cleared."
+                      #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar."
                       #:sources (list (u "https://github.com/xandkar/pista"))
                       #:website #f
                       #:references
