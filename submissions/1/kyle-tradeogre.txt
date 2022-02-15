@@ -1,0 +1,31 @@
+ # Hack name or short description
+TradeOgre iOS app
+
+
+# Hack full description
+I wanted an iOS app for trading on TradeOgre.com, but one was not available. After poking around the website, I found public API specs and decided I would build the app myself. Using my extensive iOS knowledge and an app framework I developed myself, I built the app in about 2 weeks.
+
+# Project source URL (required)
+https://github.com/kroucis/TradeOgre-iOS
+
+# Project website URL (optional)
+
+
+# Special requests? (e.g. audio, whiteboard, etc.)
+
+
+# Your name for attribution (required, but unverified - i.e. call yourself whatever you want)
+Kyle
+
+
+# Your email for attribution (optional)
+kyle@kyleroucis.com
+
+
+# Your website for attribution (optional)
+https://www.kyleroucis.com
+
+
+
+Kyle Roucis
+kyle@kyleroucis.com

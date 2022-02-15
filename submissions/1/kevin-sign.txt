@@ -1,0 +1,41 @@
+Kevin Manche <kevin603101@gmail.com>
+
+
+Subject:
+I want to present at Hack Free Or Die
+From:
+Kevin Manche <kevin603101@gmail.com>
+Date:
+2/9/22, 15:44
+To:
+siraaj@khandkar.net
+
+# Hack name or short description
+Radar-activated “Tow Zone” sign for our Makerspace in downtown Manchester, NH
+
+# Hack full description
+Light up laser-cut wooden sign with electronics, including microwave “radar” motion sensor.   Currently this is done purely in hardware with no software component, however there are plans to extend this via an ESP32 board.
+
+# Project source URL (required)
+https://github.com/Kv603/TowZonator
+
+# Project website URL (optional)
+https://github.com/Kv603/TowZonator
+
+# Special requests? (e.g. audio, whiteboard, etc.)
+Standard household outlet (this uses a UL-listed 24VDC power supply)
+
+# Your name for attribution (required, but unverified - i.e. call yourself whatever you want)
+Kevin
+
+# Your email for attribution (optional)
+kevin603101@gmail.com
+
+# Your website for attribution (optional)
+www.manchestermakerspace.org
+ 
+
+[Google Mail Message-ID: <CADVxNAvCBp1z-=t6Yo4HXgV-CCzdFYEe-ubRpSPQZee4pSL8WQ@mail.gmail.com>]
+This user agent is already supported !
+[http://www.gmail.com/]
+[Options] 

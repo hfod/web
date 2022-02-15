@@ -1,0 +1,32 @@
+# Hack name or short description
+
+Mathematical Programming and Optimization with Python and Pyomo
+
+# Hack full description
+
+A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem. 
+ 
+# Project source URL (required)
+
+My repo: https://github.com/kwrobert/pyomo-presentation
+
+To give credit where it is due, most of the example code that actually uses Pyomo is pretty much pulled from this link verbatim because I didn’t have time to set up and solve my own problem: https://github.com/jckantor/ND-Pyomo-Cookbook/blob/master/notebooks/04.02-Machine-Bottleneck.ipynb 
+
+
+# Project website URL (optional)
+
+
+# Special requests? (e.g. audio, whiteboard, etc.)
+
+A projector/monitor for sharing my laptop screen
+
+# Your name for attribution (required, but unverified - i.e. call yourself whatever you want)
+
+Kyle Robertson 
+
+# Your email for attribution (optional)
+
+Kyle.wesley@me.com
+
+# Your website for attribution (optional)
+

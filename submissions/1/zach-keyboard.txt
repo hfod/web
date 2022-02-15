@@ -1,0 +1,16 @@
+taylorzr <zach@taylorzr.com>
+
+Hey Siraaj,
+
+Offered to do a hackfreeordie presentation. Seems like they are 5 min prez, then 5 min questions. Do you expect slides, or live demo, or just whatever goes?
+
+5 mins is quick, so probably just gonna touch briefly on:
+- keyboards in general, my keyboard journey
+- prototyping experiments with cardboard / handwiring
+- software side, setting up keyboard firmware in qmk
+
+Lemme know if you need anything else from me.
+
+Thanks!
+
+Zach
