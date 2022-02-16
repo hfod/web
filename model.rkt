@@ -221,7 +221,7 @@
              ; - [x] Siraaj Khandkar: pista
              ; - [ ] Bob Peret: interns making mirrors
              ; - [x] Kyle Roucis: Lobjan
-             ; - [ ] Grant Peret: Cat Alley sign story
+             ; - [x] Grant Peret: Cat Alley sign story
              (list (T #:presenter presenter-kyle-robertson
                       #:title "Mathematical Programming and Optimization with Python and Pyomo"
                       #:description "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem."
@@ -281,15 +281,15 @@
                             (Ref "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html")))
                       #:photos '())
 
-                   ; TODO Get details from Grant.
-                   ;(T #:presenter presenter-grant-peret
-                   ;   #:title ""
-                   ;   #:description ""
-                   ;   #:sources (list (u ""))
-                   ;   #:website #f
-                   ;   #:references
-                   ;   '()
-                   ;   #:photos '())
+                   (T #:presenter presenter-grant-peret
+                      #:title "Cat Alley - Creation of an Entryway"
+                      #:description "An overview of the aesthetic modelling, design, and loading requirements to build a cantilevered entry way sign."
+                      #:sources (list (u "https://github.com/RavenGrant/CatAlley"))
+                      #:website #f
+                      #:references
+                      (list (Ref "Atlas Obscura" (u "https://www.atlasobscura.com/places/cat-alley"))
+                            (Ref "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/")))
+                      #:photos '())
                    ))
 
           (M #:seq 2
