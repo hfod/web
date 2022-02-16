@@ -1,37 +1,36 @@
 #lang racket
 
-(provide
-  next-meeting
-  Meeting-date
-  Meeting-time
-  Meeting-host
-  Meeting-seq
-  Meeting-codename
-  Meeting?
-  Meeting-talks
-  Meeting-recap
-  Meeting-registration-url
+(provide Addr-town
 
-  Addr-town
+         Host-addr
+         Host-name
+         Host-url
 
-  Host-addr
-  Host-name
-  Host-url
+         Meeting-codename
+         Meeting-date
+         Meeting-host
+         Meeting-recap
+         Meeting-registration-url
+         Meeting-seq
+         Meeting-talks
+         Meeting-time
+         Meeting?
 
-  meetings-past
+         Presenter-name
+         Presenter-website
 
-  Talk?
-  Talk-presenter
-  Talk-title
-  Talk-description
-  Talk-sources
-  Talk-references
+         Ref-name
+         Ref-url
 
-  Presenter-name
-  Presenter-website
+         Talk-description
+         Talk-presenter
+         Talk-references
+         Talk-sources
+         Talk-title
+         Talk?
 
-  Ref-url
-  Ref-name)
+         meetings-past
+         meeting-next)
 
 (require (prefix-in url: net/url))
 
@@ -308,7 +307,7 @@
   (listof Meeting?)
   (meetings-filter-by-date g:date>?))
 
-(define/contract next-meeting
+(define/contract meeting-next
   Meeting?
   (match meetings-future
     ['() #f]

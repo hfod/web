@@ -94,7 +94,7 @@
 (define/contract (page-home)
   (-> xml:xexpr/c)
   (define next-meeting
-    (match model:next-meeting
+    (match model:meeting-next
       [#f ""]
       [m
         (let* ([d (model:Meeting-date m)]
