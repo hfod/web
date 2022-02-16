@@ -2,19 +2,20 @@
 
 #lang racket
 
-(require (prefix-in xml: xml))
-
 (require (prefix-in view: "view.rkt"))
+
+(define/contract (write-files files out-dir)
+  (-> (listof view:File?) path-string? void)
+  (for-each
+    (λ (f)
+       (display-to-file (view:File-content f)
+                        (build-path out-dir (view:File-name f))
+                        #:exists 'replace))
+    files))
 
 (define/contract (main out-dir)
   (-> path-string? void)
-  (for-each
-    (match-lambda
-      [(cons path xexpr)
-       (display-to-file (xml:xexpr->string xexpr)
-                        (build-path out-dir path)
-                        #:exists 'replace)])
-    (view:pages)))
+  (write-files (view:html-files) out-dir))
 
 (module+ main
   (let ([out-dir "./dist"])

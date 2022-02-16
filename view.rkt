@@ -1,6 +1,9 @@
 #lang racket
 
-(provide pages)
+(provide html-files
+         File?
+         File-name
+         File-content)
 
 (require (prefix-in url: net/url)
          (prefix-in xml: xml))
@@ -8,6 +11,10 @@
 (require (prefix-in g: gregor))
 
 (require (prefix-in model: "model.rkt"))
+
+(struct/contract File
+                 ([name path-string?]
+                  [content string?])) ; TODO Maybe use bytes or something?
 
 (struct/contract Page
                  ([id string?]
@@ -233,13 +240,13 @@
                  [_ id]))
   (format "~a.html" name))
 
-(define/contract (pages)
-  (-> (listof (cons/c path-string? xml:xexpr/c)))
+(define/contract (html-files)
+  (-> (listof File?))
   (map (λ (p)
-          (cons (page-id->filename (Page-id p))
-                (assemble #:nav nav
-                          #:title (Page-title p)
-                          #:content (Page-content p))))
+          (File (page-id->filename (Page-id p))
+                (xml:xexpr->string (assemble #:nav nav
+                                             #:title (Page-title p)
+                                             #:content (Page-content p)))))
        (list* (page-home)
               (page-log)
               (map page-meeting model:meetings-past))))
