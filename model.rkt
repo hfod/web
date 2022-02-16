@@ -73,7 +73,7 @@
                   ))
 
 (struct/contract Meeting
-                 ([seq nonnegative-integer?]
+                 ([seq integer?]
                   [codename string?]
                   [date g:date?]
                   [time g:time?]
@@ -108,6 +108,7 @@
            #:talks talks
            #:recap recap
            #:registration-url reg-url)
+  ; TODO Recap needs to be read from a markdown file.
   (Meeting seq codename date time host talks recap reg-url))
 
 (define u url:string->url)
@@ -187,7 +188,16 @@
   (listof Meeting?)
   (let ([d g:date]
         [t g:time])
-    (list (M #:seq 0
+    (list (M #:seq -1
+             #:codename "Prehistory"
+             #:date (d 2021 10 14)
+             #:time (t 19 00)
+             #:host host-raven-labs
+             #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
+             #:recap "According to legends, Grant posted a message in the New Hampshire channel of Helium's Discord server on September 10th, 2021: \"Would anyone be interested in a NH Helium meetup sometime? Would love to meet everyone and forecast Helium's growth in  NH!\". A few of us answered the call and a month later we had a great time hanging out at Raven Labs and getting to know each other."
+             #:talks '())
+
+          (M #:seq 0
              #:codename "Ground Zero"
              #:date (d 2022 01 10)
              #:time (t 18 00)
