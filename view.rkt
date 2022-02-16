@@ -7,7 +7,7 @@
 
 (require (prefix-in g: gregor))
 
-(require (prefix-in data: "data.rkt"))
+(require (prefix-in model: "model.rkt"))
 
 (define/contract path-bootstrap-css path-string? "_lib/bs/css/bootstrap.min.css")
 (define/contract path-bootstrap-js  path-string? "_lib/bs/js/bootstrap.bundle.min.js")
@@ -81,24 +81,24 @@
                        (th ([scope "col"]) "host")))
                  (tbody
                    ,@(map (λ (m)
-                             (define h (data:Meeting-host m))
+                             (define h (model:Meeting-host m))
                              `(tr
-                               (th ([scope "row"]) ,(number->string (data:Meeting-seq m)))
-                               (td ,(g:~t (data:Meeting-date m) "yyyy MMM dd"))
-                               (td (a ([href ,(format "meeting-~a.html" (data:Meeting-seq m))]) ,(data:Meeting-codename m)))
-                               (td (a ([href ,(url:url->string (data:Host-url h))]) ,(data:Host-name h)))))
-                          (sort data:meetings-past
-                                (λ (a b) (> (data:Meeting-seq a)
-                                            (data:Meeting-seq b))))))))))
+                               (th ([scope "row"]) ,(number->string (model:Meeting-seq m)))
+                               (td ,(g:~t (model:Meeting-date m) "yyyy MMM dd"))
+                               (td (a ([href ,(format "meeting-~a.html" (model:Meeting-seq m))]) ,(model:Meeting-codename m)))
+                               (td (a ([href ,(url:url->string (model:Host-url h))]) ,(model:Host-name h)))))
+                          (sort model:meetings-past
+                                (λ (a b) (> (model:Meeting-seq a)
+                                            (model:Meeting-seq b))))))))))
 
 (define/contract (page-home)
   (-> xml:xexpr/c)
   (define next-meeting
-    (match data:next-meeting
+    (match model:next-meeting
       [#f ""]
       [m
-        (let* ([d (data:Meeting-date m)]
-               [t (data:Meeting-time m)]
+        (let* ([d (model:Meeting-date m)]
+               [t (model:Meeting-time m)]
                [dt (g:datetime (g:->year d)
                                (g:->month d)
                                (g:->day d)
@@ -106,16 +106,16 @@
                                (g:->minutes t))]
                [date (g:~t dt "EEEE, MMMM d, y")]
                [time (g:~t dt "HH:mm")]
-               [h (data:Meeting-host m)]
-               [host-town (data:Addr-town (data:Host-addr h))]
+               [h (model:Meeting-host m)]
+               [host-town (model:Addr-town (model:Host-addr h))]
                ; TODO Link to local info page about host/location?
-               [host-link `(a ([href ,(url:url->string (data:Host-url h))]) ,(data:Host-name h))])
+               [host-link `(a ([href ,(url:url->string (model:Host-url h))]) ,(model:Host-name h))])
           `((p ([class "lead"])
                ; TODO Google maps link
                ,date (br) ,time " at " ,host-link " in " ,host-town)
             (p ([class "lead"])
                (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
-                   [href ,(url:url->string (data:Meeting-registration-url m))])
+                   [href ,(url:url->string (model:Meeting-registration-url m))])
                   "Join us"))))]))
   (define title "home")
   (page #:nav-section title
@@ -142,32 +142,32 @@
           (script ,(inc "bs-enable-tooltips.js")))))
 
 (define/contract (page-meeting m)
-  (-> data:Meeting? xml:xexpr/c)
+  (-> model:Meeting? xml:xexpr/c)
   (define/contract (talk->card t)
-    (-> data:Talk? xml:xexpr/c)
-    (define p (data:Talk-presenter t))
+    (-> model:Talk? xml:xexpr/c)
+    (define p (model:Talk-presenter t))
     `(div ([class "card h-100 bg-dark text-light"])
       ;(img ([class "card-img-top"]
       ;      [src ""]
       ;      [alt ""]))
       (div ([class "card-header"])
-           (h5 ([class "card-title text-center"]) ,(data:Talk-title t)))
+           (h5 ([class "card-title text-center"]) ,(model:Talk-title t)))
       (div ([class "card-body"])
            (p  ([class "card-title text-center"])
               "by "
-              ,(if (data:Presenter-website p)
-                   `(a ([href ,(url:url->string (data:Presenter-website p))]) ,(data:Presenter-name p))
-                   (data:Presenter-name p))
+              ,(if (model:Presenter-website p)
+                   `(a ([href ,(url:url->string (model:Presenter-website p))]) ,(model:Presenter-name p))
+                   (model:Presenter-name p))
               ; TODO Render email addr text as image:
-              ;      (define email (data:Presenter-email p))
+              ;      (define email (model:Presenter-email p))
               ;      (define filename (string-append email ".png"))
               ;      (send (pict:pict->bitmap (pict:text email)) save-file filename 'png)
               ;      ; TODO Tweak colors to match site theme.
               )
            ; XXX "lead" seems semantically not ideal here, but seems to work OK.
            (p  ([class "card-text text-start lead"])
-              ,(data:Talk-description t))
-           ,(if (empty? (data:Talk-sources t))
+              ,(model:Talk-description t))
+           ,(if (empty? (model:Talk-sources t))
                 ""
                 `(p  ([class "card-text text-start"])
                   (strong "artifacts:") ; TODO Rename Talk-sources to Talk-artifacts?
@@ -175,19 +175,19 @@
                       ,@(map (λ (s)
                                 (define url (url:url->string s))
                                 `(li (a ([href ,url]) ,url)))
-                             (data:Talk-sources t)))))
-           ,(if (empty? (data:Talk-references t))
+                             (model:Talk-sources t)))))
+           ,(if (empty? (model:Talk-references t))
                 ""
                 `(p  ([class "card-text text-start"])
                   (strong "references:")
                   (ul ([class "text-start"])
                       ,@(map (λ (r)
-                                `(li (a ([href ,(url:url->string (data:Ref-url r))]) ,(data:Ref-name r))))
-                             (data:Talk-references t))))))
+                                `(li (a ([href ,(url:url->string (model:Ref-url r))]) ,(model:Ref-name r))))
+                             (model:Talk-references t))))))
       ;(div ([class "card-footer"]) "")
       ))
-  (define title (format "~a: ~a" (data:Meeting-seq m) (data:Meeting-codename m)))
-  (define cards (map talk->card (data:Meeting-talks m)))
+  (define title (format "~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m)))
+  (define cards (map talk->card (model:Meeting-talks m)))
   (define cols (map (λ (c) `(div ([class "col"]) ,c)) cards))
   (page
     #:nav-section "log"
@@ -195,7 +195,7 @@
     #:content
     `((h1 ,title)
       (p ([class "lead"])
-         ,(data:Meeting-recap m))
+         ,(model:Meeting-recap m))
       (div ([class "row row-cols-1 row-cols-md-1 g-4"]) ,@cols))))
 
 (define/contract (pages)
@@ -203,4 +203,4 @@
   ; TODO Refactor, the following list should somehow cooperate with the nav list.
   `(["index.html" . ,(page-home)]
     ["log.html"   . ,(page-log)]
-    ,@(map (λ (m) `(,(format "meeting-~a.html" (data:Meeting-seq m)) . ,(page-meeting m))) data:meetings-past)))
+    ,@(map (λ (m) `(,(format "meeting-~a.html" (model:Meeting-seq m)) . ,(page-meeting m))) model:meetings-past)))
