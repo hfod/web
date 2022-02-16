@@ -8,10 +8,18 @@ USER_AT_HOST := $(USER)@$(HOST)
 DIR_LOCAL  := dist
 DIR_SERVER := /var/www
 
-.PHONY: generate
-generate:
+.PHONY: build
+build:
 	mkdir -p $(DIR_LOCAL)
 	./generate.rkt -o $(DIR_LOCAL)
+
+.PHONY: rebuild
+rebuild: clean
+	$(MAKE) build
+
+.PHONY: clean
+clean:
+	rm -f $(DIR_LOCAL)/*.html
 
 .PHONY: deploy
 deploy:
