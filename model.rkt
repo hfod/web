@@ -14,6 +14,7 @@
          Meeting-seq
          Meeting-talks
          Meeting-time
+         Meeting-photos
          Meeting?
 
          Presenter-name
@@ -80,6 +81,7 @@
                   [host Host?]
                   [talks (listof Talk?)]
                   [recap string?]
+                  [photos (listof string?)]
                   [registration-url url:url?])
                  #:transparent)
 
@@ -107,9 +109,10 @@
            #:host host
            #:talks talks
            #:recap recap
+           #:photos photos
            #:registration-url reg-url)
   ; TODO Recap needs to be read from a markdown file.
-  (Meeting seq codename date time host talks recap reg-url))
+  (Meeting seq codename date time host talks recap photos reg-url))
 
 (define u url:string->url)
 
@@ -195,6 +198,7 @@
              #:host host-raven-labs
              #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
              #:recap "According to legends, Grant posted a message in the New Hampshire channel of Helium's Discord server on September 10th, 2021: \"Would anyone be interested in a NH Helium meetup sometime? Would love to meet everyone and forecast Helium's growth in  NH!\". A few of us answered the call and a month later we had a great time hanging out at Raven Labs and getting to know each other."
+             #:photos '()
              #:talks '())
 
           (M #:seq 0
@@ -204,6 +208,7 @@
              #:host host-raven-labs
              #:registration-url (u "")
              #:recap ""
+             #:photos '()
              #:talks '())
 
           (M #:seq 1
@@ -213,6 +218,13 @@
              #:host host-raven-labs
              #:registration-url (u (inc "join-us-button-mailto.txt"))
              #:recap ""
+             #:photos
+             '("hfod-meeting-1-2db5f0d8a20e588848316edd41ff30ce580aa3c0b59fa0abad9f68fecc331a8a.jpg"
+               "hfod-meeting-1-4deee6710697253767467278608caad4cfbce226457069d55d7ab46c1dce9462.jpg"
+               "hfod-meeting-1-503e10641c40bfe24ece19bb69ca58db700dd7ef20ea9a5dfb2a81afd8e44336.jpg"
+               "hfod-meeting-1-718848a3ffd3d7cbc047c4b045fe12076eefb2ca442c73e42e38091db65ce602.jpg"
+               "hfod-meeting-1-8b5b40a5c575fa56fafa7ba84dbe0c738d3617751e448e9850ee9fe15e722594.jpg"
+               "hfod-meeting-1-bc9ff5a4f7736379a6e1839cb1ad678d90b690fb56ca9a348e8ded333e209809.jpg")
              #:talks
              ; TODO Talks:
              ; - [x] Kyle Robertson: optimization
@@ -299,6 +311,7 @@
              #:host host-raven-labs
              #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
              #:recap ""
+             #:photos '()
              #:talks '())
           )))
 

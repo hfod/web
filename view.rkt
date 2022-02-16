@@ -29,6 +29,7 @@
 (define/contract path-bootstrap-css path-string? "_lib/bs/css/bootstrap.min.css")
 (define/contract path-bootstrap-js  path-string? "_lib/bs/js/bootstrap.bundle.min.js")
 (define/contract path-local-css     path-string? "_lib/style.css")
+(define/contract path-photos        path-string? "_data/photos")
 
 (define/contract (inc file)
   (-> path-string? string?)
@@ -147,11 +148,50 @@
                              (model:Talk-references t))))))
       ;(div ([class "card-footer"]) "")
       ))
+  (define photo-paths
+    (map
+      (λ (filename)
+         (build-path path-photos
+                     "meetings"
+                     (number->string (model:Meeting-seq m))
+                     filename))
+      (model:Meeting-photos m)))
   (P #:id (format "meeting-~a" (number->string (model:Meeting-seq m)))
      #:title (format "Meeting ~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m))
      #:content
      `((h1 ,(model:Meeting-codename m))
        (h6 ,(g:~t (model:Meeting-date m) "EEEE, MMMM d, y"))
+
+       ,(if (empty? photo-paths)
+            ""
+            `(div ([id "carouselExampleControls"]
+                   [class "carousel slide"]
+                   [data-bs-ride "carousel"])
+              (div ([class "carousel-inner"])
+                   ,@(for/list ([i (in-naturals)]
+                                [p photo-paths])
+                               `(div ([class ,(if (= i 0)
+                                                  "carousel-item active"
+                                                  "carousel-item")])
+                                 (img ([src ,(path->string p)]
+                                       [class "d-block w-100"])))))
+              (button ([class "carousel-control-prev"]
+                       [type "button"]
+                       [data-bs-target "#carouselExampleControls"]
+                       [data-bs-slide "prev"])
+                      (span ([class "carousel-control-prev-icon"]
+                             [aria-hidden "true"]))
+                      (span ([class "visually-hidden"])
+                            "Previous"))
+              (button ([class "carousel-control-next"]
+                       [type "button"]
+                       [data-bs-target "#carouselExampleControls"]
+                       [data-bs-slide "next"])
+                      (span ([class "carousel-control-next-icon"]
+                             [aria-hidden "true"]))
+                      (span ([class "visually-hidden"])
+                            "Next"))))
+
        (p ([class "lead"])
           ,(model:Meeting-recap m))
        (div ([class "row row-cols-1 row-cols-md-1 g-4"])
