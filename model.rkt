@@ -197,7 +197,7 @@
              #:talks '())
 
           (M #:seq 1
-             #:codename "Genesis"
+             #:codename "Genesis Block"
              #:date (d 2022 02 10)
              #:time (t 18 00)
              #:host host-raven-labs
