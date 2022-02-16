@@ -56,17 +56,10 @@
   (-> Page?)
   (define next-meeting
     (match model:meeting-next
-      [#f ""]
+      [#f ""] ; TODO A message that nothing is scheduled.
       [m
-        (let* ([d (model:Meeting-date m)]
-               [t (model:Meeting-time m)]
-               [dt (g:datetime (g:->year d)
-                               (g:->month d)
-                               (g:->day d)
-                               (g:->hours t)
-                               (g:->minutes t))]
-               [date (g:~t dt "EEEE, MMMM d, y")]
-               [time (g:~t dt "HH:mm")]
+        (let* ([date (g:~t (model:Meeting-date m) "EEEE, MMMM d, y")]
+               [time (g:~t (model:Meeting-time m) "HH:mm")]
                [h (model:Meeting-host m)]
                [host-town (model:Addr-town (model:Host-addr h))]
                ; TODO Link to local info page about host/location?
@@ -147,11 +140,11 @@
                              (model:Talk-references t))))))
       ;(div ([class "card-footer"]) "")
       ))
-  (define title (format "~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m)))
   (P #:id (format "meeting-~a" (number->string (model:Meeting-seq m)))
-     #:title title
+     #:title (format "Meeting ~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m))
      #:content
-     `((h1 ,title)
+     `((h1 ,(model:Meeting-codename m))
+       (h6 ,(g:~t (model:Meeting-date m) "EEEE, MMMM d, y"))
        (p ([class "lead"])
           ,(model:Meeting-recap m))
        (div ([class "row row-cols-1 row-cols-md-1 g-4"])
