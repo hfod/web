@@ -103,6 +103,17 @@
        ,@next-meeting
        (script ,(inc "bs-enable-tooltips.js")))))
 
+(define/contract (link->anchor l)
+  (-> model:Link? xml:xexpr/c)
+  (define name (model:Link-name l))
+  (define url (url:url->string (model:Link-url l)))
+  (let ([name (if name name url)])
+    `(a ([href ,url]) ,name)))
+
+(define/contract (links->list-items links)
+  (-> (listof model:Link?) (listof xml:xexpr/c))
+  (map (λ (l) `(li ,(link->anchor l))) links))
+
 (define/contract (page-meeting m)
   (-> model:Meeting? Page?)
   (define/contract (talk->card t)
@@ -129,23 +140,18 @@
            ; XXX "lead" seems semantically not ideal here, but seems to work OK.
            (p  ([class "card-text text-start lead"])
               ,(model:Talk-description t))
-           ,(if (empty? (model:Talk-sources t))
+           ,(if (empty? (model:Talk-artifacts t))
                 ""
                 `(p  ([class "card-text text-start"])
-                  (strong "artifacts:") ; TODO Rename Talk-sources to Talk-artifacts?
+                  (strong "artifacts:")
                   (ul ([class "text-start"])
-                      ,@(map (λ (s)
-                                (define url (url:url->string s))
-                                `(li (a ([href ,url]) ,url)))
-                             (model:Talk-sources t)))))
+                      ,@(links->list-items (model:Talk-artifacts t)))))
            ,(if (empty? (model:Talk-references t))
                 ""
                 `(p  ([class "card-text text-start"])
                   (strong "references:")
                   (ul ([class "text-start"])
-                      ,@(map (λ (r)
-                                `(li (a ([href ,(url:url->string (model:Ref-url r))]) ,(model:Ref-name r))))
-                             (model:Talk-references t))))))
+                      ,@(links->list-items (model:Talk-references t))))))
       ;(div ([class "card-footer"]) "")
       ))
   (define photo-paths

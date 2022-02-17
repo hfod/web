@@ -20,13 +20,14 @@
          Presenter-name
          Presenter-website
 
-         Ref-name
-         Ref-url
+         Link-name
+         Link-url
+         Link?
 
+         Talk-artifacts
          Talk-description
          Talk-presenter
          Talk-references
-         Talk-sources
          Talk-title
          Talk?
 
@@ -59,17 +60,17 @@
                   [website (or/c #f url:url?)]
                   [affiliated-links (listof url:url?)]))
 
-(struct/contract Ref
-                 ([name string?]
+(struct/contract Link
+                 ([name (or/c #f string?)]
                   [url url:url?]))
 
 (struct/contract Talk
                  ([presenter Presenter?]
                   [title string?]
                   [description string?]
-                  [sources (listof url:url?)] ; XXX We really should not allow this to be empty.
                   [website (or/c #f url:url?)]
-                  [references (listof Ref?)]
+                  [artifacts (listof Link?)] ; XXX We really should not allow this to be empty.
+                  [references (listof Link?)]
                   [photos (listof path?)]
                   ))
 
@@ -96,11 +97,11 @@
 (define (T #:presenter presenter
            #:title title
            #:description description
-           #:sources sources
+           #:artifacts artifacts
            #:website website
            #:references references
            #:photos photos)
-  (Talk presenter title description sources website references photos))
+  (Talk presenter title description website artifacts references photos))
 
 (define (M #:seq seq
            #:codename codename
@@ -237,7 +238,7 @@
              (list (T #:presenter presenter-kyle-robertson
                       #:title "Mathematical Programming and Optimization with Python and Pyomo"
                       #:description "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem."
-                      #:sources (list (u "https://github.com/kwrobert/pyomo-presentation"))
+                      #:artifacts (list (Link #f (u "https://github.com/kwrobert/pyomo-presentation")))
                       #:website #f
                       #:references
                       '()
@@ -246,38 +247,38 @@
                    (T #:presenter presenter-jeff-nelson
                       #:title "RaspiBLitz w/ pay server"
                       #:description "Raspberry pi setup running raspiblitz with other services like pay server and exlplorers."
-                      #:sources (list (u "https://github.com/rootzoll/raspiblitz"))
+                      #:artifacts (list (Link #f (u "https://github.com/rootzoll/raspiblitz")))
                       #:website #f
                       #:references
-                      '() ; TODO Links to all component sources.
+                      '() ; TODO Links to all component artifacts.
                       #:photos '())
 
                    (T #:presenter presenter-zach-taylor
                       #:title "DIY mechanical split keyboard from cardboard!"
                       #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring."
-                      #:sources '() ; TODO Need source links.
+                      #:artifacts '() ; TODO Need source links.
                       #:website #f
                       #:references
-                      '() ; TODO Need some links to component sources.
+                      '() ; TODO Need some links to component artifacts.
                       #:photos '())
 
                    (T #:presenter presenter-siraaj-khandkar
                       #:title "pista: a hacker's status bar"
                       #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar."
-                      #:sources (list (u "https://github.com/xandkar/pista"))
+                      #:artifacts (list (Link #f (u "https://github.com/xandkar/pista")))
                       #:website #f
                       #:references
                       (list
-                        (Ref "dwm" (u "https://dwm.suckless.org/"))
-                        (Ref "ii" (u "https://tools.suckless.org/ii/"))
-                        (Ref "status experiments" (u "https://github.com/xandkar/khatus/")))
+                        (Link "dwm" (u "https://dwm.suckless.org/"))
+                        (Link "ii" (u "https://tools.suckless.org/ii/"))
+                        (Link "status experiments" (u "https://github.com/xandkar/khatus/")))
                       #:photos '())
 
                    ; TODO Get details from Bob.
                    ;(T #:presenter presenter-bob-peret
                    ;   #:title ""
                    ;   #:description ""
-                   ;   #:sources (list (u ""))
+                   ;   #:artifacts (list (Link #f (u "")))
                    ;   #:website #f
                    ;   #:references
                    ;   '()
@@ -286,21 +287,21 @@
                    (T #:presenter presenter-kyle-roucis
                       #:title "Lojban: the logical language for nerds"
                       #:description "Lojban is an \"open source\" logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
-                      #:sources (list (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u"))
+                      #:artifacts (list (Link #f (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u")))
                       #:website (u "Lojban.org")
                       #:references
-                      (list (Ref "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
-                            (Ref "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html")))
+                      (list (Link "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
+                            (Link "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html")))
                       #:photos '())
 
                    (T #:presenter presenter-grant-peret
                       #:title "Cat Alley - Creation of an Entryway"
                       #:description "An overview of the aesthetic modelling, design, and loading requirements to build a cantilevered entry way sign."
-                      #:sources (list (u "https://github.com/RavenGrant/CatAlley"))
+                      #:artifacts (list (Link #f (u "https://github.com/RavenGrant/CatAlley")))
                       #:website #f
                       #:references
-                      (list (Ref "Atlas Obscura" (u "https://www.atlasobscura.com/places/cat-alley"))
-                            (Ref "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/")))
+                      (list (Link "Atlas Obscura" (u "https://www.atlasobscura.com/places/cat-alley"))
+                            (Link "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/")))
                       #:photos '())
                    ))
 
