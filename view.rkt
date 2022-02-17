@@ -85,7 +85,11 @@
             (p ([class "lead"])
                (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
                    [href ,(url:url->string (model:Meeting-registration-url m))])
-                  "Join us"))))]))
+                  "Register")
+               " "
+               (a ([class "btn btn-lg btn-secondary fw-bold"]
+                   [href "https://discord.gg/NsEwkfCHgv"])
+                  "Chat"))))]))
   (define id "home")
   (P #:id id
      #:title id
