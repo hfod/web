@@ -1,11 +1,13 @@
 #lang racket
 
-(provide html-files
+(provide web-files
          File?
-         File-name
+         File-path
          File-content)
 
-(require (prefix-in url: net/url)
+(require (prefix-in pic: pict)
+         (prefix-in sha: file/sha1)
+         (prefix-in url: net/url)
          (prefix-in xml: xml))
 
 (require (prefix-in g: gregor))
@@ -13,22 +15,25 @@
 (require (prefix-in model: "model.rkt"))
 
 (struct/contract File
-                 ([name path-string?]
-                  [content string?])) ; TODO Maybe use bytes or something?
+                 ([path path-string?]
+                  [content (or/c bytes? string?)])) ; TODO Restrict to bytes only?
 
 (struct/contract Page
                  ([id string?]
                   [title string?]
-                  [content (listof xml:xexpr/c)]))
+                  [content (listof xml:xexpr/c)]
+                  [deps (listof File?)]))
 
 (define (P #:id id
            #:title title
-           #:content content)
-  (Page id title content))
+           #:content content
+           #:deps deps)
+  (Page id title content deps))
 
 (define/contract path-bootstrap-css path-string? "_lib/bs/css/bootstrap.min.css")
 (define/contract path-bootstrap-js  path-string? "_lib/bs/js/bootstrap.bundle.min.js")
 (define/contract path-local-css     path-string? "_lib/style.css")
+(define/contract path-images        path-string? "_data/img")    ; Non-photo images
 (define/contract path-photos        path-string? "_data/photos")
 
 (define/contract (inc file)
@@ -40,6 +45,7 @@
   (define title "log")
   (P #:id title
      #:title title
+     #:deps '()
      #:content
      `((h1 ,title)
        (table ([class "table table-dark table-striped table-hover"])
@@ -82,6 +88,7 @@
   (define id "home")
   (P #:id id
      #:title id
+     #:deps '()
      #:content
      `((h1 "Hack Free Or Die")
        (p ([class "lead"])
@@ -114,8 +121,25 @@
   (-> (listof model:Link?) (listof xml:xexpr/c))
   (map (λ (l) `(li ,(link->anchor l))) links))
 
+(define/contract (email->file e)
+  (-> string? File?)
+  (define content
+    (with-output-to-bytes
+      (thunk (send (pic:pict->bitmap (pic:text e))
+                   save-file
+                   (current-output-port)
+                   'png))))
+  (define digest (sha:bytes->hex-string (sha256-bytes content)))
+  (define name (string-append digest ".png"))
+  (define path (build-path path-images name))
+  (File path content))
+
 (define/contract (page-meeting m)
   (-> model:Meeting? Page?)
+  (define/contract email-addr-image-files
+    (listof File?)
+    (map (λ (t) (email->file (model:Presenter-email (model:Talk-presenter t))))
+         (model:Meeting-talks m)))
   (define/contract (talk->card t)
     (-> model:Talk? xml:xexpr/c)
     (define p (model:Talk-presenter t))
@@ -131,11 +155,8 @@
               ,(if (model:Presenter-website p)
                    `(a ([href ,(url:url->string (model:Presenter-website p))]) ,(model:Presenter-name p))
                    (model:Presenter-name p))
-              ; TODO Render email addr text as image:
-              ;      (define email (model:Presenter-email p))
-              ;      (define filename (string-append email ".png"))
-              ;      (send (pict:pict->bitmap (pict:text email)) save-file filename 'png)
-              ;      ; TODO Tweak colors to match site theme.
+              ; TODO Tweak email colors to match site theme.
+              ; TODO Insert email images.
               )
            ; XXX "lead" seems semantically not ideal here, but seems to work OK.
            (p  ([class "card-text text-start lead"])
@@ -164,6 +185,7 @@
       (model:Meeting-photos m)))
   (P #:id (format "meeting-~a" (number->string (model:Meeting-seq m)))
      #:title (format "Meeting ~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m))
+     #:deps email-addr-image-files
      #:content
      `((h1 ,(model:Meeting-codename m))
        (h6 ,(g:~t (model:Meeting-date m) "EEEE, MMMM d, y"))
@@ -286,13 +308,17 @@
                  [_ id]))
   (format "~a.html" name))
 
-(define/contract (html-files)
+(define/contract (web-files)
   (-> (listof File?))
-  (map (λ (p)
-          (File (page-id->filename (Page-id p))
-                (xml:xexpr->string (assemble #:nav nav
-                                             #:title (Page-title p)
-                                             #:content (Page-content p)))))
-       (list* (page-home)
-              (page-log)
-              (map page-meeting model:meetings-past))))
+  (append*
+    (map (λ (p)
+            (define page-file
+              (File (page-id->filename (Page-id p))
+                    (xml:xexpr->string (assemble #:nav nav
+                                                 #:title (Page-title p)
+                                                 #:content (Page-content p)))))
+            (define dep-files (Page-deps p))
+            (cons page-file dep-files))
+         (list* (page-home)
+                (page-log)
+                (map page-meeting model:meetings-past)))))

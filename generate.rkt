@@ -8,14 +8,16 @@
   (-> (listof view:File?) path-string? void)
   (for-each
     (λ (f)
+       (define filepath (build-path out-dir (view:File-path f)))
+       (make-parent-directory* filepath)
        (display-to-file (view:File-content f)
-                        (build-path out-dir (view:File-name f))
+                        filepath
                         #:exists 'replace))
     files))
 
 (define/contract (main out-dir)
   (-> path-string? void)
-  (write-files (view:html-files) out-dir))
+  (write-files (view:web-files) out-dir))
 
 (module+ main
   (let ([out-dir "./dist"])
