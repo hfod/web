@@ -128,6 +128,12 @@
   (-> (listof model:Link?) (listof xml:xexpr/c))
   (map (λ (l) `(li ,(link->anchor l))) links))
 
+;; TODO Use generalized content addressing for all referenced objects: img, js, css, etc.
+(define/contract (obj->path data)
+  (-> bytes? path?)
+  (define digest (sha:bytes->hex-string (sha256-bytes data)))
+  (build-path "_obj/" (substring digest 0 2) digest))
+
 (define/contract (email->file e)
   (-> string? File?)
   ; TODO Tie the email font color to a theme variable somehow.
@@ -141,10 +147,7 @@
                    save-file
                    (current-output-port)
                    'png))))
-  (define digest (sha:bytes->hex-string (sha256-bytes content)))
-  (define name (string-append digest ".png"))
-  (define path (build-path path-images name))
-  (File path content))
+  (File (obj->path content) content))
 
 (define/contract (page-meeting m)
   (-> model:Meeting? Page?)

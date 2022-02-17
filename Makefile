@@ -20,7 +20,7 @@ rebuild: clean
 .PHONY: clean
 clean:
 	rm -f $(DIR_LOCAL)/*.html
-	rm -fr $(DIR_LOCAL)/_data/img
+	rm -fr $(DIR_LOCAL)/_obj/
 
 .PHONY: deploy
 deploy:
