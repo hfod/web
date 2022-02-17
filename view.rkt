@@ -134,6 +134,10 @@
   (define digest (sha:bytes->hex-string (sha256-bytes data)))
   (build-path "_obj/" (substring digest 0 2) digest))
 
+(define/contract (obj->file data)
+  (-> bytes? File?)
+  (File (obj->path data) data))
+
 (define/contract (email->file e)
   (-> string? File?)
   ; TODO Tie the email font color to a theme variable somehow.
@@ -147,7 +151,7 @@
                    save-file
                    (current-output-port)
                    'png))))
-  (File (obj->path content) content))
+  (obj->file content))
 
 (define/contract (page-meeting m)
   (-> model:Meeting? Page?)
