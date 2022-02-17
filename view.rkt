@@ -5,7 +5,8 @@
          File-path
          File-content)
 
-(require (prefix-in pic: pict)
+(require (prefix-in draw: racket/draw)
+         (prefix-in pic: pict)
          (prefix-in sha: file/sha1)
          (prefix-in url: net/url)
          (prefix-in xml: xml))
@@ -123,9 +124,14 @@
 
 (define/contract (email->file e)
   (-> string? File?)
+  ; TODO Tie the email font color to a theme variable somehow.
+  (define color (make-object draw:color% 248 249 250))
+  (define font 'modern)
+  (define style (cons color font))
+  (define size 13)
   (define content
     (with-output-to-bytes
-      (thunk (send (pic:pict->bitmap (pic:text e))
+      (thunk (send (pic:pict->bitmap (pic:text (format "<~a>" e) style size))
                    save-file
                    (current-output-port)
                    'png))))
@@ -138,8 +144,12 @@
   (-> model:Meeting? Page?)
   (define/contract email-addr-image-files
     (listof File?)
-    (map (λ (t) (email->file (model:Presenter-email (model:Talk-presenter t))))
-         (model:Meeting-talks m)))
+    '())
+  ; TODO Refactor to remove mutation of email-addr-image-files?
+  (define (email->path e)
+    (define f (email->file e))
+    (set! email-addr-image-files (cons f email-addr-image-files))
+    (path->string (File-path f)))
   (define/contract (talk->card t)
     (-> model:Talk? xml:xexpr/c)
     (define p (model:Talk-presenter t))
@@ -155,9 +165,7 @@
               ,(if (model:Presenter-website p)
                    `(a ([href ,(url:url->string (model:Presenter-website p))]) ,(model:Presenter-name p))
                    (model:Presenter-name p))
-              ; TODO Tweak email colors to match site theme.
-              ; TODO Insert email images.
-              )
+              " " (img ([src ,(email->path (model:Presenter-email p))])))
            ; XXX "lead" seems semantically not ideal here, but seems to work OK.
            (p  ([class "card-text text-start lead"])
               ,(model:Talk-description t))
@@ -183,48 +191,50 @@
                      (number->string (model:Meeting-seq m))
                      filename))
       (model:Meeting-photos m)))
+  (define content
+    `((h1 ,(model:Meeting-codename m))
+      (h6 ,(g:~t (model:Meeting-date m) "EEEE, MMMM d, y"))
+
+      ,(if (empty? photo-paths)
+           ""
+           `(div ([id "carouselExampleControls"]
+                  [class "carousel slide"]
+                  [data-bs-ride "carousel"])
+             (div ([class "carousel-inner"])
+                  ,@(for/list ([i (in-naturals)]
+                               [p photo-paths])
+                              `(div ([class ,(if (= i 0)
+                                                 "carousel-item active"
+                                                 "carousel-item")])
+                                (img ([src ,(path->string p)]
+                                      [class "d-block w-100"])))))
+             (button ([class "carousel-control-prev"]
+                      [type "button"]
+                      [data-bs-target "#carouselExampleControls"]
+                      [data-bs-slide "prev"])
+                     (span ([class "carousel-control-prev-icon"]
+                            [aria-hidden "true"]))
+                     (span ([class "visually-hidden"])
+                           "Previous"))
+             (button ([class "carousel-control-next"]
+                      [type "button"]
+                      [data-bs-target "#carouselExampleControls"]
+                      [data-bs-slide "next"])
+                     (span ([class "carousel-control-next-icon"]
+                            [aria-hidden "true"]))
+                     (span ([class "visually-hidden"])
+                           "Next"))))
+
+      (p ([class "lead"])
+         ,(model:Meeting-recap m))
+      (div ([class "row row-cols-1 row-cols-md-1 g-4"])
+           ,@(map (λ (c) `(div ([class "col"]) ,c))
+                  (map talk->card (model:Meeting-talks m))))))
+  ; XXX content mutates email-addr-image-files, so must be called before using it.
   (P #:id (format "meeting-~a" (number->string (model:Meeting-seq m)))
      #:title (format "Meeting ~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m))
      #:deps email-addr-image-files
-     #:content
-     `((h1 ,(model:Meeting-codename m))
-       (h6 ,(g:~t (model:Meeting-date m) "EEEE, MMMM d, y"))
-
-       ,(if (empty? photo-paths)
-            ""
-            `(div ([id "carouselExampleControls"]
-                   [class "carousel slide"]
-                   [data-bs-ride "carousel"])
-              (div ([class "carousel-inner"])
-                   ,@(for/list ([i (in-naturals)]
-                                [p photo-paths])
-                               `(div ([class ,(if (= i 0)
-                                                  "carousel-item active"
-                                                  "carousel-item")])
-                                 (img ([src ,(path->string p)]
-                                       [class "d-block w-100"])))))
-              (button ([class "carousel-control-prev"]
-                       [type "button"]
-                       [data-bs-target "#carouselExampleControls"]
-                       [data-bs-slide "prev"])
-                      (span ([class "carousel-control-prev-icon"]
-                             [aria-hidden "true"]))
-                      (span ([class "visually-hidden"])
-                            "Previous"))
-              (button ([class "carousel-control-next"]
-                       [type "button"]
-                       [data-bs-target "#carouselExampleControls"]
-                       [data-bs-slide "next"])
-                      (span ([class "carousel-control-next-icon"]
-                             [aria-hidden "true"]))
-                      (span ([class "visually-hidden"])
-                            "Next"))))
-
-       (p ([class "lead"])
-          ,(model:Meeting-recap m))
-       (div ([class "row row-cols-1 row-cols-md-1 g-4"])
-            ,@(map (λ (c) `(div ([class "col"]) ,c))
-                   (map talk->card (model:Meeting-talks m)))))))
+     #:content content))
 
 (define/contract (assemble #:nav nav
                            #:title title
