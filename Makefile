@@ -36,3 +36,12 @@ deploy:
 .PHONY: install_deps
 install_deps:
 	raco pkg install gregor
+
+.PHONY: TODO
+TODO:
+	@grep \
+		--exclude=Makefile \
+		--exclude-dir=$(DIR_LOCAL) \
+		--exclude-dir=.git \
+		--color=always \
+		-rIHn TODO .
