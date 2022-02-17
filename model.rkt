@@ -9,12 +9,12 @@
          Meeting-codename
          Meeting-date
          Meeting-host
+         Meeting-photos
          Meeting-recap
          Meeting-registration-url
          Meeting-seq
          Meeting-talks
          Meeting-time
-         Meeting-photos
          Meeting?
 
          Presenter-name
@@ -30,8 +30,8 @@
          Talk-title
          Talk?
 
-         meetings-past
-         meeting-next)
+         meeting-next
+         meetings-past)
 
 (require (prefix-in url: net/url))
 
