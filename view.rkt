@@ -41,6 +41,8 @@
   (-> path-string? string?)
   (string-join (file->lines (build-path "inc" file)) "")) ; XXX Discarding newlines.
 
+; TODO page-plan with future meetings list: date/time, location, registration, etc.
+
 (define/contract (page-log)
   (-> Page?)
   (define title "log")
