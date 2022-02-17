@@ -136,8 +136,9 @@
 (define presenter-zach-taylor
   (P #:name "Zach Taylor"
      #:email "zach@taylorzr.com"
-     #:website #f
-     #:affiliated-links (list (u "https://www.reddit.com/user/taylorzr"))))
+     #:website (u "http://taylorzr.com")
+     #:affiliated-links (list (u "https://www.reddit.com/user/taylorzr")
+                              (u "https://github.com/taylorzr"))))
 
 (define presenter-siraaj-khandkar
   (P #:name "Siraaj Khandkar"
