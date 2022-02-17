@@ -204,9 +204,15 @@
                      (number->string (model:Meeting-seq m))
                      filename))
       (model:Meeting-photos m)))
+  (define h (model:Meeting-host m))
   (define content
     `((h1 ,(model:Meeting-codename m))
       (h6 ,(g:~t (model:Meeting-date m) "EEEE, MMMM d, y"))
+      (h6 ,(g:~t (model:Meeting-time m) "HH:mm")
+          " at "
+          (a ([href ,(url:url->string (model:Host-url h))]) ,(model:Host-name h))
+          " in "
+          ,(model:Addr-town (model:Host-addr h)))
 
       ,(if (empty? photo-paths)
            ""
