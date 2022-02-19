@@ -20,13 +20,13 @@
   (write-files (view:web-files) out-dir))
 
 (module+ main
-  (let ([out-dir "./dist"])
+  (let ([out-dir "www"])
     ; TODO Add option to generate indented output, for debugging diffs.
     (command-line
       #:program (find-system-path 'run-file)
       #:once-each
       [("-o" "--out-dir")
-       path "Directory to which to write page files. DEFAULT: ./dist"
+       path "Directory to which to write page files. DEFAULT: www"
        (invariant-assertion path-string? path)
        (set! out-dir (normalize-path path))])
     (main out-dir)))

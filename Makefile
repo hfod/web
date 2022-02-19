@@ -5,7 +5,7 @@ HOST         := hackfreeordie.org
 PORT         := 22
 USER_AT_HOST := $(USER)@$(HOST)
 
-DIR_LOCAL  := dist
+DIR_LOCAL  := www
 DIR_SERVER := /var/www
 
 .PHONY: build
@@ -19,7 +19,7 @@ rebuild: clean
 
 .PHONY: clean
 clean:
-	rm -r $(DIR_LOCAL)
+	rm -rf $(DIR_LOCAL)
 
 .PHONY: deploy
 deploy:
