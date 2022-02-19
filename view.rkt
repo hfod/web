@@ -31,13 +31,31 @@
            #:deps deps)
   (Page id title content deps))
 
-(define/contract path-bootstrap-css path-string? "_lib/bs/css/bootstrap.min.css")
-(define/contract path-bootstrap-js  path-string? "_lib/bs/js/bootstrap.bundle.min.js")
-(define/contract path-local-css     path-string? "_lib/style.css")
+(define/contract (obj->path data)
+  (-> bytes? path?)
+  (define digest (sha:bytes->hex-string (sha256-bytes data)))
+  (build-path "_obj/" (substring digest 0 2) digest))
+
+(define/contract (obj->file data)
+  (-> bytes? File?)
+  (File (obj->path data) data))
+
+(define/contract (lib file)
+  (-> path-string? File?)
+  (obj->file (file->bytes (build-path "view" "web" "lib" file))))
+
+(define/contract file-bootstrap-css File? (lib "bs/css/bootstrap.min.css"))
+(define/contract file-bootstrap-js  File? (lib "bs/js/bootstrap.bundle.min.js"))
+(define/contract file-local-css     File? (lib "style.css"))
+
+(define/contract path-bootstrap-css path-string? (path->string (File-path file-bootstrap-css)))
+(define/contract path-bootstrap-js  path-string? (path->string (File-path file-bootstrap-js)))
+(define/contract path-local-css     path-string? (path->string (File-path file-local-css)))
 
 (define/contract (inc file)
   (-> path-string? string?)
-  (string-join (file->lines (build-path "inc" file)) "")) ; XXX Discarding newlines.
+  (define path (build-path "view" "web" "inc" file))
+  (string-join (file->lines path) "")) ; XXX Discarding newlines.
 
 ; TODO page-plan with future meetings list: date/time, location, registration, etc.
 
@@ -125,16 +143,6 @@
 (define/contract (links->list-items links)
   (-> (listof model:Link?) (listof xml:xexpr/c))
   (map (λ (l) `(li ,(link->anchor l))) links))
-
-;; TODO Use generalized content addressing for all referenced objects: img, js, css, etc.
-(define/contract (obj->path data)
-  (-> bytes? path?)
-  (define digest (sha:bytes->hex-string (sha256-bytes data)))
-  (build-path "_obj/" (substring digest 0 2) digest))
-
-(define/contract (obj->file data)
-  (-> bytes? File?)
-  (File (obj->path data) data))
 
 (define/contract (email->file e)
   (-> string? File?)
@@ -332,14 +340,18 @@
 (define/contract (web-files)
   (-> (listof File?))
   (append*
-    (map (λ (p)
-            (define page-file
-              (File (page-id->filename (Page-id p))
-                    (xml:xexpr->string (assemble #:nav nav
-                                                 #:title (Page-title p)
-                                                 #:content (Page-content p)))))
-            (define dep-files (Page-deps p))
-            (cons page-file dep-files))
-         (list* (page-home)
-                (page-log)
-                (map page-meeting model:meetings-past)))))
+    ; TODO Refactor such that list of runtime lib files are expressed as deps of assemble.
+    (cons (list file-bootstrap-css
+                file-bootstrap-js
+                file-local-css)
+          (map (λ (p)
+                  (define page-file
+                    (File (page-id->filename (Page-id p))
+                          (xml:xexpr->string (assemble #:nav nav
+                                                       #:title (Page-title p)
+                                                       #:content (Page-content p)))))
+                  (define dep-files (Page-deps p))
+                  (cons page-file dep-files))
+               (list* (page-home)
+                      (page-log)
+                      (map page-meeting model:meetings-past))))))

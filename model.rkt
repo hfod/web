@@ -221,7 +221,12 @@
              #:date (d 2022 02 10)
              #:time (t 18 00)
              #:host host-raven-labs
-             #:registration-url (u (inc "join-us-button-mailto.txt"))
+             #:registration-url
+             (let* ([file "join-us-button-mailto.txt"]
+                    ; FIXME Tangled abstractions - we're not in a view!!!
+                    [path (build-path "view" "web" "inc" file)]
+                    [mailto (file->string path)])
+               (u mailto))
              #:recap ""
              #:talks
              ; TODO Talks:
