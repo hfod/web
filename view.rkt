@@ -34,8 +34,6 @@
 (define/contract path-bootstrap-css path-string? "_lib/bs/css/bootstrap.min.css")
 (define/contract path-bootstrap-js  path-string? "_lib/bs/js/bootstrap.bundle.min.js")
 (define/contract path-local-css     path-string? "_lib/style.css")
-(define/contract path-images        path-string? "_data/img")    ; Non-photo images
-(define/contract path-photos        path-string? "_data/photos")
 
 (define/contract (inc file)
   (-> path-string? string?)
@@ -196,14 +194,7 @@
                       ,@(links->list-items (model:Talk-references t))))))
       ;(div ([class "card-footer"]) "")
       ))
-  (define photo-paths
-    (map
-      (λ (filename)
-         (build-path path-photos
-                     "meetings"
-                     (number->string (model:Meeting-seq m))
-                     filename))
-      (model:Meeting-photos m)))
+  (define photo-files (map obj->file (model:Meeting-photos m)))
   (define h (model:Meeting-host m))
   (define content
     `((h1 ,(model:Meeting-codename m))
@@ -214,18 +205,18 @@
           " in "
           ,(model:Addr-town (model:Host-addr h)))
 
-      ,(if (empty? photo-paths)
+      ,(if (empty? photo-files)
            ""
            `(div ([id "carouselExampleControls"]
                   [class "carousel slide"]
                   [data-bs-ride "carousel"])
              (div ([class "carousel-inner"])
                   ,@(for/list ([i (in-naturals)]
-                               [p photo-paths])
+                               [p photo-files])
                               `(div ([class ,(if (= i 0)
                                                  "carousel-item active"
                                                  "carousel-item")])
-                                (img ([src ,(path->string p)]
+                                (img ([src ,(path->string (File-path p))]
                                       [class "d-block w-100"])))))
              (button ([class "carousel-control-prev"]
                       [type "button"]
@@ -252,7 +243,8 @@
   ; XXX content mutates email-addr-image-files, so must be called before using it.
   (P #:id (format "meeting-~a" (number->string (model:Meeting-seq m)))
      #:title (format "Meeting ~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m))
-     #:deps email-addr-image-files
+     #:deps (append email-addr-image-files
+                    photo-files)
      #:content content))
 
 (define/contract (assemble #:nav nav

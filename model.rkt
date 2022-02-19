@@ -72,7 +72,7 @@
                   [website (or/c #f url:url?)]
                   [artifacts (listof Link?)] ; XXX We really should not allow this to be empty.
                   [references (listof Link?)]
-                  [photos (listof path?)]
+                  [photos (listof bytes?)]
                   ))
 
 (struct/contract Meeting
@@ -83,7 +83,7 @@
                   [host Host?]
                   [talks (listof Talk?)]
                   [recap string?]
-                  [photos (listof string?)]
+                  [photos (listof bytes?)]
                   [registration-url url:url?])
                  #:transparent)
 
@@ -100,9 +100,8 @@
            #:description description
            #:artifacts artifacts
            #:website website
-           #:references references
-           #:photos photos)
-  (Talk presenter title description website artifacts references photos))
+           #:references references)
+  (Talk presenter title description website artifacts references '()))
 
 (define (M #:seq seq
            #:codename codename
@@ -111,9 +110,14 @@
            #:host host
            #:talks talks
            #:recap recap
-           #:photos photos
            #:registration-url reg-url)
   ; TODO Recap needs to be read from a markdown file.
+  (define photos
+    (let ([dir (build-path "data" "meetings" (number->string seq) "photos")])
+      (if (directory-exists? dir)
+          (map (λ (file) (file->bytes (build-path dir file)))
+               (directory-list dir))
+          '())))
   (Meeting seq codename date time host talks recap photos reg-url))
 
 (define u url:string->url)
@@ -201,7 +205,6 @@
              #:host host-raven-labs
              #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
              #:recap "According to legends, Grant posted a message in the New Hampshire channel of Helium's Discord server on September 10th, 2021: \"Would anyone be interested in a NH Helium meetup sometime? Would love to meet everyone and forecast Helium's growth in  NH!\". A few of us answered the call and a month later we had a great time hanging out at Raven Labs and getting to know each other."
-             #:photos '()
              #:talks '())
 
           (M #:seq 0
@@ -211,7 +214,6 @@
              #:host host-raven-labs
              #:registration-url (u "")
              #:recap ""
-             #:photos '()
              #:talks '())
 
           (M #:seq 1
@@ -221,13 +223,6 @@
              #:host host-raven-labs
              #:registration-url (u (inc "join-us-button-mailto.txt"))
              #:recap ""
-             #:photos
-             '("hfod-meeting-1-2db5f0d8a20e588848316edd41ff30ce580aa3c0b59fa0abad9f68fecc331a8a.jpg"
-               "hfod-meeting-1-4deee6710697253767467278608caad4cfbce226457069d55d7ab46c1dce9462.jpg"
-               "hfod-meeting-1-503e10641c40bfe24ece19bb69ca58db700dd7ef20ea9a5dfb2a81afd8e44336.jpg"
-               "hfod-meeting-1-718848a3ffd3d7cbc047c4b045fe12076eefb2ca442c73e42e38091db65ce602.jpg"
-               "hfod-meeting-1-8b5b40a5c575fa56fafa7ba84dbe0c738d3617751e448e9850ee9fe15e722594.jpg"
-               "hfod-meeting-1-bc9ff5a4f7736379a6e1839cb1ad678d90b690fb56ca9a348e8ded333e209809.jpg")
              #:talks
              ; TODO Talks:
              ; - [x] Kyle Robertson: optimization
@@ -243,8 +238,7 @@
                       #:artifacts (list (Link #f (u "https://github.com/kwrobert/pyomo-presentation")))
                       #:website #f
                       #:references
-                      '()
-                      #:photos '())
+                      '())
 
                    (T #:presenter presenter-jeff-nelson
                       #:title "RaspiBLitz w/ pay server"
@@ -253,7 +247,7 @@
                       #:website #f
                       #:references
                       '() ; TODO Links to all component artifacts.
-                      #:photos '())
+                      )
 
                    (T #:presenter presenter-zach-taylor
                       #:title "DIY mechanical split keyboard from cardboard!"
@@ -263,8 +257,7 @@
                       #:references
                       ; TODO Need some links to components
                       (list
-                        (Link #f (u "https://www.reddit.com/r/ErgoMechKeyboards/comments/shy8hz/6_column_splay_split_handwired_cardboard/")))
-                      #:photos '())
+                        (Link #f (u "https://www.reddit.com/r/ErgoMechKeyboards/comments/shy8hz/6_column_splay_split_handwired_cardboard/"))))
 
                    (T #:presenter presenter-siraaj-khandkar
                       #:title "pista: a hacker's status bar"
@@ -275,8 +268,7 @@
                       (list
                         (Link "dwm" (u "https://dwm.suckless.org/"))
                         (Link "ii" (u "https://tools.suckless.org/ii/"))
-                        (Link "status experiments" (u "https://github.com/xandkar/khatus/")))
-                      #:photos '())
+                        (Link "status experiments" (u "https://github.com/xandkar/khatus/"))))
 
                    ; TODO Get details from Bob.
                    ;(T #:presenter presenter-bob-peret
@@ -285,8 +277,7 @@
                    ;   #:artifacts (list (Link #f (u "")))
                    ;   #:website #f
                    ;   #:references
-                   ;   '()
-                   ;   #:photos '())
+                   ;   '())
 
                    (T #:presenter presenter-kyle-roucis
                       #:title "Lojban: the logical language for nerds"
@@ -295,8 +286,7 @@
                       #:website (u "Lojban.org")
                       #:references
                       (list (Link "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
-                            (Link "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html")))
-                      #:photos '())
+                            (Link "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html"))))
 
                    (T #:presenter presenter-grant-peret
                       #:title "Cat Alley - Creation of an Entryway"
@@ -305,8 +295,7 @@
                       #:website #f
                       #:references
                       (list (Link "Atlas Obscura" (u "https://www.atlasobscura.com/places/cat-alley"))
-                            (Link "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/")))
-                      #:photos '())
+                            (Link "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/"))))
                    ))
 
           (M #:seq 2
@@ -316,7 +305,6 @@
              #:host host-raven-labs
              #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
              #:recap ""
-             #:photos '()
              #:talks '())
           )))
 
