@@ -11,7 +11,8 @@
          (prefix-in url: net/url)
          (prefix-in xml: xml))
 
-(require (prefix-in g: gregor))
+(require (prefix-in g: gregor)
+         (prefix-in md: markdown))
 
 (require (prefix-in model: "model.rkt"))
 
@@ -243,8 +244,9 @@
                      (span ([class "visually-hidden"])
                            "Next"))))
 
-      (p ([class "lead"])
-         ,(model:Meeting-recap m))
+      (div ()
+           ; TODO Do something more aesthetic with the blockquote presentation.
+           ,@(xexpr-insert-class 'blockquote "blockquote" (md:parse-markdown (model:Meeting-recap m))))
       (div ([class "row row-cols-1 row-cols-md-1 g-4"])
            ,@(map (λ (c) `(div ([class "col"]) ,c))
                   (map talk->card (model:Meeting-talks m))))))
@@ -254,6 +256,27 @@
      #:deps (append email-addr-image-files
                     photo-files)
      #:content content))
+
+;; TODO Generalize mapping x-expressions.
+(define/contract (xexpr-insert-class sym class xs)
+  (-> symbol? string? (listof xml:xexpr/c) (listof xml:xexpr/c))
+  (define attribute? (list/c symbol? string?))
+  (define attributes? (listof attribute?))
+  (define (insert x)
+    (match x
+      [(list* s as xs) #:when (and (symbol? s)
+                                   (attributes? as))
+       (let ([as (if (equal? s sym)
+                     (cons `(class ,class) as)
+                     as)]
+             [xs (map insert xs)])
+         (list* s as xs))]
+      [x #:when (string? x) x]
+      [x #:when (symbol? x) x]
+      [x #:when (xml:cdata? x) x]
+      [x #:when (xml:comment? x) x]
+      [x #:when (xml:p-i? x) x]))
+  (map insert xs))
 
 (define/contract (assemble #:nav nav
                            #:title title

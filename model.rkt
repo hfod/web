@@ -109,15 +109,19 @@
            #:time time
            #:host host
            #:talks talks
-           #:recap recap
            #:registration-url reg-url)
-  ; TODO Recap needs to be read from a markdown file.
+  (define meeting-dir (build-path "data" "meetings" (number->string seq)))
   (define photos
-    (let ([dir (build-path "data" "meetings" (number->string seq) "photos")])
+    (let ([dir (build-path meeting-dir "photos")])
       (if (directory-exists? dir)
           (map (λ (file) (file->bytes (build-path dir file)))
                (directory-list dir))
           '())))
+  (define recap
+    (let ([recap-file (build-path meeting-dir "recap.md")])
+      (if (file-exists? recap-file)
+          (file->string recap-file)
+          "")))
   (Meeting seq codename date time host talks recap photos reg-url))
 
 (define u url:string->url)
@@ -204,7 +208,6 @@
              #:time (t 19 00)
              #:host host-raven-labs
              #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
-             #:recap "According to legends, Grant posted a message in the New Hampshire channel of Helium's Discord server on September 10th, 2021: \"Would anyone be interested in a NH Helium meetup sometime? Would love to meet everyone and forecast Helium's growth in  NH!\". A few of us answered the call and a month later we had a great time hanging out at Raven Labs and getting to know each other."
              #:talks '())
 
           (M #:seq 0
@@ -213,7 +216,6 @@
              #:time (t 18 00)
              #:host host-raven-labs
              #:registration-url (u "")
-             #:recap ""
              #:talks '())
 
           (M #:seq 1
@@ -227,7 +229,6 @@
                     [path (build-path "view" "web" "inc" file)]
                     [mailto (file->string path)])
                (u mailto))
-             #:recap ""
              #:talks
              ; TODO Talks:
              ; - [x] Kyle Robertson: optimization
@@ -309,7 +310,6 @@
              #:time (t 18 00)
              #:host host-raven-labs
              #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
-             #:recap ""
              #:talks '())
           )))
 
