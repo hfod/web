@@ -76,6 +76,7 @@
                   ))
 
 (struct/contract Meeting
+                 ; TODO Model attendees.
                  ([seq integer?]
                   [codename string?]
                   [date g:date?]

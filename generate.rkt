@@ -15,18 +15,22 @@
                         #:exists 'replace))
     files))
 
-(define/contract (main out-dir)
-  (-> path-string? void)
-  (write-files (view:web-files) out-dir))
-
 (module+ main
-  (let ([out-dir "www"])
-    ; TODO Add option to generate indented output, for debugging diffs.
+  (let ([program (find-system-path 'run-file)]
+        [out-dir (current-directory)])
     (command-line
-      #:program (find-system-path 'run-file)
+      #:program program
       #:once-each
       [("-o" "--out-dir")
-       path "Directory to which to write page files. DEFAULT: www"
+       path "Directory to which to write output files and directories. DEFAULT: $PWD"
        (invariant-assertion path-string? path)
-       (set! out-dir (normalize-path path))])
-    (main out-dir)))
+       (set! out-dir (normalize-path path))]
+      #:args (command . args)
+      (current-command-line-arguments (list->vector args))
+      (let ([program (string-append (path->string program) " " command)])
+        (match command
+          ["web"
+           ; TODO Add option to generate indented output, for debugging diffs.
+           (write-files (view:web-files) out-dir)]
+          ["email"
+           (write-files (view:email-files) out-dir)])))))

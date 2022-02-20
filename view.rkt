@@ -1,6 +1,7 @@
 #lang racket
 
 (provide web-files
+         email-files
          File?
          File-path
          File-content)
@@ -378,3 +379,43 @@
                (list* (page-home)
                       (page-log)
                       (map page-meeting model:meetings-past))))))
+
+;; TODO email-meeting-invite
+;; TODO email-meeting-announce
+;; TODO email-meeting-remind
+
+(define/contract (email-meeting-recap m)
+  (-> model:Meeting? File?)
+  (define talks (model:Meeting-talks m))
+  (define (talk->pres-name-email t)
+    (define p (model:Talk-presenter t))
+    (format "~a <~a>"
+            (model:Presenter-name p)
+            (model:Presenter-email p)))
+  (define recipients
+    ; TODO Add attendees in addition to presenters, but they must be modeled first.
+    (string-join (map talk->pres-name-email talks) ","))
+  (define headers
+    (string-join
+      (list (format "To: ~a" recipients)
+            (format "Subject: [hfod] Meeting ~a recap" (model:Meeting-seq m)))
+      "\n"))
+  (define paragraphs
+    ; TODO Wrap lines at N chars. N=72 is reasonable.
+    (cons
+      (model:Meeting-recap m)
+      (map (λ (t)
+              (string-join
+                (list (format "## ~a" (model:Talk-title t))
+                      (format "by ~a" (talk->pres-name-email t))
+                      (model:Talk-description t))
+                "\n"))
+           talks)))
+  (define body
+    (string-join paragraphs "\n\n"))
+  (File (format "meeting-recap-~a.eml" (model:Meeting-seq m))
+        (format "~a~n~n~a" headers body)))
+
+(define/contract (email-files)
+  (-> (listof File?))
+  (map email-meeting-recap model:meetings-past))

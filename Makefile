@@ -1,17 +1,28 @@
-MAKEFLAGS := --no-builtin-rules
+N_CPUS := $(shell nproc 2> /dev/null || gnproc 2> /dev/null || sysctl -n hw.ncpu 2> /dev/null)
+
+MAKEFLAGS := --no-builtin-rules -j $(N_CPUS)
 
 USER         := xand
 HOST         := hackfreeordie.org
 PORT         := 22
 USER_AT_HOST := $(USER)@$(HOST)
 
-DIR_LOCAL  := www
-DIR_SERVER := /var/www
+DIR_EMAIL      := email
+DIR_WEB_LOCAL  := www
+DIR_WEB_SERVER := /var/www
 
 .PHONY: build
-build:
-	mkdir -p $(DIR_LOCAL)
-	./generate.rkt -o $(DIR_LOCAL)
+build: web email
+
+.PHONY: web
+web:
+	mkdir -p $(DIR_WEB_LOCAL)
+	./generate.rkt -o $(DIR_WEB_LOCAL) web
+
+.PHONY: email
+email:
+	mkdir -p $(DIR_EMAIL)
+	./generate.rkt -o $(DIR_EMAIL) email
 
 .PHONY: rebuild
 rebuild: clean
@@ -19,7 +30,7 @@ rebuild: clean
 
 .PHONY: clean
 clean:
-	rm -rf $(DIR_LOCAL)
+	rm -rf $(DIR_WEB_LOCAL) $(DIR_EMAIL)
 
 .PHONY: deploy
 deploy:
@@ -28,10 +39,10 @@ deploy:
 		--delete \
 		--omit-dir-times \
 		--copy-links \
-		./$(DIR_LOCAL)/* \
+		./$(DIR_WEB_LOCAL)/* \
 		-e 'ssh -p $(PORT)' \
-		$(USER_AT_HOST):$(DIR_SERVER)
-	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX $(DIR_SERVER)
+		$(USER_AT_HOST):$(DIR_WEB_SERVER)
+	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX $(DIR_WEB_SERVER)
 
 .PHONY: install_deps
 install_deps:
@@ -41,7 +52,7 @@ install_deps:
 TODO:
 	@grep \
 		--exclude=Makefile \
-		--exclude-dir=$(DIR_LOCAL) \
+		--exclude-dir=$(DIR_WEB_LOCAL) \
 		--exclude-dir=.git \
 		--color=always \
 		-rIHn TODO .
