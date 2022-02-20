@@ -25,6 +25,12 @@
        path "Directory to which to write output files and directories. DEFAULT: $PWD"
        (invariant-assertion path-string? path)
        (set! out-dir (normalize-path path))]
+      #:help-labels
+      ""
+      "Commands:"
+      "  web"
+      "  email"
+      ""
       #:args (command . args)
       (current-command-line-arguments (list->vector args))
       (let ([program (string-append (path->string program) " " command)])
