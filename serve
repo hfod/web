@@ -1,0 +1,19 @@
+#! /usr/bin/env racket
+#lang racket
+; vim:ft=racket:
+
+(require (prefix-in  srv:  web-server/servlet)
+         (prefix-in  env:  web-server/servlet-env)
+         (prefix-in  log:  web-server/dispatchers/dispatch-log))
+
+(module+ main
+  (let ([program (find-system-path 'run-file)]
+        [paths-to-serve '()])
+    (command-line #:args (path . paths) (set! paths-to-serve (cons path paths)))
+    (env:serve/servlet
+      (λ ignore (srv:response/xexpr '(html)))
+      #:launch-browser? #t
+      #:extra-files-paths paths-to-serve
+      #:log-file (string-append (path->string program) ".log")
+      #:log-format log:paren-format
+      #:servlet-path "")))

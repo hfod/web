@@ -26,6 +26,10 @@ email:
 	mkdir -p $(DIR_EMAIL)
 	$(CMD_GENERATE) -o $(DIR_EMAIL) email
 
+.PHONY: serve
+serve:
+	./serve $(DIR_WEB_LOCAL)
+
 .PHONY: rebuild
 rebuild: clean
 	$(MAKE) build
@@ -33,6 +37,10 @@ rebuild: clean
 .PHONY: clean
 clean:
 	rm -rf $(DIR_WEB_LOCAL) $(DIR_EMAIL)
+
+.PHONY: preview
+preview: rebuild
+	$(MAKE) serve
 
 .PHONY: deploy
 deploy:
