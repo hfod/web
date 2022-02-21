@@ -1,6 +1,6 @@
 #! /usr/bin/env racket
-
 #lang racket
+; vim:ft=racket:
 
 (require (prefix-in view: "view.rkt"))
 

@@ -11,18 +11,20 @@ DIR_EMAIL      := email
 DIR_WEB_LOCAL  := www
 DIR_WEB_SERVER := /var/www
 
+CMD_GENERATE := ./generate
+
 .PHONY: build
 build: web email
 
 .PHONY: web
 web:
 	mkdir -p $(DIR_WEB_LOCAL)
-	./generate.rkt -o $(DIR_WEB_LOCAL) web
+	$(CMD_GENERATE) -o $(DIR_WEB_LOCAL) web
 
 .PHONY: email
 email:
 	mkdir -p $(DIR_EMAIL)
-	./generate.rkt -o $(DIR_EMAIL) email
+	$(CMD_GENERATE) -o $(DIR_EMAIL) email
 
 .PHONY: rebuild
 rebuild: clean
