@@ -14,6 +14,7 @@
 
 ;; TODO handle-subscribe-to-announce
 ;; TODO Organize handlers in appropriate modules. Leave only server start here.
+;; TODO SSL
 
 (define/contract (handle-test req)
   handler?
