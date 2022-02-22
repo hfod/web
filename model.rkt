@@ -1,5 +1,8 @@
 #lang racket
 
+;; TODO Export full structs
+;; TODO Move data to data.rkt
+
 (provide Addr-town
 
          Host-addr
