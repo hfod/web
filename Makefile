@@ -28,7 +28,7 @@ email:
 
 .PHONY: serve
 serve:
-	./serve $(DIR_WEB_LOCAL)
+	./serve --dev $(DIR_WEB_LOCAL)
 
 .PHONY: rebuild
 rebuild: clean

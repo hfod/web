@@ -4,16 +4,66 @@
 
 (require (prefix-in  srv:  web-server/servlet)
          (prefix-in  env:  web-server/servlet-env)
-         (prefix-in  log:  web-server/dispatchers/dispatch-log))
+         (prefix-in  log:  web-server/dispatchers/dispatch-log)
+         (prefix-in  http: web-server/http)
+         (prefix-in  dis:  web-server/dispatch)
+         (prefix-in  res:  web-server/configuration/responders))
+
+(define handler?
+  (-> srv:request? srv:response?))
+
+;; TODO handle-subscribe-to-announce
+;; TODO Organize handlers in appropriate modules. Leave only server start here.
+
+(define/contract (handle-test req)
+  handler?
+  (http:response/output (λ (op) (displayln "works" op))))
+
+(define/contract (handle-error-not-found req)
+  handler?
+  (srv:response/xexpr
+    '(html (head (title "error 404 : not found"))
+      (body "not found"))
+    #:code 404))
+
+(define/contract (handle-error-crash url exn)
+  (-> any/c exn? srv:response?)
+  (srv:response/xexpr
+    '(html (head (title "error 500 : internal server error"))
+      (body "internal server error"))
+    #:code 500))
 
 (module+ main
-  (let ([program (find-system-path 'run-file)]
-        [paths-to-serve '()])
-    (command-line #:args (path . paths) (set! paths-to-serve (cons path paths)))
-    (env:serve/servlet
-      (λ ignore (srv:response/xexpr '(html)))
-      #:launch-browser? #t
-      #:extra-files-paths paths-to-serve
-      #:log-file (string-append (path->string program) ".log")
-      #:log-format log:paren-format
-      #:servlet-path "")))
+  ; TODO CLI opts: port-num, log-file
+  (let ([program (path->string (find-system-path 'run-file))]
+        [paths-to-serve '()]
+        [dev? #f])
+    (command-line
+      #:program program
+      #:once-each
+      [("-d" "--dev")
+       "Development mode: open browser, show stack traces, etc."
+       (set! dev? #t)]
+      #:args (path . paths)
+      (set! paths-to-serve (cons path paths)))
+    (let-values
+      ([(dispatch handler->url)
+        (dis:dispatch-rules
+          [("test") handle-test])])
+      (env:serve/servlet
+        dispatch
+        #:launch-browser? dev?
+        #:extra-files-paths paths-to-serve
+        #:file-not-found-responder handle-error-not-found
+        #:servlet-responder
+        (if dev?
+            res:servlet-error-responder
+            handle-error-crash)
+        #:servlet-loading-responder
+        (if dev?
+            res:servlet-loading-responder
+            handle-error-crash)
+        #:log-file (string-append program ".log")
+        #:log-format log:paren-format
+        #:servlet-path ""
+        #:servlet-regexp #rx""))))
