@@ -62,6 +62,7 @@ install_deps:
 TODO:
 	@grep \
 		--exclude=Makefile \
+		--exclude-dir=view \
 		--exclude-dir=$(DIR_WEB_LOCAL) \
 		--exclude-dir=.git \
 		--color=always \
