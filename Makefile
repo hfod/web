@@ -56,7 +56,7 @@ deploy:
 
 .PHONY: install_deps
 install_deps:
-	raco pkg install --skip-installed --auto gregor markdown
+	raco pkg install --skip-installed --auto gregor markdown text-block
 
 .PHONY: TODO
 TODO:

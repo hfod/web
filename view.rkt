@@ -13,7 +13,8 @@
          (prefix-in xml: xml))
 
 (require (prefix-in g: gregor)
-         (prefix-in md: markdown))
+         (prefix-in md: markdown)
+         (prefix-in txt: text-block/text))
 
 (require (prefix-in data:  "data.rkt")
          (prefix-in model: "model.rkt"))
@@ -402,14 +403,13 @@
             (format "Subject: [hfod] Meeting ~a recap" (model:Meeting-seq m)))
       "\n"))
   (define paragraphs
-    ; TODO Wrap lines at N chars. N=72 is reasonable.
     (cons
       (model:Meeting-recap m)
       (map (λ (t)
               (string-join
-                (list (format "## ~a" (model:Talk-title t))
-                      (format "by ~a" (talk->pres-name-email t))
-                      (model:Talk-description t))
+                (list* (format "## ~a" (model:Talk-title t))
+                       (format "by ~a" (talk->pres-name-email t))
+                       (txt:text->lines (model:Talk-description t) 72))
                 "\n"))
            talks)))
   (define body
