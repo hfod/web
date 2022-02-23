@@ -15,7 +15,8 @@
 (require (prefix-in g: gregor)
          (prefix-in md: markdown))
 
-(require (prefix-in model: "model.rkt"))
+(require (prefix-in data:  "data.rkt")
+         (prefix-in model: "model.rkt"))
 
 (struct/contract File
                  ([path path-string?]
@@ -83,14 +84,14 @@
                             (td ,(g:~t (model:Meeting-date m) "yyyy MMM dd"))
                             (td (a ([href ,(format "meeting-~a.html" (model:Meeting-seq m))]) ,(model:Meeting-codename m)))
                             (td (a ([href ,(url:url->string (model:Host-url h))]) ,(model:Host-name h)))))
-                       (sort model:meetings-past
+                       (sort data:meetings-past
                              (λ (a b) (> (model:Meeting-seq a)
                                          (model:Meeting-seq b))))))))))
 
 (define/contract (page-home)
   (-> Page?)
   (define next-meeting
-    (match model:meeting-next
+    (match data:meeting-next
       [#f ""] ; TODO A message that nothing is scheduled.
       [m
         (let* ([date (g:~t (model:Meeting-date m) "EEEE, MMMM d, y")]
@@ -351,7 +352,7 @@
                                     `(li (a ([class "dropdown-item"]
                                              [href ,(format "meeting-~a.html" (model:Meeting-seq m))])
                                             ,(format "~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m)))))
-                                 (sort model:meetings-past
+                                 (sort data:meetings-past
                                        (λ (a b) (> (model:Meeting-seq a)
                                                    (model:Meeting-seq b))))))))))))
 
@@ -378,7 +379,7 @@
                   (cons page-file dep-files))
                (list* (page-home)
                       (page-log)
-                      (map page-meeting model:meetings-past))))))
+                      (map page-meeting data:meetings-past))))))
 
 ;; TODO email-meeting-invite
 ;; TODO email-meeting-announce
@@ -418,4 +419,4 @@
 
 (define/contract (email-files)
   (-> (listof File?))
-  (map email-meeting-recap model:meetings-past))
+  (map email-meeting-recap data:meetings-past))
