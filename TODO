@@ -7,3 +7,7 @@
 - prose
     - reference external markdown file, to be read by a model type constructor
 - content address all runtime-referenced files: images, css, js, etc.
+
+- Configs to support both server setups:
+    - Racket serves both static and dynamic paths;
+    - nginx serves static paths and forwards dynamic paths to the Racket server.
