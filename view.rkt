@@ -1,10 +1,9 @@
 #lang racket
 
-(provide web-files
-         email-files
-         File?
-         File-path
-         File-content)
+(provide (struct-out File)
+         (contract-out
+           [web-files   (-> (listof File?))]
+           [email-files (-> (listof File?))]))
 
 (require (prefix-in draw: racket/draw)
          (prefix-in pic: pict)

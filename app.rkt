@@ -1,8 +1,9 @@
 #lang racket
 
-(provide dispatch
-         handle-error-not-found
-         handle-error-crash)
+(provide (contract-out
+           [dispatch                handler?]
+           [handle-error-not-found  handler?]
+           [handle-error-crash      (-> any/c exn? srv:response?)]))
 
 (require (prefix-in  srv:  web-server/servlet)
          (prefix-in  http: web-server/http)

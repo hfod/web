@@ -1,7 +1,8 @@
 #lang racket
 
-(provide meeting-next
-         meetings-past)
+(provide (contract-out
+           [meeting-next model:Meeting?]
+           [meetings-past (listof model:Meeting?)]))
 
 (require (prefix-in url: net/url))
 
