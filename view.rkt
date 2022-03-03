@@ -387,6 +387,7 @@
 
 (define/contract (email-meeting-recap m)
   (-> model:Meeting? File?)
+  (define h (model:Meeting-host m))
   (define talks (model:Meeting-talks m))
   (define (talk->pres-name-email t)
     (define p (model:Talk-presenter t))
@@ -401,12 +402,27 @@
       (list (format "To: ~a" recipients)
             (format "Subject: [hfod] Meeting ~a recap" (model:Meeting-seq m)))
       "\n"))
+  (define title-paragraph
+    (string-join
+      `(,(format "# Meeting ~a: ~a"
+                 (model:Meeting-seq m)
+                 (model:Meeting-codename m))
+        ,(format "Held on ~a, ~a at ~a in ~a"
+                 (g:~t (model:Meeting-date m) "EEEE, MMMM d, y")
+                 (g:~t (model:Meeting-time m) "HH:mm")
+                 (model:Host-name h)
+                 (model:Addr-town (model:Host-addr h)))
+        ,(url:url->string (model:Host-url h)))
+      "\n"))
   (define paragraphs
-    (cons
+    (list*
+      title-paragraph
+      "## Recap"
       (model:Meeting-recap m)
+      "## Presentations"
       (map (λ (t)
               (string-join
-                (list* (format "## ~a" (model:Talk-title t))
+                (list* (format "### ~a" (model:Talk-title t))
                        (format "by ~a" (talk->pres-name-email t))
                        (txt:text->lines (model:Talk-description t) 72))
                 "\n"))
