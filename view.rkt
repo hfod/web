@@ -106,11 +106,7 @@
             (p ([class "lead"])
                (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
                    [href ,(url:url->string (model:Meeting-registration-url m))])
-                  "Register")
-               " "
-               (a ([class "btn btn-lg btn-secondary fw-bold"]
-                   [href "https://discord.gg/NsEwkfCHgv"])
-                  "Chat"))))]))
+                  "Register"))))]))
   (define id "home")
   (P #:id id
      #:title id
@@ -132,6 +128,10 @@
           "The only qualification is that the work you present has to be open source - so that we can all study and learn from it.")
        (p ([class "lead"])
           "After the presentations we hangout and discuss whatever.")
+       (p ([class "lead"])
+          (a ([class "btn btn-lg btn-secondary fw-bold"]
+              [href "https://discord.gg/NsEwkfCHgv"])
+             "Discord"))
        (h3 "Next meeting")
        ,@next-meeting
        (script ,(inc "bs-enable-tooltips.js")))))
