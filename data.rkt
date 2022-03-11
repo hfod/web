@@ -231,7 +231,7 @@
                    ))
 
           (M #:seq 2
-             #:codename "TBD"
+             #:codename "Tuna Pizza"
              #:date (d 2022 03 10)
              #:time (t 18 00)
              #:host host-raven-labs
