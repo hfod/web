@@ -92,7 +92,7 @@
   (-> Page?)
   (define next-meeting
     (match data:meeting-next
-      [#f ""] ; TODO A message that nothing is scheduled.
+      [#f '()] ; TODO A message that nothing is scheduled.
       [m
         (let* ([date (g:~t (model:Meeting-date m) "EEEE, MMMM d, y")]
                [time (g:~t (model:Meeting-time m) "HH:mm")]

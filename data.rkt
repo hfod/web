@@ -1,7 +1,7 @@
 #lang racket
 
 (provide (contract-out
-           [meeting-next model:Meeting?]
+           [meeting-next (or/c #f model:Meeting?)]
            [meetings-past (listof model:Meeting?)]))
 
 (require (prefix-in url: net/url))
@@ -255,7 +255,7 @@
   (meetings-filter-by-date g:date>?))
 
 (define/contract meeting-next
-  model:Meeting?
+  (or/c #f model:Meeting?)
   (match meetings-future
     ['() #f]
     [ms
