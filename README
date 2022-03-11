@@ -1,2 +1,8 @@
 Hack Free Or Die website
 ========================
+
+Have photos to add?
+-------------------
+
+Submit a PR adding your photo files to `data/meetings/$id/photos/` where `$id`
+is the sequential ID of the meeting. Filename does not matter.
