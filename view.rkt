@@ -16,7 +16,7 @@
          (prefix-in txt: text-block/text))
 
 (require (prefix-in data:  "data.rkt")
-         (prefix-in model: "model.rkt"))
+         "model.rkt")
 
 (struct/contract File
                  ([path path-string?]
@@ -78,15 +78,15 @@
                     (th ([scope "col"]) "host")))
               (tbody
                 ,@(map (λ (m)
-                          (define h (model:Meeting-host m))
+                          (define h (Meeting-host m))
                           `(tr
-                            (th ([scope "row"]) ,(number->string (model:Meeting-seq m)))
-                            (td ,(g:~t (model:Meeting-date m) "yyyy MMM dd"))
-                            (td (a ([href ,(format "meeting-~a.html" (model:Meeting-seq m))]) ,(model:Meeting-codename m)))
-                            (td (a ([href ,(url:url->string (model:Host-url h))]) ,(model:Host-name h)))))
+                            (th ([scope "row"]) ,(number->string (Meeting-seq m)))
+                            (td ,(g:~t (Meeting-date m) "yyyy MMM dd"))
+                            (td (a ([href ,(format "meeting-~a.html" (Meeting-seq m))]) ,(Meeting-codename m)))
+                            (td (a ([href ,(url:url->string (Host-url h))]) ,(Host-name h)))))
                        (sort data:meetings-past
-                             (λ (a b) (> (model:Meeting-seq a)
-                                         (model:Meeting-seq b))))))))))
+                             (λ (a b) (> (Meeting-seq a)
+                                         (Meeting-seq b))))))))))
 
 (define/contract (page-home)
   (-> Page?)
@@ -96,18 +96,18 @@
         '((p ([class "lead"])
              "TBD"))]
       [m
-        (let* ([date (g:~t (model:Meeting-date m) "EEEE, MMMM d, y")]
-               [time (g:~t (model:Meeting-time m) "HH:mm")]
-               [h (model:Meeting-host m)]
-               [host-town (model:Addr-town (model:Host-addr h))]
+        (let* ([date (g:~t (Meeting-date m) "EEEE, MMMM d, y")]
+               [time (g:~t (Meeting-time m) "HH:mm")]
+               [h (Meeting-host m)]
+               [host-town (Addr-town (Host-addr h))]
                ; TODO Link to local info page about host/location?
-               [host-link `(a ([href ,(url:url->string (model:Host-url h))]) ,(model:Host-name h))])
+               [host-link `(a ([href ,(url:url->string (Host-url h))]) ,(Host-name h))])
           `((p ([class "lead"])
                ; TODO Google maps link
                ,date (br) ,time " at " ,host-link " in " ,host-town)
             (p ([class "lead"])
                (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
-                   [href ,(url:url->string (model:Meeting-registration-url m))])
+                   [href ,(url:url->string (Meeting-registration-url m))])
                   "Register"))))]))
   (define id "home")
   (P #:id id
@@ -139,14 +139,14 @@
        (script ,(inc "bs-enable-tooltips.js")))))
 
 (define/contract (link->anchor l)
-  (-> model:Link? xml:xexpr/c)
-  (define name (model:Link-name l))
-  (define url (url:url->string (model:Link-url l)))
+  (-> Link? xml:xexpr/c)
+  (define name (Link-name l))
+  (define url (url:url->string (Link-url l)))
   (let ([name (if name name url)])
     `(a ([href ,url]) ,name)))
 
 (define/contract (links->list-items links)
-  (-> (listof model:Link?) (listof xml:xexpr/c))
+  (-> (listof Link?) (listof xml:xexpr/c))
   (map (λ (l) `(li ,(link->anchor l))) links))
 
 (define/contract (email->file e)
@@ -165,7 +165,7 @@
   (obj->file content))
 
 (define/contract (page-meeting m)
-  (-> model:Meeting? Page?)
+  (-> Meeting? Page?)
   (define/contract email-addr-image-files
     (listof File?)
     '())
@@ -175,48 +175,48 @@
     (set! email-addr-image-files (cons f email-addr-image-files))
     (path->string (File-path f)))
   (define/contract (talk->card t)
-    (-> model:Talk? xml:xexpr/c)
-    (define p (model:Talk-presenter t))
+    (-> Talk? xml:xexpr/c)
+    (define p (Talk-presenter t))
     `(div ([class "card h-100 bg-dark text-light"])
       ;(img ([class "card-img-top"]
       ;      [src ""]
       ;      [alt ""]))
       (div ([class "card-header"])
-           (h5 ([class "card-title text-center"]) ,(model:Talk-title t)))
+           (h5 ([class "card-title text-center"]) ,(Talk-title t)))
       (div ([class "card-body"])
            (p  ([class "card-title text-center"])
               "by "
-              ,(if (model:Presenter-website p)
-                   `(a ([href ,(url:url->string (model:Presenter-website p))]) ,(model:Presenter-name p))
-                   (model:Presenter-name p))
-              " " (img ([src ,(email->path (model:Presenter-email p))])))
+              ,(if (Presenter-website p)
+                   `(a ([href ,(url:url->string (Presenter-website p))]) ,(Presenter-name p))
+                   (Presenter-name p))
+              " " (img ([src ,(email->path (Presenter-email p))])))
            ; XXX "lead" seems semantically not ideal here, but seems to work OK.
            (p  ([class "card-text text-start lead"])
-              ,(model:Talk-description t))
-           ,(if (empty? (model:Talk-artifacts t))
+              ,(Talk-description t))
+           ,(if (empty? (Talk-artifacts t))
                 ""
                 `(p  ([class "card-text text-start"])
                   (strong "artifacts:")
                   (ul ([class "text-start"])
-                      ,@(links->list-items (model:Talk-artifacts t)))))
-           ,(if (empty? (model:Talk-references t))
+                      ,@(links->list-items (Talk-artifacts t)))))
+           ,(if (empty? (Talk-references t))
                 ""
                 `(p  ([class "card-text text-start"])
                   (strong "references:")
                   (ul ([class "text-start"])
-                      ,@(links->list-items (model:Talk-references t))))))
+                      ,@(links->list-items (Talk-references t))))))
       ;(div ([class "card-footer"]) "")
       ))
-  (define photo-files (map obj->file (model:Meeting-photos m)))
-  (define h (model:Meeting-host m))
+  (define photo-files (map obj->file (Meeting-photos m)))
+  (define h (Meeting-host m))
   (define content
-    `((h1 ,(model:Meeting-codename m))
-      (h6 ,(g:~t (model:Meeting-date m) "EEEE, MMMM d, y"))
-      (h6 ,(g:~t (model:Meeting-time m) "HH:mm")
+    `((h1 ,(Meeting-codename m))
+      (h6 ,(g:~t (Meeting-date m) "EEEE, MMMM d, y"))
+      (h6 ,(g:~t (Meeting-time m) "HH:mm")
           " at "
-          (a ([href ,(url:url->string (model:Host-url h))]) ,(model:Host-name h))
+          (a ([href ,(url:url->string (Host-url h))]) ,(Host-name h))
           " in "
-          ,(model:Addr-town (model:Host-addr h)))
+          ,(Addr-town (Host-addr h)))
 
       ,(if (empty? photo-files)
            ""
@@ -250,13 +250,13 @@
 
       (div ()
            ; TODO Do something more aesthetic with the blockquote presentation.
-           ,@(xexpr-insert-class 'blockquote "blockquote" (md:parse-markdown (model:Meeting-recap m))))
+           ,@(xexpr-insert-class 'blockquote "blockquote" (md:parse-markdown (Meeting-recap m))))
       (div ([class "row row-cols-1 row-cols-md-1 g-4"])
            ,@(map (λ (c) `(div ([class "col"]) ,c))
-                  (map talk->card (model:Meeting-talks m))))))
+                  (map talk->card (Meeting-talks m))))))
   ; XXX content mutates email-addr-image-files, so must be called before using it.
-  (P #:id (format "meeting-~a" (number->string (model:Meeting-seq m)))
-     #:title (format "Meeting ~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m))
+  (P #:id (format "meeting-~a" (number->string (Meeting-seq m)))
+     #:title (format "Meeting ~a: ~a" (Meeting-seq m) (Meeting-codename m))
      #:deps (append email-addr-image-files
                     photo-files)
      #:content content))
@@ -352,11 +352,11 @@
                            [aria-labelledby "navbarDarkDropdownMenuLink"])
                           ,@(map (λ (m)
                                     `(li (a ([class "dropdown-item"]
-                                             [href ,(format "meeting-~a.html" (model:Meeting-seq m))])
-                                            ,(format "~a: ~a" (model:Meeting-seq m) (model:Meeting-codename m)))))
+                                             [href ,(format "meeting-~a.html" (Meeting-seq m))])
+                                            ,(format "~a: ~a" (Meeting-seq m) (Meeting-codename m)))))
                                  (sort data:meetings-past
-                                       (λ (a b) (> (model:Meeting-seq a)
-                                                   (model:Meeting-seq b))))))))))))
+                                       (λ (a b) (> (Meeting-seq a)
+                                                   (Meeting-seq b))))))))))))
 
 (define (page-id->filename id)
   (define name (match id
@@ -388,50 +388,50 @@
 ;; TODO email-meeting-remind
 
 (define/contract (email-meeting-recap m)
-  (-> model:Meeting? File?)
-  (define h (model:Meeting-host m))
-  (define talks (model:Meeting-talks m))
+  (-> Meeting? File?)
+  (define h (Meeting-host m))
+  (define talks (Meeting-talks m))
   (define (talk->pres-name-email t)
-    (define p (model:Talk-presenter t))
+    (define p (Talk-presenter t))
     (format "~a <~a>"
-            (model:Presenter-name p)
-            (model:Presenter-email p)))
+            (Presenter-name p)
+            (Presenter-email p)))
   (define recipients
     ; TODO Add attendees in addition to presenters, but they must be modeled first.
     (string-join (map talk->pres-name-email talks) ","))
   (define headers
     (string-join
       (list (format "To: ~a" recipients)
-            (format "Subject: [hfod] Meeting ~a recap" (model:Meeting-seq m)))
+            (format "Subject: [hfod] Meeting ~a recap" (Meeting-seq m)))
       "\n"))
   (define title-paragraph
     (string-join
       `(,(format "# Meeting ~a: ~a"
-                 (model:Meeting-seq m)
-                 (model:Meeting-codename m))
+                 (Meeting-seq m)
+                 (Meeting-codename m))
         ,(format "Held on ~a, ~a at ~a in ~a"
-                 (g:~t (model:Meeting-date m) "EEEE, MMMM d, y")
-                 (g:~t (model:Meeting-time m) "HH:mm")
-                 (model:Host-name h)
-                 (model:Addr-town (model:Host-addr h)))
-        ,(url:url->string (model:Host-url h)))
+                 (g:~t (Meeting-date m) "EEEE, MMMM d, y")
+                 (g:~t (Meeting-time m) "HH:mm")
+                 (Host-name h)
+                 (Addr-town (Host-addr h)))
+        ,(url:url->string (Host-url h)))
       "\n"))
   (define paragraphs
     (list*
       title-paragraph
       "## Recap"
-      (model:Meeting-recap m)
+      (Meeting-recap m)
       "## Presentations"
       (map (λ (t)
               (string-join
-                (list* (format "### ~a" (model:Talk-title t))
+                (list* (format "### ~a" (Talk-title t))
                        (format "by ~a" (talk->pres-name-email t))
-                       (txt:text->lines (model:Talk-description t) 72))
+                       (txt:text->lines (Talk-description t) 72))
                 "\n"))
            talks)))
   (define body
     (string-join paragraphs "\n\n"))
-  (File (format "meeting-recap-~a.eml" (model:Meeting-seq m))
+  (File (format "meeting-recap-~a.eml" (Meeting-seq m))
         (format "~a~n~n~a" headers body)))
 
 (define/contract (email-files)

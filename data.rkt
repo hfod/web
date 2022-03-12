@@ -1,15 +1,15 @@
 #lang racket
 
 (provide (contract-out
-           [meeting-next (or/c #f model:Meeting?)]
-           [meetings-past (listof model:Meeting?)]))
+           [meeting-next (or/c #f Meeting?)]
+           [meetings-past (listof Meeting?)]))
 
 (require (prefix-in url: net/url))
 
 (require (prefix-in g: gregor)
          (prefix-in g: gregor/time))
 
-(require (prefix-in model: "model.rkt"))
+(require "model.rkt")
 
 ;; TODO Automate making these keyworded constructors with a macro?
 ;;      But we do need to keep the custom from-file-to-field readers,
@@ -19,7 +19,7 @@
            #:email email
            #:website website
            #:affiliated-links links)
-  (model:Presenter name (string-downcase email) website links))
+  (Presenter name (string-downcase email) website links))
 
 (define (T #:presenter presenter
            #:title title
@@ -27,7 +27,7 @@
            #:artifacts artifacts
            #:website website
            #:references references)
-  (model:Talk presenter title description website artifacts references '()))
+  (Talk presenter title description website artifacts references '()))
 
 (define (M #:seq seq
            #:codename codename
@@ -48,7 +48,7 @@
       (if (file-exists? recap-file)
           (file->string recap-file)
           "")))
-  (model:Meeting seq codename date time host talks recap photos reg-url))
+  (Meeting seq codename date time host talks recap photos reg-url))
 
 (define u url:string->url)
 
@@ -111,33 +111,33 @@
      #:affiliated-links '()))
 
 (define host-raven-labs
-  (model:Host "Raven Labs"
-              (model:Addr "913"
-                          "Elm St"
-                          "Suite 405"
-                          "Manchester"
-                          "NH"
-                          "03101"
-                          "USA")
-              (u "https://www.ravenlabsnh.com")))
+  (Host "Raven Labs"
+        (Addr "913"
+              "Elm St"
+              "Suite 405"
+              "Manchester"
+              "NH"
+              "03101"
+              "USA")
+        (u "https://www.ravenlabsnh.com")))
 
 (define host-manch-maker-space
-  (model:Host "Manchester Makerspace"
-              (model:Addr "36"
-                          "Old Granite St"
-                          ""
-                          "Manchester"
-                          "NH"
-                          "0301"
-                          "USA")
-              (u "https://manchestermakerspace.org")))
+  (Host "Manchester Makerspace"
+        (Addr "36"
+              "Old Granite St"
+              ""
+              "Manchester"
+              "NH"
+              "0301"
+              "USA")
+        (u "https://manchestermakerspace.org")))
 
 (define/contract (inc file)
   (-> path-string? string?)
   (file->string (build-path "inc" file)))
 
 (define/contract meetings
-  (listof model:Meeting?)
+  (listof Meeting?)
   (let ([d g:date]
         [t g:time])
     (list (M #:seq -1
@@ -179,7 +179,7 @@
              (list (T #:presenter presenter-kyle-robertson
                       #:title "Mathematical Programming and Optimization with Python and Pyomo"
                       #:description "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem."
-                      #:artifacts (list (model:Link #f (u "https://github.com/kwrobert/pyomo-presentation")))
+                      #:artifacts (list (Link #f (u "https://github.com/kwrobert/pyomo-presentation")))
                       #:website #f
                       #:references
                       '())
@@ -187,7 +187,7 @@
                    (T #:presenter presenter-jeff-nelson
                       #:title "RaspiBLitz w/ pay server"
                       #:description "Raspberry pi setup running raspiblitz with other services like pay server and exlplorers."
-                      #:artifacts (list (model:Link #f (u "https://github.com/rootzoll/raspiblitz")))
+                      #:artifacts (list (Link #f (u "https://github.com/rootzoll/raspiblitz")))
                       #:website #f
                       #:references
                       '() ; TODO Links to all component artifacts.
@@ -196,29 +196,29 @@
                    (T #:presenter presenter-zach-taylor
                       #:title "DIY mechanical split keyboard from cardboard!"
                       #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring."
-                      #:artifacts (list (model:Link #f (u "https://github.com/taylorzr/qmk_firmware")))
+                      #:artifacts (list (Link #f (u "https://github.com/taylorzr/qmk_firmware")))
                       #:website #f
                       #:references
                       ; TODO Need some links to components
                       (list
-                        (model:Link #f (u "https://www.reddit.com/r/ErgoMechKeyboards/comments/shy8hz/6_column_splay_split_handwired_cardboard/"))))
+                        (Link #f (u "https://www.reddit.com/r/ErgoMechKeyboards/comments/shy8hz/6_column_splay_split_handwired_cardboard/"))))
 
                    (T #:presenter presenter-siraaj-khandkar
                       #:title "pista: a hacker's status bar"
                       #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar."
-                      #:artifacts (list (model:Link #f (u "https://github.com/xandkar/pista")))
+                      #:artifacts (list (Link #f (u "https://github.com/xandkar/pista")))
                       #:website #f
                       #:references
                       (list
-                        (model:Link "dwm" (u "https://dwm.suckless.org/"))
-                        (model:Link "ii" (u "https://tools.suckless.org/ii/"))
-                        (model:Link "status experiments" (u "https://github.com/xandkar/khatus/"))))
+                        (Link "dwm" (u "https://dwm.suckless.org/"))
+                        (Link "ii" (u "https://tools.suckless.org/ii/"))
+                        (Link "status experiments" (u "https://github.com/xandkar/khatus/"))))
 
                    ; TODO Get details from Bob.
                    ;(T #:presenter presenter-bob-peret
                    ;   #:title ""
                    ;   #:description ""
-                   ;   #:artifacts (list (model:Link #f (u "")))
+                   ;   #:artifacts (list (Link #f (u "")))
                    ;   #:website #f
                    ;   #:references
                    ;   '())
@@ -226,20 +226,20 @@
                    (T #:presenter presenter-kyle-roucis
                       #:title "Lojban: the logical language for nerds"
                       #:description "Lojban is an \"open source\" logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
-                      #:artifacts (list (model:Link #f (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u")))
+                      #:artifacts (list (Link #f (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u")))
                       #:website (u "Lojban.org")
                       #:references
-                      (list (model:Link "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
-                            (model:Link "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html"))))
+                      (list (Link "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
+                            (Link "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html"))))
 
                    (T #:presenter presenter-grant-peret
                       #:title "Cat Alley - Creation of an Entryway"
                       #:description "An overview of the aesthetic modelling, design, and loading requirements to build a cantilevered entry way sign."
-                      #:artifacts (list (model:Link #f (u "https://github.com/RavenGrant/CatAlley")))
+                      #:artifacts (list (Link #f (u "https://github.com/RavenGrant/CatAlley")))
                       #:website #f
                       #:references
-                      (list (model:Link "Atlas Obscura" (u "https://www.atlasobscura.com/places/cat-alley"))
-                            (model:Link "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/"))))
+                      (list (Link "Atlas Obscura" (u "https://www.atlasobscura.com/places/cat-alley"))
+                            (Link "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/"))))
                    ))
 
           (M #:seq 2
@@ -252,7 +252,7 @@
              (list (T #:presenter presenter-siraaj-khandkar
                       #:title "gg - the gitter of gits"
                       #:description "A tool to locate, compare and cross-reference all your git repositories accross machines."
-                      #:artifacts (list (model:Link #f (u "https://github.com/xandkar/gg/")))
+                      #:artifacts (list (Link #f (u "https://github.com/xandkar/gg/")))
                       #:website #f
                       #:references '())
                    (T #:presenter presenter-jeff-nelson
@@ -282,7 +282,7 @@
                    (T #:presenter presenter-kyle-roucis
                       #:title "KroucisVM"
                       #:description "A bytecode-driven dynamic-dispatched object-oriented so-many-hyphens virtual machine built in C and based on the Objective-C dynamic dispatch object model."
-                      #:artifacts (list (model:Link #f (u "https://github.com/kroucis/KroucisVM")))
+                      #:artifacts (list (Link #f (u "https://github.com/kroucis/KroucisVM")))
                       #:website #f
                       #:references '())
                    (T #:presenter presenter-bob-peret
@@ -295,24 +295,24 @@
           )))
 
 (define/contract (meetings-filter-by-date compares?)
-  (-> (-> g:date? g:date? boolean?) (listof model:Meeting?))
+  (-> (-> g:date? g:date? boolean?) (listof Meeting?))
   (let ([today (g:today)])
-    (filter (λ (m) (compares? (model:Meeting-date m)
+    (filter (λ (m) (compares? (Meeting-date m)
                               today))
             meetings)))
 
 (define/contract meetings-past
-  (listof model:Meeting?)
+  (listof Meeting?)
   (meetings-filter-by-date g:date<?))
 
 (define/contract meetings-future
-  (listof model:Meeting?)
+  (listof Meeting?)
   (meetings-filter-by-date g:date>?))
 
 (define/contract meeting-next
-  (or/c #f model:Meeting?)
+  (or/c #f Meeting?)
   (match meetings-future
     ['() #f]
     [ms
-      (first (sort ms (λ (m1 m2) (g:date<? (model:Meeting-date m1)
-                                           (model:Meeting-date m2)))))]))
+      (first (sort ms (λ (m1 m2) (g:date<? (Meeting-date m1)
+                                           (Meeting-date m2)))))]))
