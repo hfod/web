@@ -236,7 +236,14 @@
              #:time (t 18 00)
              #:host host-raven-labs
              #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
-             #:talks '())
+             #:talks
+              (list (T #:presenter presenter-kyle-roucis
+                      #:title "KroucisVM"
+                      #:description "A bytecode-driven dynamic-dispatched object-oriented so-many-hyphens virtual machine built in C and based on the Objective-C dynamic dispatch object model."
+                      #:artifacts (list (model:Link #f (u "https://github.com/kroucis/KroucisVM")))
+                      #:website #f
+                      #:references '())
+                    ))
           )))
 
 (define/contract (meetings-filter-by-date compares?)
