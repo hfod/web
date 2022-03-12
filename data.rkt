@@ -250,9 +250,9 @@
              #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
              #:talks
              (list (T #:presenter presenter-siraaj-khandkar
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
+                      #:title "gg - the gitter of gits"
+                      #:description "A tool to locate, compare and cross-reference all your git repositories accross machines."
+                      #:artifacts (list (model:Link #f (u "https://github.com/xandkar/gg/")))
                       #:website #f
                       #:references '())
                    (T #:presenter presenter-jeff-nelson
