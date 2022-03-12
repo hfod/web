@@ -98,6 +98,18 @@
      #:website #f
      #:affiliated-links (list url-raven-labs)))
 
+(define presenter-brandon-simpson
+  (P #:name "Brandon Simpson"
+     #:email "2boog25@gmail.com"
+     #:website (u "https://bgsimpson.wixsite.com/brandon")
+     #:affiliated-links (list (u "https://github.com/vermontolympian/"))))
+
+(define presenter-bryan-TODO
+  (P #:name "Bryan"
+     #:email ""
+     #:website #f
+     #:affiliated-links '()))
+
 (define host-raven-labs
   (model:Host "Raven Labs"
               (model:Addr "913"
@@ -237,10 +249,46 @@
              #:host host-raven-labs
              #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
              #:talks
-             (list (T #:presenter presenter-kyle-roucis
+             (list (T #:presenter presenter-siraaj-khandkar
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+                   (T #:presenter presenter-jeff-nelson
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+                   (T #:presenter presenter-brandon-simpson
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+                   (T #:presenter presenter-bryan-TODO
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+                   (T #:presenter presenter-grant-peret
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+                   (T #:presenter presenter-kyle-roucis
                       #:title "KroucisVM"
                       #:description "A bytecode-driven dynamic-dispatched object-oriented so-many-hyphens virtual machine built in C and based on the Objective-C dynamic dispatch object model."
                       #:artifacts (list (model:Link #f (u "https://github.com/kroucis/KroucisVM")))
+                      #:website #f
+                      #:references '())
+                   (T #:presenter presenter-bob-peret
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
                       #:website #f
                       #:references '())
                    ))
