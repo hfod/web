@@ -261,12 +261,6 @@
                    ;   #:artifacts '()
                    ;   #:website #f
                    ;   #:references '())
-                   (T #:presenter presenter-brandon-simpson
-                      #:title "3 DOF Robotic Arm"
-                      #:description "In this project, my team and I used a 3 DOF robotic manipulator and a USB webcam to implement an automated pick and place system. Through image processing, the system was able to detect and locate objects of a specific color. Using forward and inverse position and velocity kinematics, my team and Ideveloped a program to command a robotic arm to pick and place colored spheres until there were none remaining in the workspace. This system was also capable of sorting a specific non-spherical random object and able to dynamically track an object."
-                      #:artifacts `(,(Link #f (u "https://bgsimpson.wixsite.com/brandon/post/unified-robotics-iii")))
-                      #:website #f
-                      #:references '())
                    ;(T #:presenter presenter-bryan-TODO
                    ;   #:title ""
                    ;   #:description ""
@@ -279,6 +273,12 @@
                    ;   #:artifacts '()
                    ;   #:website #f
                    ;   #:references '())
+                   (T #:presenter presenter-brandon-simpson
+                      #:title "3 DOF Robotic Arm"
+                      #:description "In this project, my team and I used a 3 DOF robotic manipulator and a USB webcam to implement an automated pick and place system. Through image processing, the system was able to detect and locate objects of a specific color. Using forward and inverse position and velocity kinematics, my team and Ideveloped a program to command a robotic arm to pick and place colored spheres until there were none remaining in the workspace. This system was also capable of sorting a specific non-spherical random object and able to dynamically track an object."
+                      #:artifacts `(,(Link #f (u "https://bgsimpson.wixsite.com/brandon/post/unified-robotics-iii")))
+                      #:website #f
+                      #:references '())
                    (T #:presenter presenter-kyle-roucis
                       #:title "KroucisVM"
                       #:description "A bytecode-driven dynamic-dispatched object-oriented so-many-hyphens virtual machine built in C and based on the Objective-C dynamic dispatch object model."
