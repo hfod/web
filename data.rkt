@@ -292,6 +292,15 @@
                    ;   #:website #f
                    ;   #:references '())
                    ))
+
+          (M #:seq 3
+             #:codename "TBD"
+             #:date (d 2022 04 07)
+             #:time (t 18 00)
+             #:host host-manch-maker-space
+             #:registration-url (u "https://forms.gle/uwTZM4gcWc6RcQyq6")
+             #:talks
+             '())
           )))
 
 (define/contract (meetings-filter-by-date compares?)
