@@ -40,8 +40,10 @@
   (define photos
     (let ([dir (build-path meeting-dir "photos")])
       (if (directory-exists? dir)
-          (map (λ (file) (file->bytes (build-path dir file)))
-               (directory-list dir))
+          (map file->bytes
+               (filter file-exists? ; XXX Ignore (tmp) directories.
+                       (map (λ (file) (build-path dir file))
+                            (directory-list dir))))
           '())))
   (define recap
     (let ([recap-file (build-path meeting-dir "recap.md")])
