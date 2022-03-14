@@ -223,6 +223,17 @@
            `(div ([id "carouselExampleControls"]
                   [class "carousel slide"]
                   [data-bs-ride "carousel"])
+             (div ([class "carousel-indicators"])
+                  ,@(for/list ([i (in-naturals)]
+                               [p photo-files])
+                              `(button ([type "button"]
+                                        [data-bs-target "#carouselExampleControls"]
+                                        [data-bs-slide-to ,(number->string i)]
+                                        [aria-label ,(format "Slide ~a" i)]
+                                        ,@(if (= i 0)
+                                              `([class "active"]
+                                                [aria-current "true"])
+                                              '())))))
              (div ([class "carousel-inner"])
                   ,@(for/list ([i (in-naturals)]
                                [p photo-files])
