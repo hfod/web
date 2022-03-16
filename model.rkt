@@ -3,6 +3,7 @@
 (provide (struct-out Addr)
          (struct-out Host)
          (struct-out Meeting)
+         (struct-out Photo)
          (struct-out Presenter)
          (struct-out Link)
          (struct-out Talk))
@@ -24,8 +25,7 @@
 (struct/contract Host
                  ([name string?]
                   [addr Addr?]
-                  [url url:url?]
-                  ))
+                  [url url:url?]))
 
 (struct/contract Presenter
                  ([name string?]
@@ -37,15 +37,17 @@
                  ([name (or/c #f string?)]
                   [url url:url?]))
 
+(struct/contract Photo
+                 ([data bytes?]
+                  [caption string?]))
+
 (struct/contract Talk
                  ([presenter Presenter?]
                   [title string?]
                   [description string?]
                   [website (or/c #f url:url?)]
                   [artifacts (listof Link?)] ; XXX We really should not allow this to be empty.
-                  [references (listof Link?)]
-                  [photos (listof bytes?)]
-                  ))
+                  [references (listof Link?)]))
 
 (struct/contract Meeting
                  ; TODO Model attendees.
@@ -56,5 +58,5 @@
                   [host Host?]
                   [talks (listof Talk?)]
                   [recap string?]
-                  [photos (listof bytes?)]
+                  [photos (listof Photo?)]
                   [registration-url url:url?]))

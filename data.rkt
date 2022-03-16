@@ -27,7 +27,7 @@
            #:artifacts artifacts
            #:website website
            #:references references)
-  (Talk presenter title description website artifacts references '()))
+  (Talk presenter title description website artifacts references))
 
 (define (M #:seq seq
            #:codename codename
@@ -40,10 +40,28 @@
   (define photos
     (let ([dir (build-path meeting-dir "photos")])
       (if (directory-exists? dir)
-          (map file->bytes
-               (filter file-exists? ; XXX Ignore (tmp) directories.
-                       (map (λ (file) (build-path dir file))
-                            (directory-list dir))))
+          (let* ([files
+                   (filter file-exists? ; XXX Ignore (tmp) directories.
+                           (map (λ (file) (build-path dir file))
+                                (directory-list dir)))]
+                 [photo-files
+                   (filter
+                     (λ (path)
+                        (define ext
+                          (string-downcase (bytes->string/utf-8 (path-get-extension path))))
+                        (and ext (member ext '(".png"
+                                               ".jpg"
+                                               ".jpeg"))))
+                     files)])
+            (map (λ (photo-file)
+                    (define caption
+                      (let ([caption-file (path-replace-extension photo-file ".txt")])
+                        (if (file-exists? caption-file)
+                            (file->string caption-file)
+                            "")))
+                    (define data (file->bytes photo-file))
+                    (Photo data caption))
+                 photo-files))
           '())))
   (define recap
     (let ([recap-file (build-path meeting-dir "recap.md")])

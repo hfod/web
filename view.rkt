@@ -207,7 +207,7 @@
                       ,@(links->list-items (Talk-references t))))))
       ;(div ([class "card-footer"]) "")
       ))
-  (define photo-files (map obj->file (Meeting-photos m)))
+  (define photos (Meeting-photos m))
   (define h (Meeting-host m))
   (define content
     `((h1 ,(Meeting-codename m))
@@ -218,14 +218,14 @@
           " in "
           ,(Addr-town (Host-addr h)))
 
-      ,(if (empty? photo-files)
+      ,(if (empty? photos)
            ""
            `(div ([id "carouselExampleControls"]
                   [class "carousel slide"]
                   [data-bs-ride "carousel"])
              (div ([class "carousel-indicators"])
                   ,@(for/list ([i (in-naturals)]
-                               [p photo-files])
+                               [p photos])
                               `(button ([type "button"]
                                         [data-bs-target "#carouselExampleControls"]
                                         [data-bs-slide-to ,(number->string i)]
@@ -236,12 +236,14 @@
                                               '())))))
              (div ([class "carousel-inner"])
                   ,@(for/list ([i (in-naturals)]
-                               [p photo-files])
+                               [p photos])
                               `(div ([class ,(if (= i 0)
                                                  "carousel-item active"
                                                  "carousel-item")])
-                                (img ([src ,(path->string (File-path p))]
-                                      [class "d-block w-100"])))))
+                                (img ([src ,(path->string (File-path (obj->file (Photo-data p))))]
+                                      [class "d-block w-100"]))
+                                (div ([class "carousel-caption d-none d-md-block"])
+                                     ,(Photo-caption p)))))
              (button ([class "carousel-control-prev"]
                       [type "button"]
                       [data-bs-target "#carouselExampleControls"]
@@ -269,7 +271,7 @@
   (P #:id (format "meeting-~a" (number->string (Meeting-seq m)))
      #:title (format "Meeting ~a: ~a" (Meeting-seq m) (Meeting-codename m))
      #:deps (append email-addr-image-files
-                    photo-files)
+                    (map obj->file (map Photo-data photos)))
      #:content content))
 
 ;; TODO Generalize mapping x-expressions.
