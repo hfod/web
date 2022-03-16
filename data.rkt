@@ -124,8 +124,8 @@
      #:website (u "https://bgsimpson.wixsite.com/brandon")
      #:affiliated-links (list (u "https://github.com/vermontolympian/"))))
 
-(define presenter-bryan-TODO
-  (P #:name "Bryan"
+(define presenter-brian-gray
+  (P #:name "Brian Gray"
      #:email ""
      #:website #f
      #:affiliated-links '()))
@@ -281,7 +281,7 @@
                    ;   #:artifacts '()
                    ;   #:website #f
                    ;   #:references '())
-                   ;(T #:presenter presenter-bryan-TODO
+                   ;(T #:presenter presenter-brian-gray
                    ;   #:title ""
                    ;   #:description ""
                    ;   #:artifacts '()
