@@ -17,9 +17,10 @@
 
 (define (P #:name name
            #:email email
+           #:email-show? [email-show? #t]
            #:website website
            #:affiliated-links links)
-  (Presenter name (string-downcase email) website links))
+  (Presenter name (string-downcase email) email-show? website links))
 
 (define (T #:presenter presenter
            #:title title
@@ -103,6 +104,7 @@
 (define presenter-bob-peret
   (P #:name "Bob Peret"
      #:email ""
+     #:email-show? #f
      #:website #f
      #:affiliated-links (list url-raven-labs)))
 
@@ -121,12 +123,14 @@
 (define presenter-brandon-simpson
   (P #:name "Brandon Simpson"
      #:email "2boog25@gmail.com"
+     #:email-show? #f
      #:website (u "https://bgsimpson.wixsite.com/brandon")
      #:affiliated-links (list (u "https://github.com/vermontolympian/"))))
 
 (define presenter-brian-gray
   (P #:name "Brian Gray"
      #:email ""
+     #:email-show? #f
      #:website #f
      #:affiliated-links '()))
 
@@ -235,13 +239,13 @@
                         (Link "status experiments" (u "https://github.com/xandkar/khatus/"))))
 
                    ; TODO Get details from Bob.
-                   ;(T #:presenter presenter-bob-peret
-                   ;   #:title ""
-                   ;   #:description ""
-                   ;   #:artifacts (list (Link #f (u "")))
-                   ;   #:website #f
-                   ;   #:references
-                   ;   '())
+                   (T #:presenter presenter-bob-peret
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references
+                      '())
 
                    (T #:presenter presenter-kyle-roucis
                       #:title "Lojban: the logical language for nerds"
@@ -275,24 +279,24 @@
                       #:artifacts (list (Link #f (u "https://github.com/xandkar/gg/")))
                       #:website #f
                       #:references '())
-                   ;(T #:presenter presenter-jeff-nelson
-                   ;   #:title ""
-                   ;   #:description ""
-                   ;   #:artifacts '()
-                   ;   #:website #f
-                   ;   #:references '())
-                   ;(T #:presenter presenter-brian-gray
-                   ;   #:title ""
-                   ;   #:description ""
-                   ;   #:artifacts '()
-                   ;   #:website #f
-                   ;   #:references '())
-                   ;(T #:presenter presenter-grant-peret
-                   ;   #:title ""
-                   ;   #:description ""
-                   ;   #:artifacts '()
-                   ;   #:website #f
-                   ;   #:references '())
+                   (T #:presenter presenter-jeff-nelson
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+                   (T #:presenter presenter-brian-gray
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+                   (T #:presenter presenter-grant-peret
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
                    (T #:presenter presenter-brandon-simpson
                       #:title "3 DOF Robotic Arm"
                       #:description "In this project, my team and I used a 3 DOF robotic manipulator and a USB webcam to implement an automated pick and place system. Through image processing, the system was able to detect and locate objects of a specific color. Using forward and inverse position and velocity kinematics, my team and Ideveloped a program to command a robotic arm to pick and place colored spheres until there were none remaining in the workspace. This system was also capable of sorting a specific non-spherical random object and able to dynamically track an object."
@@ -305,12 +309,12 @@
                       #:artifacts (list (Link #f (u "https://github.com/kroucis/KroucisVM")))
                       #:website #f
                       #:references '())
-                   ;(T #:presenter presenter-bob-peret
-                   ;   #:title ""
-                   ;   #:description ""
-                   ;   #:artifacts '()
-                   ;   #:website #f
-                   ;   #:references '())
+                   (T #:presenter presenter-bob-peret
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
                    ))
 
           (M #:seq 3

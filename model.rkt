@@ -30,6 +30,7 @@
 (struct/contract Presenter
                  ([name string?]
                   [email string?]
+                  [email-show? boolean?]
                   [website (or/c #f url:url?)]
                   [affiliated-links (listof url:url?)]))
 

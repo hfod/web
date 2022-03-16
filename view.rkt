@@ -158,11 +158,13 @@
   (define size 13)
   (define content
     (with-output-to-bytes
-      (thunk (send (pic:pict->bitmap (pic:text (format "<~a>" e) style size))
+      (thunk (send (pic:pict->bitmap (pic:text e style size))
                    save-file
                    (current-output-port)
                    'png))))
   (obj->file content))
+
+;; TODO Presenter profile pages
 
 (define/contract (page-meeting m)
   (-> Meeting? Page?)
@@ -182,26 +184,32 @@
       ;      [src ""]
       ;      [alt ""]))
       (div ([class "card-header"])
-           (h5 ([class "card-title text-center"]) ,(Talk-title t)))
+           (h5 ([class "card-title text-center"])
+               ,(Presenter-name p))
+           ,(if (Presenter-email-show? p)
+                `(h5 ([class "card-title text-center"])
+                  (img ([src ,(email->path (Presenter-email p))])))
+                "")
+           ,(if (Presenter-website p)
+                (let ([url (url:url->string (Presenter-website p))])
+                  `(h6 ([class "card-title text-center"])
+                    (a ([href ,url]) ,url)))
+                ""))
       (div ([class "card-body"])
-           (p  ([class "card-title text-center"])
-              "by "
-              ,(if (Presenter-website p)
-                   `(a ([href ,(url:url->string (Presenter-website p))]) ,(Presenter-name p))
-                   (Presenter-name p))
-              " " (img ([src ,(email->path (Presenter-email p))])))
+           (h5 ([class "card-title text-center"])
+               ,(Talk-title t))
            ; XXX "lead" seems semantically not ideal here, but seems to work OK.
-           (p  ([class "card-text text-start lead"])
+           (p ([class "card-text text-start lead"])
               ,(Talk-description t))
            ,(if (empty? (Talk-artifacts t))
                 ""
-                `(p  ([class "card-text text-start"])
+                `(p ([class "card-text text-start"])
                   (strong "artifacts:")
                   (ul ([class "text-start"])
                       ,@(links->list-items (Talk-artifacts t)))))
            ,(if (empty? (Talk-references t))
                 ""
-                `(p  ([class "card-text text-start"])
+                `(p ([class "card-text text-start"])
                   (strong "references:")
                   (ul ([class "text-start"])
                       ,@(links->list-items (Talk-references t))))))
