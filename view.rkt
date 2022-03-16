@@ -164,7 +164,9 @@
                    'png))))
   (obj->file content))
 
-;; TODO Presenter profile pages
+;; TODO Pages for people - a.k.a. profiles.
+;; TODO Pages for projects.
+;; TODO Pages for hosts, with address, map and contact info.
 
 (define/contract (page-meeting m)
   (-> Meeting? Page?)
