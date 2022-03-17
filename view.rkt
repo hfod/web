@@ -108,7 +108,7 @@
             (p ([class "lead"])
                (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
                    [href ,(url:url->string (Meeting-registration-url m))])
-                  "Register"))))]))
+                  "RSVP"))))]))
   (define id "home")
   (P #:id id
      #:title id
