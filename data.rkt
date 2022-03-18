@@ -281,10 +281,10 @@
                       #:website #f
                       #:references '())
                    (T #:presenter presenter-jeff-nelson
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
+                      #:title "Pi Bramble"
+                      #:description "A cluster or Rasberry Pi's managed by kubernetes to deploy a drupal website"
+                      #:artifacts `(,(Link #f (u "https://github.com/geerlingguy/raspberry-pi-dramble")))
+                      #:website (u "https://www.pidramble.com/")
                       #:references '())
                    (T #:presenter presenter-brian-gray
                       #:title ""
