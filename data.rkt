@@ -145,7 +145,7 @@
               "USA")
         (u "https://www.ravenlabsnh.com")))
 
-(define host-manch-maker-space
+(define host-manchester-makerspace
   (Host "Manchester Makerspace"
         (Addr "36"
               "Old Granite St"
@@ -322,7 +322,7 @@
              #:codename "TBD"
              #:date (d 2022 04 07)
              #:time (t 18 00)
-             #:host host-manch-maker-space
+             #:host host-manchester-makerspace
              #:registration-url (u "https://forms.gle/uwTZM4gcWc6RcQyq6")
              #:talks
              '())
