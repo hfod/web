@@ -54,3 +54,11 @@ body {
 
 a {color: white}
 a:hover {color: grey}
+
+blockquote {
+  text-align: left;
+  margin: auto auto auto 1em;
+  padding-left: 1em;
+  font-style:italic;
+  border-left: 2px solid white;
+}

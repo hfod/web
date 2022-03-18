@@ -209,8 +209,7 @@
       (div ([class "card-body"])
            (h5 ([class "card-title text-center"])
                ,(Talk-title t))
-           ; XXX "lead" seems semantically not ideal here, but seems to work OK.
-           (p ([class "card-text text-start lead"])
+           (p ([class "card-text text-start"])
               ,(Talk-description t))
            ,(if (empty? (Talk-artifacts t))
                 ""
@@ -280,9 +279,10 @@
                      (span ([class "visually-hidden"])
                            "Next"))))
 
-      (div ()
-           ; TODO Do something more aesthetic with the blockquote presentation.
-           ,@(xexpr-insert-class 'blockquote "blockquote" (md:parse-markdown (Meeting-recap m))))
+      (div ([class "lead"])
+           ,@(xexpr-insert-classes
+               '((blockquote . "blockquote"))
+               (md:parse-markdown (Meeting-recap m))))
       (div ([class "row row-cols-1 row-cols-md-1 g-4"])
            ,@(map (λ (c) `(div ([class "col"]) ,c))
                   (map talk->card (Meeting-talks m))))))
@@ -294,11 +294,16 @@
                     (map obj->file (map Photo-data photos)))
      #:content content))
 
+(define/contract (xexpr-insert-classes symb-class-pairs xs)
+  (-> (listof (cons/c symbol? string?)) (listof xml:xexpr/c) (listof xml:xexpr/c))
+  (foldl xexpr-insert-class xs symb-class-pairs))
+
 ;; TODO Generalize mapping x-expressions.
-(define/contract (xexpr-insert-class sym class xs)
-  (-> symbol? string? (listof xml:xexpr/c) (listof xml:xexpr/c))
+(define/contract (xexpr-insert-class pair xs)
+  (-> (cons/c symbol? string?) (listof xml:xexpr/c) (listof xml:xexpr/c))
   (define attribute? (list/c symbol? string?))
   (define attributes? (listof attribute?))
+  (match-define (cons sym class) pair)
   (define (insert x)
     (match x
       [(list* s as xs) #:when (and (symbol? s)
