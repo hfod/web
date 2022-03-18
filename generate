@@ -3,12 +3,13 @@
 ; vim:ft=racket:
 
 (require (prefix-in view: "view.rkt"))
+(require (prefix-in path: "path.rkt"))
 
 (define/contract (write-files files out-dir)
   (-> (listof view:File?) path-string? void)
   (for-each
     (λ (f)
-       (define filepath (build-path out-dir (view:File-path f)))
+       (define filepath (path:reroot out-dir (view:File-path f)))
        (make-parent-directory* filepath)
        (display-to-file (view:File-content f)
                         filepath

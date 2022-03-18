@@ -19,25 +19,27 @@
          "model.rkt")
 
 (struct/contract File
-                 ([path path-string?]
+                 ([path path?]
                   [content (or/c bytes? string?)])) ; TODO Restrict to bytes only?
 
 (struct/contract Page
                  ([id string?]
+                  [path path-string?]
                   [title string?]
                   [content (listof xml:xexpr/c)]
                   [deps (listof File?)]))
 
 (define (P #:id id
+           #:path path
            #:title title
            #:content content
            #:deps deps)
-  (Page id title content deps))
+  (Page id path title content deps))
 
 (define/contract (obj->path data)
   (-> bytes? path?)
   (define digest (sha:bytes->hex-string (sha256-bytes data)))
-  (build-path "_obj/" (substring digest 0 2) digest))
+  (build-path "/" "_obj" (substring digest 0 2) digest))
 
 (define/contract (obj->file data)
   (-> bytes? File?)
@@ -54,6 +56,11 @@
 (define/contract path-bootstrap-css path-string? (path->string (File-path file-bootstrap-css)))
 (define/contract path-bootstrap-js  path-string? (path->string (File-path file-bootstrap-js)))
 (define/contract path-local-css     path-string? (path->string (File-path file-local-css)))
+(define/contract path-home          path-string? "/")
+(define/contract path-meetings      path-string? "/meetings")
+(define/contract (path-meeting m)
+  (-> Meeting? path-string?)
+  (path->string (build-path path-meetings (~a (Meeting-seq m)))))
 
 (define/contract (inc file)
   (-> path-string? string?)
@@ -62,10 +69,11 @@
 
 ; TODO page-plan with future meetings list: date/time, location, registration, etc.
 
-(define/contract (page-log)
+(define/contract (page-meetings)
   (-> Page?)
-  (define title "log")
+  (define title "meetings")
   (P #:id title
+     #:path path-meetings
      #:title title
      #:deps '()
      #:content
@@ -82,7 +90,7 @@
                           `(tr
                             (th ([scope "row"]) ,(number->string (Meeting-seq m)))
                             (td ,(g:~t (Meeting-date m) "yyyy MMM dd"))
-                            (td (a ([href ,(format "meeting-~a.html" (Meeting-seq m))]) ,(Meeting-codename m)))
+                            (td (a ([href ,(path-meeting m)]) ,(Meeting-codename m)))
                             (td (a ([href ,(url:url->string (Host-url h))]) ,(Host-name h)))))
                        (sort data:meetings-past
                              (λ (a b) (> (Meeting-seq a)
@@ -111,6 +119,7 @@
                   "RSVP"))))]))
   (define id "home")
   (P #:id id
+     #:path path-home
      #:title id
      #:deps '()
      #:content
@@ -279,6 +288,7 @@
                   (map talk->card (Meeting-talks m))))))
   ; XXX content mutates email-addr-image-files, so must be called before using it.
   (P #:id (format "meeting-~a" (number->string (Meeting-seq m)))
+     #:path (path-meeting m)
      #:title (format "Meeting ~a: ~a" (Meeting-seq m) (Meeting-codename m))
      #:deps (append email-addr-image-files
                     (map obj->file (map Photo-data photos)))
@@ -346,7 +356,7 @@
     (div ([class "container-fluid"])
 
          (a ([class "navbar-brand"]
-             [href "index.html"])
+             [href ,path-home])
             "home")
 
          (button ([class "navbar-toggler"]
@@ -364,28 +374,22 @@
               (ul ([class "navbar-nav"])
                   (li ([class "nav-item dropdown"])
                       (a ([class "nav-link dropdown-toggle"]
-                          [href "#"]
+                          [href ,path-meetings]
                           [id "navbarDarkDropdownMenuLink"]
                           [role "button"]
                           [data-bs-toggle "dropdown"]
                           [aria-expanded "false"])
-                         "log")
+                         "meetings")
 
                       (ul ([class "dropdown-menu dropdown-menu-dark"]
                            [aria-labelledby "navbarDarkDropdownMenuLink"])
                           ,@(map (λ (m)
                                     `(li (a ([class "dropdown-item"]
-                                             [href ,(format "meeting-~a.html" (Meeting-seq m))])
+                                             [href ,(path-meeting m)])
                                             ,(format "~a: ~a" (Meeting-seq m) (Meeting-codename m)))))
                                  (sort data:meetings-past
                                        (λ (a b) (> (Meeting-seq a)
                                                    (Meeting-seq b))))))))))))
-
-(define (page-id->filename id)
-  (define name (match id
-                 ["home" "index"]
-                 [_ id]))
-  (format "~a.html" name))
 
 (define/contract (web-files)
   (-> (listof File?))
@@ -396,14 +400,14 @@
                 file-local-css)
           (map (λ (p)
                   (define page-file
-                    (File (page-id->filename (Page-id p))
+                    (File (build-path (Page-path p) "index.html")
                           (xml:xexpr->string (assemble #:nav nav
                                                        #:title (Page-title p)
                                                        #:content (Page-content p)))))
                   (define dep-files (Page-deps p))
                   (cons page-file dep-files))
                (list* (page-home)
-                      (page-log)
+                      (page-meetings)
                       (map page-meeting data:meetings-past))))))
 
 ;; TODO email-meeting-invite
@@ -454,7 +458,7 @@
            talks)))
   (define body
     (string-join paragraphs "\n\n"))
-  (File (format "meeting-recap-~a.eml" (Meeting-seq m))
+  (File (string->path (format "meeting-recap-~a.eml" (Meeting-seq m)))
         (format "~a~n~n~a" headers body)))
 
 (define/contract (email-files)
