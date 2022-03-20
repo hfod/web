@@ -1,6 +1,7 @@
 #lang racket
 
 (provide (contract-out
+           [hosts (listof Host?)]
            [meeting-next (or/c #f Meeting?)]
            [meetings-past (listof Meeting?)]))
 
@@ -135,26 +136,44 @@
      #:affiliated-links '()))
 
 (define host-raven-labs
-  (Host "Raven Labs"
+  (Host "raven-labs"
+        "Raven Labs"
         (Addr "913"
               "Elm St"
               "Suite 405"
               "Manchester"
               "NH"
               "03101"
-              "USA")
+              "USA"
+              (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.5021479285165!2d-71.46491045831543!3d42.98875989907271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24fece398a01f%3A0xd63afeaabdeeb64d!2sRaven%20Laboratory%2C%20LLC!5e0!3m2!1sen!2sus!4v1647814700969!5m2!1sen!2sus"))
         (u "https://www.ravenlabsnh.com")))
 
 (define host-manchester-makerspace
-  (Host "Manchester Makerspace"
+  (Host "manchester-makerspace"
+        "Manchester Makerspace"
         (Addr "36"
               "Old Granite St"
               ""
               "Manchester"
               "NH"
               "0301"
-              "USA")
+              "USA"
+              (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.609093458723!2d-71.46651978372435!3d42.98650747914976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24ed838cd5e57%3A0x511bc564be09b62b!2sManchester%20Makerspace!5e0!3m2!1sen!2sus!4v1647814467210!5m2!1sen!2sus"))
         (u "https://manchestermakerspace.org")))
+
+(define (assert-unique f xs)
+  (define seen (make-hash))
+  (for-each
+    (λ (x)
+       (define y (f x))
+       (hash-update! seen y add1 0)
+       (invariant-assertion (<=/c 1) (hash-ref seen y)))
+    xs)
+  xs)
+
+(define hosts
+  (assert-unique Host-id (list host-raven-labs
+                               host-manchester-makerspace)))
 
 (define/contract (inc file)
   (-> path-string? string?)

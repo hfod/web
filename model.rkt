@@ -20,10 +20,14 @@
                   [town string?]
                   [state "NH"]
                   [zipcode string?]
-                  [country "USA"]))
+                  [country "USA"]
+                  ; XXX Generating these URLs requires an API key
+                  ;     and potentially costs, but making them manually is free.
+                  [google-maps-embed-url url:url?]))
 
 (struct/contract Host
-                 ([name string?]
+                 ([id string?]
+                  [name string?]
                   [addr Addr?]
                   [url url:url?]))
 

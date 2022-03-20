@@ -57,15 +57,47 @@
 (define/contract path-bootstrap-js  path-string? (path->string (File-path file-bootstrap-js)))
 (define/contract path-local-css     path-string? (path->string (File-path file-local-css)))
 (define/contract path-home          path-string? "/")
+(define/contract path-hosts         path-string? "/hosts")
 (define/contract path-meetings      path-string? "/meetings")
 (define/contract (path-meeting m)
   (-> Meeting? path-string?)
   (path->string (build-path path-meetings (~a (Meeting-seq m)))))
+(define/contract (path-host h)
+  (-> Host? path-string?)
+  (path->string (build-path path-hosts (Host-id h))))
 
 (define/contract (inc file)
   (-> path-string? string?)
   (define path (build-path "view" "web" "inc" file))
   (string-join (file->lines path) "")) ; XXX Discarding newlines.
+
+(define/contract (page-host h)
+  (-> Host? Page?)
+  (define a (Host-addr h))
+  (define title (Host-name h))
+  (define url (url:url->string (Host-url h)))
+  (P #:id title
+     #:path (path-host h)
+     #:title title
+     #:deps '()
+     #:content
+     `((h1 ,title)
+       (a ([href ,url]) ,url)
+       (p ,(Addr-building a)
+          ,(Addr-street a)
+          (br)
+          ,@(if (not (string=? "" (Addr-room a))) `(,(Addr-room a) (br)) '(""))
+          ,(Addr-town a)
+          ,(Addr-state a)
+          ,(Addr-zipcode a))
+       (p (iframe ([width "600"]
+                   [height "450"]
+                   [style "border:0"]
+                   [loading "lazy"]
+                   [allowfullscreen ""]
+                   [src ,(url:url->string (Addr-google-maps-embed-url a))])))
+       ; TODO List meetings held at this host.
+       )))
 
 ; TODO page-plan with future meetings list: date/time, location, registration, etc.
 
@@ -109,7 +141,7 @@
                [h (Meeting-host m)]
                [host-town (Addr-town (Host-addr h))]
                ; TODO Link to local info page about host/location?
-               [host-link `(a ([href ,(url:url->string (Host-url h))]) ,(Host-name h))])
+               [host-link `(a ([href ,(path-host h)]) ,(Host-name h))])
           `((p ([class "lead"])
                ; TODO Google maps link
                ,date (br) ,time " at " ,host-link " in " ,host-town)
@@ -232,7 +264,7 @@
       (h6 ,(g:~t (Meeting-date m) "EEEE, MMMM d, y"))
       (h6 ,(g:~t (Meeting-time m) "HH:mm")
           " at "
-          (a ([href ,(url:url->string (Host-url h))]) ,(Host-name h))
+          (a ([href ,(path-host h)]) ,(Host-name h))
           " in "
           ,(Addr-town (Host-addr h)))
 
@@ -377,6 +409,8 @@
                [id "navbarNavDarkDropdown"])
 
               (ul ([class "navbar-nav"])
+
+                  ; Meetings
                   (li ([class "nav-item dropdown"])
                       (a ([class "nav-link dropdown-toggle"]
                           [href ,path-meetings]
@@ -397,7 +431,28 @@
                                                (format "~a : ~a" date name)))))
                                  (sort data:meetings-past
                                        (λ (a b) (> (Meeting-seq a)
-                                                   (Meeting-seq b))))))))))))
+                                                   (Meeting-seq b)))))))
+
+                  ; Hosts
+                  (li ([class "nav-item dropdown"])
+                      (a ([class "nav-link dropdown-toggle"]
+                          [href "#"]
+                          [id "navbarDarkDropdownMenuLink"]
+                          [role "button"]
+                          [data-bs-toggle "dropdown"]
+                          [aria-expanded "false"])
+                         "hosts")
+
+                      (ul ([class "dropdown-menu dropdown-menu-dark"]
+                           [aria-labelledby "navbarDarkDropdownMenuLink"])
+                          ,@(map (λ (h)
+                                    `(li (a ([class "dropdown-item"]
+                                             [href ,(path-host h)])
+                                            ,(Host-name h))))
+                                 (sort data:hosts
+                                       (λ (a b) (string>? (Host-name a)
+                                                          (Host-name b)))))))
+                  )))))
 
 (define/contract (web-files)
   (-> (listof File?))
@@ -414,9 +469,10 @@
                                                        #:content (Page-content p)))))
                   (define dep-files (Page-deps p))
                   (cons page-file dep-files))
-               (list* (page-home)
-                      (page-meetings)
-                      (map page-meeting data:meetings-past))))))
+               (append (list (page-home))
+                       (list (page-meetings))
+                       (map page-meeting data:meetings-past)
+                       (map page-host data:hosts))))))
 
 ;; TODO email-meeting-invite
 ;; TODO email-meeting-announce
