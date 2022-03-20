@@ -391,7 +391,10 @@
                           ,@(map (λ (m)
                                     `(li (a ([class "dropdown-item"]
                                              [href ,(path-meeting m)])
-                                            ,(format "~a: ~a" (Meeting-seq m) (Meeting-codename m)))))
+                                            ,(let ([date (g:~t (Meeting-date m)
+                                                               "yyyy-MMM-dd")]
+                                                   [name (Meeting-codename m)])
+                                               (format "~a : ~a" date name)))))
                                  (sort data:meetings-past
                                        (λ (a b) (> (Meeting-seq a)
                                                    (Meeting-seq b))))))))))))
