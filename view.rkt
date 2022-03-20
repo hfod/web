@@ -221,20 +221,20 @@
     (path->string (File-path f)))
   (define/contract (talk->card t)
     (-> Talk? xml:xexpr/c)
-    (define p (Talk-presenter t))
+    (define s (Talk-speaker t))
     `(div ([class "card h-100 bg-dark text-light"])
       ;(img ([class "card-img-top"]
       ;      [src ""]
       ;      [alt ""]))
       (div ([class "card-header"])
            (h5 ([class "card-title text-center"])
-               ,(Presenter-name p))
-           ,(if (Presenter-email-show? p)
+               ,(Speaker-name s))
+           ,(if (Speaker-email-show? s)
                 `(h5 ([class "card-title text-center"])
-                  (img ([src ,(email->path (Presenter-email p))])))
+                  (img ([src ,(email->path (Speaker-email s))])))
                 "")
-           ,(if (Presenter-website p)
-                (let ([url (url:url->string (Presenter-website p))])
+           ,(if (Speaker-website s)
+                (let ([url (url:url->string (Speaker-website s))])
                   `(h6 ([class "card-title text-center"])
                     (a ([href ,url]) ,url)))
                 ""))
@@ -483,12 +483,12 @@
   (define h (Meeting-host m))
   (define talks (Meeting-talks m))
   (define (talk->pres-name-email t)
-    (define p (Talk-presenter t))
+    (define s (Talk-speaker t))
     (format "~a <~a>"
-            (Presenter-name p)
-            (Presenter-email p)))
+            (Speaker-name s)
+            (Speaker-email s)))
   (define recipients
-    ; TODO Add attendees in addition to presenters, but they must be modeled first.
+    ; TODO Add attendees in addition to speakers, but they must be modeled first.
     (string-join (map talk->pres-name-email talks) ","))
   (define headers
     (string-join

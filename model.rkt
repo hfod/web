@@ -4,7 +4,7 @@
          (struct-out Host)
          (struct-out Meeting)
          (struct-out Photo)
-         (struct-out Presenter)
+         (struct-out Speaker)
          (struct-out Link)
          (struct-out Talk))
 
@@ -31,7 +31,7 @@
                   [addr Addr?]
                   [url url:url?]))
 
-(struct/contract Presenter
+(struct/contract Speaker
                  ([name string?]
                   [email string?]
                   [email-show? boolean?]
@@ -47,7 +47,7 @@
                   [caption string?]))
 
 (struct/contract Talk
-                 ([presenter Presenter?]
+                 ([speaker Speaker?]
                   [title string?]
                   [description string?]
                   [website (or/c #f url:url?)]
