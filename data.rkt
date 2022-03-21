@@ -2,6 +2,7 @@
 
 (provide (contract-out
            [hosts (listof Host?)]
+           [speakers (listof Speaker?)]
            [meeting-next (or/c #f Meeting?)]
            [meetings-past (listof Meeting?)]))
 
@@ -16,12 +17,13 @@
 ;;      But we do need to keep the custom from-file-to-field readers,
 ;;      so it isn't a straight translation.
 
-(define (S #:name name
+(define (S #:id id
+           #:name name
            #:email email
            #:email-show? [email-show? #t]
            #:website website
            #:affiliated-links links)
-  (Speaker name (string-downcase email) email-show? website links))
+  (Speaker id name (string-downcase email) email-show? website links))
 
 (define (T #:speaker speaker
            #:title title
@@ -76,104 +78,112 @@
 
 (define/contract url-raven-labs url:url? (u "ravenlabsnh.com"))
 
-(define speaker-kyle-robertson
-  (S #:name "Kyle Robertson"
-     #:email "kyle.wesley@me.com"
-     #:website #f
-     #:affiliated-links (list (u "https://github.com/kwrobert")
-                              url-raven-labs)))
-
-(define speaker-jeff-nelson
-  (S #:name "Jeff Nelson"
-     #:email "jeff@ravenlabsnh.com"
-     #:website #f
-     #:affiliated-links (list url-raven-labs)))
-
-(define speaker-zach-taylor
-  (S #:name "Zach Taylor"
-     #:email "zach@taylorzr.com"
-     #:website (u "http://taylorzr.com")
-     #:affiliated-links (list (u "https://www.reddit.com/user/taylorzr")
-                              (u "https://github.com/taylorzr"))))
-
-(define speaker-siraaj-khandkar
-  (S #:name "Siraaj Khandkar"
-     #:email "siraaj@khandkar.net"
-     #:website (u "https://xandkar.net")
-     #:affiliated-links (list (u "https://github.com/xandkar"))))
-
-(define speaker-bob-peret
-  (S #:name "Bob Peret"
-     #:email ""
-     #:email-show? #f
-     #:website #f
-     #:affiliated-links (list url-raven-labs)))
-
-(define speaker-kyle-roucis
-  (S #:name "Kyle Roucis"
-     #:email "kyle@kyleroucis.com"
-     #:website (u "https://www.kyleroucis.com")
-     #:affiliated-links (list (u "https://github.com/kroucis"))))
-
-(define speaker-grant-peret
-  (S #:name "Grant Peret"
-     #:email "grant@ravenlabsnh.com"
-     #:website #f
-     #:affiliated-links (list url-raven-labs)))
-
-(define speaker-brandon-simpson
-  (S #:name "Brandon Simpson"
-     #:email "2boog25@gmail.com"
-     #:email-show? #f
-     #:website (u "https://bgsimpson.wixsite.com/brandon")
-     #:affiliated-links (list (u "https://github.com/vermontolympian/"))))
-
-(define speaker-brian-gray
-  (S #:name "Brian Gray"
-     #:email ""
-     #:email-show? #f
-     #:website #f
-     #:affiliated-links '()))
-
-(define host-raven-labs
-  (Host "raven-labs"
-        "Raven Labs"
-        (Addr "913"
-              "Elm St"
-              "Suite 405"
-              "Manchester"
-              "NH"
-              "03101"
-              "USA"
-              (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.5021479285165!2d-71.46491045831543!3d42.98875989907271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24fece398a01f%3A0xd63afeaabdeeb64d!2sRaven%20Laboratory%2C%20LLC!5e0!3m2!1sen!2sus!4v1647814700969!5m2!1sen!2sus"))
-        (u "https://www.ravenlabsnh.com")))
-
-(define host-manchester-makerspace
-  (Host "manchester-makerspace"
-        "Manchester Makerspace"
-        (Addr "36"
-              "Old Granite St"
-              ""
-              "Manchester"
-              "NH"
-              "0301"
-              "USA"
-              (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.609093458723!2d-71.46651978372435!3d42.98650747914976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24ed838cd5e57%3A0x511bc564be09b62b!2sManchester%20Makerspace!5e0!3m2!1sen!2sus!4v1647814467210!5m2!1sen!2sus"))
-        (u "https://manchestermakerspace.org")))
-
-(define (assert-unique f xs)
+(define (tbl #:key key . xs)
   (define seen (make-hash))
-  (for-each
-    (λ (x)
-       (define y (f x))
-       (hash-update! seen y add1 0)
-       (invariant-assertion (<=/c 1) (hash-ref seen y)))
-    xs)
-  xs)
+  (foldl
+    (λ (x t)
+       (define k (key x))
+       (hash-update! seen k add1 0)
+       (invariant-assertion (<=/c 1) (hash-ref seen k))
+       (hash-set t k x))
+    (hash)
+    xs))
 
-(define hosts
-  (assert-unique Host-id (list host-raven-labs
-                               host-manchester-makerspace)))
+(define speaker-id-kyle-robertson  "kyle-robertson")
+(define speaker-id-jeff-nelson     "jeff-nelson")
+(define speaker-id-zach-taylor     "zach-taylor")
+(define speaker-id-siraaj-khandkar "siraaj-khandkar")
+(define speaker-id-bob-peret       "bob-peret")
+(define speaker-id-kyle-roucis     "kyle-roucis")
+(define speaker-id-grant-peret     "grant-peret")
+(define speaker-id-brandon-simpson "brandon-simpson")
+(define speaker-id-brian-gray      "brian-gray")
+
+(define host-id-raven-labs            "raven-labs")
+(define host-id-manchester-makerspace "manchester-makerspace")
+
+(define speaker
+  (let ([speakers
+          (tbl #:key Speaker-id
+               (S #:id speaker-id-kyle-robertson
+                  #:name "Kyle Robertson"
+                  #:email "kyle.wesley@me.com"
+                  #:website #f
+                  #:affiliated-links (list (u "https://github.com/kwrobert")
+                                           url-raven-labs))
+               (S #:id speaker-id-jeff-nelson
+                  #:name "Jeff Nelson"
+                  #:email "jeff@ravenlabsnh.com"
+                  #:website #f
+                  #:affiliated-links (list url-raven-labs))
+               (S #:id speaker-id-zach-taylor
+                  #:name "Zach Taylor"
+                  #:email "zach@taylorzr.com"
+                  #:website (u "http://taylorzr.com")
+                  #:affiliated-links (list (u "https://www.reddit.com/user/taylorzr")
+                                           (u "https://github.com/taylorzr")))
+               (S #:id speaker-id-siraaj-khandkar
+                  #:name "Siraaj Khandkar"
+                  #:email "siraaj@khandkar.net"
+                  #:website (u "https://xandkar.net")
+                  #:affiliated-links (list (u "https://github.com/xandkar")))
+               (S #:id speaker-id-bob-peret
+                  #:name "Bob Peret"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links (list url-raven-labs))
+               (S #:id speaker-id-kyle-roucis
+                  #:name "Kyle Roucis"
+                  #:email "kyle@kyleroucis.com"
+                  #:website (u "https://www.kyleroucis.com")
+                  #:affiliated-links (list (u "https://github.com/kroucis")))
+               (S #:id speaker-id-grant-peret
+                  #:name "Grant Peret"
+                  #:email "grant@ravenlabsnh.com"
+                  #:website #f
+                  #:affiliated-links (list url-raven-labs))
+               (S #:id speaker-id-brandon-simpson
+                  #:name "Brandon Simpson"
+                  #:email "2boog25@gmail.com"
+                  #:email-show? #f
+                  #:website (u "https://bgsimpson.wixsite.com/brandon")
+                  #:affiliated-links (list (u "https://github.com/vermontolympian/")))
+               (S #:id speaker-id-brian-gray
+                  #:name "Brian Gray"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+               )])
+    (λ (id) (hash-ref speakers id))))
+
+(define host
+  (let ([hosts
+          (tbl #:key Host-id
+               (Host host-id-raven-labs
+                     "Raven Labs"
+                     (Addr "913"
+                           "Elm St"
+                           "Suite 405"
+                           "Manchester"
+                           "NH"
+                           "03101"
+                           "USA"
+                           (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.5021479285165!2d-71.46491045831543!3d42.98875989907271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24fece398a01f%3A0xd63afeaabdeeb64d!2sRaven%20Laboratory%2C%20LLC!5e0!3m2!1sen!2sus!4v1647814700969!5m2!1sen!2sus"))
+                     (u "https://www.ravenlabsnh.com"))
+               (Host host-id-manchester-makerspace
+                     "Manchester Makerspace"
+                     (Addr "36"
+                           "Old Granite St"
+                           ""
+                           "Manchester"
+                           "NH"
+                           "0301"
+                           "USA"
+                           (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.609093458723!2d-71.46651978372435!3d42.98650747914976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24ed838cd5e57%3A0x511bc564be09b62b!2sManchester%20Makerspace!5e0!3m2!1sen!2sus!4v1647814467210!5m2!1sen!2sus"))
+                     (u "https://manchestermakerspace.org")))])
+    (λ (id) (hash-ref hosts id))))
 
 (define/contract (inc file)
   (-> path-string? string?)
@@ -187,7 +197,7 @@
              #:codename "Prehistory"
              #:date (d 2021 10 14)
              #:time (t 19 00)
-             #:host host-raven-labs
+             #:host (host host-id-raven-labs)
              #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
              #:talks '())
 
@@ -195,7 +205,7 @@
              #:codename "Ground Zero"
              #:date (d 2022 01 10)
              #:time (t 18 00)
-             #:host host-raven-labs
+             #:host (host host-id-raven-labs)
              #:registration-url (u "")
              #:talks '())
 
@@ -203,7 +213,7 @@
              #:codename "Genesis Block"
              #:date (d 2022 02 10)
              #:time (t 18 00)
-             #:host host-raven-labs
+             #:host (host host-id-raven-labs)
              #:registration-url
              (let* ([file "join-us-button-mailto.txt"]
                     ; FIXME Tangled abstractions - we're not in a view!!!
@@ -219,7 +229,7 @@
              ; - [ ] Bob Peret: interns making mirrors
              ; - [x] Kyle Roucis: Lobjan
              ; - [x] Grant Peret: Cat Alley sign story
-             (list (T #:speaker speaker-kyle-robertson
+             (list (T #:speaker (speaker speaker-id-kyle-robertson)
                       #:title "Mathematical Programming and Optimization with Python and Pyomo"
                       #:description "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem."
                       #:artifacts (list (Link #f (u "https://github.com/kwrobert/pyomo-presentation")))
@@ -227,7 +237,7 @@
                       #:references
                       '())
 
-                   (T #:speaker speaker-jeff-nelson
+                   (T #:speaker (speaker speaker-id-jeff-nelson)
                       #:title "RaspiBLitz w/ pay server"
                       #:description "Raspberry pi setup running raspiblitz with other services like pay server and exlplorers."
                       #:artifacts (list (Link #f (u "https://github.com/rootzoll/raspiblitz")))
@@ -236,7 +246,7 @@
                       '() ; TODO Links to all component artifacts.
                       )
 
-                   (T #:speaker speaker-zach-taylor
+                   (T #:speaker (speaker speaker-id-zach-taylor)
                       #:title "DIY mechanical split keyboard from cardboard!"
                       #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring."
                       #:artifacts (list (Link #f (u "https://github.com/taylorzr/qmk_firmware")))
@@ -246,7 +256,7 @@
                       (list
                         (Link #f (u "https://www.reddit.com/r/ErgoMechKeyboards/comments/shy8hz/6_column_splay_split_handwired_cardboard/"))))
 
-                   (T #:speaker speaker-siraaj-khandkar
+                   (T #:speaker (speaker speaker-id-siraaj-khandkar)
                       #:title "pista: a hacker's status bar"
                       #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar."
                       #:artifacts (list (Link #f (u "https://github.com/xandkar/pista")))
@@ -258,7 +268,7 @@
                         (Link "status experiments" (u "https://github.com/xandkar/khatus/"))))
 
                    ; TODO Get details from Bob.
-                   (T #:speaker speaker-bob-peret
+                   (T #:speaker (speaker speaker-id-bob-peret)
                       #:title ""
                       #:description ""
                       #:artifacts '()
@@ -266,7 +276,7 @@
                       #:references
                       '())
 
-                   (T #:speaker speaker-kyle-roucis
+                   (T #:speaker (speaker speaker-id-kyle-roucis)
                       #:title "Lojban: the logical language for nerds"
                       #:description "Lojban is an \"open source\" logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
                       #:artifacts (list (Link #f (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u")))
@@ -276,7 +286,7 @@
                             (Link "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
                             (Link "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html"))))
 
-                   (T #:speaker speaker-grant-peret
+                   (T #:speaker (speaker speaker-id-grant-peret)
                       #:title "Cat Alley - Creation of an Entryway"
                       #:description "An overview of the aesthetic modelling, design, and loading requirements to build a cantilevered entry way sign."
                       #:artifacts (list (Link #f (u "https://github.com/RavenGrant/CatAlley")))
@@ -290,46 +300,46 @@
              #:codename "Tuna Pizza"
              #:date (d 2022 03 10)
              #:time (t 18 00)
-             #:host host-raven-labs
+             #:host (host host-id-raven-labs)
              #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
              #:talks
-             (list (T #:speaker speaker-siraaj-khandkar
+             (list (T #:speaker (speaker speaker-id-siraaj-khandkar)
                       #:title "gg - the gitter of gits"
                       #:description "A tool to locate, compare and cross-reference all your git repositories accross machines."
                       #:artifacts (list (Link #f (u "https://github.com/xandkar/gg/")))
                       #:website #f
                       #:references '())
-                   (T #:speaker speaker-jeff-nelson
+                   (T #:speaker (speaker speaker-id-jeff-nelson)
                       #:title ""
                       #:description ""
                       #:artifacts '()
                       #:website #f
                       #:references '())
-                   (T #:speaker speaker-brian-gray
+                   (T #:speaker (speaker speaker-id-brian-gray)
                       #:title ""
                       #:description ""
                       #:artifacts '()
                       #:website #f
                       #:references '())
-                   (T #:speaker speaker-grant-peret
+                   (T #:speaker (speaker speaker-id-grant-peret)
                       #:title ""
                       #:description ""
                       #:artifacts '()
                       #:website #f
                       #:references '())
-                   (T #:speaker speaker-brandon-simpson
+                   (T #:speaker (speaker speaker-id-brandon-simpson)
                       #:title "3 DOF Robotic Arm"
                       #:description "In this project, my team and I used a 3 DOF robotic manipulator and a USB webcam to implement an automated pick and place system. Through image processing, the system was able to detect and locate objects of a specific color. Using forward and inverse position and velocity kinematics, my team and Ideveloped a program to command a robotic arm to pick and place colored spheres until there were none remaining in the workspace. This system was also capable of sorting a specific non-spherical random object and able to dynamically track an object."
                       #:artifacts (list (Link #f (u "https://bgsimpson.wixsite.com/brandon/post/unified-robotics-iii")))
                       #:website #f
                       #:references '())
-                   (T #:speaker speaker-kyle-roucis
+                   (T #:speaker (speaker speaker-id-kyle-roucis)
                       #:title "KroucisVM"
                       #:description "A bytecode-driven dynamic-dispatched object-oriented so-many-hyphens virtual machine built in C and based on the Objective-C dynamic dispatch object model."
                       #:artifacts (list (Link #f (u "https://github.com/kroucis/KroucisVM")))
                       #:website #f
                       #:references '())
-                   (T #:speaker speaker-bob-peret
+                   (T #:speaker (speaker speaker-id-bob-peret)
                       #:title ""
                       #:description ""
                       #:artifacts '()
@@ -341,11 +351,21 @@
              #:codename "TBD"
              #:date (d 2022 04 07)
              #:time (t 18 00)
-             #:host host-manchester-makerspace
+             #:host (host host-id-manchester-makerspace)
              #:registration-url (u "https://forms.gle/uwTZM4gcWc6RcQyq6")
              #:talks
              '())
           )))
+
+(define hosts
+  (map host
+       (remove-duplicates (map (compose Host-id Meeting-host)
+                               meetings))))
+
+(define speakers
+  (map speaker
+       (remove-duplicates (map (compose Speaker-id Talk-speaker)
+                               (append* (map Meeting-talks meetings))))))
 
 (define/contract (meetings-filter-by-date compares?)
   (-> (-> g:date? g:date? boolean?) (listof Meeting?))

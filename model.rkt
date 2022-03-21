@@ -32,7 +32,8 @@
                   [url url:url?]))
 
 (struct/contract Speaker
-                 ([name string?]
+                 ([id string?]
+                  [name string?]
                   [email string?]
                   [email-show? boolean?]
                   [website (or/c #f url:url?)]

@@ -59,17 +59,52 @@
 (define/contract path-home          path-string? "/")
 (define/contract path-hosts         path-string? "/hosts")
 (define/contract path-meetings      path-string? "/meetings")
+(define/contract path-speakers      path-string? "/speakers")
 (define/contract (path-meeting m)
   (-> Meeting? path-string?)
   (path->string (build-path path-meetings (~a (Meeting-seq m)))))
 (define/contract (path-host h)
   (-> Host? path-string?)
   (path->string (build-path path-hosts (Host-id h))))
+(define/contract (path-speaker s)
+  (-> Speaker? path-string?)
+  (path->string (build-path path-speakers (Speaker-id s))))
 
 (define/contract (inc file)
   (-> path-string? string?)
   (define path (build-path "view" "web" "inc" file))
   (string-join (file->lines path) "")) ; XXX Discarding newlines.
+
+(define/contract (page-speaker s)
+  (-> Speaker? Page?)
+  (define (u->l u) (Link #f u))
+  (define email-file
+    (if (Speaker-email-show? s)
+        (email->file (Speaker-email s))
+        #f))
+  (define title (Speaker-name s))
+  (P #:id title
+     #:path (path-speaker s)
+     #:title title
+     #:deps (if email-file `(,email-file) '())
+     #:content
+     `((h1 ,title)
+       ,(if (Speaker-website s)
+            (let ([u (url:url->string (Speaker-website s))])
+              `(a ([href ,u]) ,u))
+            "")
+       ,(if email-file
+            `(h5 ;([class "card-title text-center"])
+              (img ([src ,(path->string (File-path email-file))])))
+            "")
+       ,(if (empty? (Speaker-affiliated-links s))
+            ""
+            `(p ([class "text-start"])
+              (strong "links:")
+              (ul ([class "text-start"])
+                  ,@(links->list-items (map u->l (Speaker-affiliated-links s))))))
+       ; TODO List talks
+       )))
 
 (define/contract (page-host h)
   (-> Host? Page?)
@@ -211,14 +246,6 @@
 
 (define/contract (page-meeting m)
   (-> Meeting? Page?)
-  (define/contract email-addr-image-files
-    (listof File?)
-    '())
-  ; TODO Refactor to remove mutation of email-addr-image-files?
-  (define (email->path e)
-    (define f (email->file e))
-    (set! email-addr-image-files (cons f email-addr-image-files))
-    (path->string (File-path f)))
   (define/contract (talk->card t)
     (-> Talk? xml:xexpr/c)
     (define s (Talk-speaker t))
@@ -228,16 +255,7 @@
       ;      [alt ""]))
       (div ([class "card-header"])
            (h5 ([class "card-title text-center"])
-               ,(Speaker-name s))
-           ,(if (Speaker-email-show? s)
-                `(h5 ([class "card-title text-center"])
-                  (img ([src ,(email->path (Speaker-email s))])))
-                "")
-           ,(if (Speaker-website s)
-                (let ([url (url:url->string (Speaker-website s))])
-                  `(h6 ([class "card-title text-center"])
-                    (a ([href ,url]) ,url)))
-                ""))
+               (a ([href ,(path-speaker  s)]) ,(Speaker-name s))))
       (div ([class "card-body"])
            (h5 ([class "card-title text-center"])
                ,(Talk-title t))
@@ -318,12 +336,10 @@
       (div ([class "row row-cols-1 row-cols-md-1 g-4"])
            ,@(map (λ (c) `(div ([class "col"]) ,c))
                   (map talk->card (Meeting-talks m))))))
-  ; XXX content mutates email-addr-image-files, so must be called before using it.
   (P #:id (format "meeting-~a" (number->string (Meeting-seq m)))
      #:path (path-meeting m)
      #:title (format "Meeting ~a: ~a" (Meeting-seq m) (Meeting-codename m))
-     #:deps (append email-addr-image-files
-                    (map obj->file (map Photo-data photos)))
+     #:deps (map obj->file (map Photo-data photos))
      #:content content))
 
 (define/contract (xexpr-insert-classes symb-class-pairs xs)
@@ -452,6 +468,26 @@
                                  (sort data:hosts
                                        (λ (a b) (string>? (Host-name a)
                                                           (Host-name b)))))))
+
+                  ;; Speakers
+                  ;(li ([class "nav-item dropdown"])
+                  ;    (a ([class "nav-link dropdown-toggle"]
+                  ;        [href "#"]
+                  ;        [id "navbarDarkDropdownMenuLink"]
+                  ;        [role "button"]
+                  ;        [data-bs-toggle "dropdown"]
+                  ;        [aria-expanded "false"])
+                  ;       "speakers")
+
+                  ;    (ul ([class "dropdown-menu dropdown-menu-dark"]
+                  ;         [aria-labelledby "navbarDarkDropdownMenuLink"])
+                  ;        ,@(map (λ (s)
+                  ;                  `(li (a ([class "dropdown-item"]
+                  ;                           [href ,(path-speaker s)])
+                  ;                          ,(Speaker-name s))))
+                  ;               (sort data:speakers
+                  ;                     (λ (a b) (string<? (Speaker-name a)
+                  ;                                        (Speaker-name b)))))))
                   )))))
 
 (define/contract (web-files)
@@ -472,7 +508,9 @@
                (append (list (page-home))
                        (list (page-meetings))
                        (map page-meeting data:meetings-past)
-                       (map page-host data:hosts))))))
+                       (map page-host data:hosts)
+                       (map page-speaker data:speakers)
+                       )))))
 
 ;; TODO email-meeting-invite
 ;; TODO email-meeting-announce
