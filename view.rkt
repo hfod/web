@@ -119,11 +119,14 @@
      `((h1 ,title)
        (a ([href ,url]) ,url)
        (p ,(Addr-building a)
+          " "
           ,(Addr-street a)
           (br)
           ,@(if (not (string=? "" (Addr-room a))) `(,(Addr-room a) (br)) '(""))
           ,(Addr-town a)
+          ", "
           ,(Addr-state a)
+          " "
           ,(Addr-zipcode a))
        (p (iframe ([width "600"]
                    [height "450"]
