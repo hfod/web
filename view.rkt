@@ -60,9 +60,9 @@
 (define/contract path-hosts         path-string? "/hosts")
 (define/contract path-meetings      path-string? "/meetings")
 (define/contract path-speakers      path-string? "/speakers")
-(define/contract (path-meeting m)
-  (-> Meeting? path-string?)
-  (path->string (build-path path-meetings (~a (Meeting-seq m)))))
+(define/contract (path-meeting id)
+  (-> integer? path-string?)
+  (path->string (build-path path-meetings (~a id))))
 (define/contract (path-host h)
   (-> Host? path-string?)
   (path->string (build-path path-hosts (Host-id h))))
@@ -103,7 +103,14 @@
               (strong "links:")
               (ul ([class "text-start"])
                   ,@(links->list-items (map u->l (Speaker-affiliated-links s))))))
-       ; TODO List talks
+       (p ([class "text-start"])
+          (strong "talks:")
+          (ul ([class "text-start"])
+              ,@(map (λ (meet-id-talk)
+                        (match-define (cons mid t) meet-id-talk)
+                        `(li (a ([href ,(path-meeting mid)]) ,(Talk-title t))))
+                     (data:speaker->talks s))))
+       ; TODO Maybe talks should have their own pages?
        )))
 
 (define/contract (page-host h)
@@ -160,7 +167,7 @@
                           `(tr
                             (th ([scope "row"]) ,(number->string (Meeting-seq m)))
                             (td ,(g:~t (Meeting-date m) "yyyy MMM dd"))
-                            (td (a ([href ,(path-meeting m)]) ,(Meeting-codename m)))
+                            (td (a ([href ,(path-meeting (Meeting-seq m))]) ,(Meeting-codename m)))
                             (td (a ([href ,(url:url->string (Host-url h))]) ,(Host-name h)))))
                        (sort data:meetings-past
                              (λ (a b) (> (Meeting-seq a)
@@ -340,7 +347,7 @@
            ,@(map (λ (c) `(div ([class "col"]) ,c))
                   (map talk->card (Meeting-talks m))))))
   (P #:id (format "meeting-~a" (number->string (Meeting-seq m)))
-     #:path (path-meeting m)
+     #:path (path-meeting (Meeting-seq m))
      #:title (format "Meeting ~a: ~a" (Meeting-seq m) (Meeting-codename m))
      #:deps (map obj->file (map Photo-data photos))
      #:content content))
@@ -443,7 +450,7 @@
                            [aria-labelledby "navbarDarkDropdownMenuLink"])
                           ,@(map (λ (m)
                                     `(li (a ([class "dropdown-item"]
-                                             [href ,(path-meeting m)])
+                                             [href ,(path-meeting (Meeting-seq m))])
                                             ,(let ([date (g:~t (Meeting-date m)
                                                                "yyyy-MMM-dd")]
                                                    [name (Meeting-codename m)])

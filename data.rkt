@@ -3,6 +3,7 @@
 (provide (contract-out
            [hosts (listof Host?)]
            [speakers (listof Speaker?)]
+           [speaker->talks (-> Speaker? (listof (cons/c integer? Talk?)))]
            [meeting-next (or/c #f Meeting?)]
            [meetings-past (listof Meeting?)]))
 
@@ -366,6 +367,20 @@
   (map speaker
        (remove-duplicates (map (compose Speaker-id Talk-speaker)
                                (append* (map Meeting-talks meetings))))))
+
+;; TODO Something nicer than (meeing-id talk) pair? TalkInfo? MeetingInfo?
+(define speaker->talks
+  (let ([s2t (foldl
+               (λ (mt s2t)
+                  (define t (cdr mt))
+                  (define sid (Speaker-id (Talk-speaker t)))
+                  (hash-update s2t sid (λ (mts) (cons mt mts)) '()))
+               (hash)
+               (append* (map (λ (m)
+                                (map (λ (t) (cons (Meeting-seq m) t))
+                                     (Meeting-talks m)))
+                             meetings)))])
+    (λ (s) (hash-ref s2t (Speaker-id s)))))  ; XXX not found => not a speaker
 
 (define/contract (meetings-filter-by-date compares?)
   (-> (-> g:date? g:date? boolean?) (listof Meeting?))
