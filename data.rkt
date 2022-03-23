@@ -288,7 +288,7 @@
                             (Link "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html"))))
 
                    (T #:speaker (speaker speaker-id-grant-peret)
-                      #:title "Cat Alley - Creation of an Entryway"
+                      #:title "Cat Alley: Creation of an Entryway"
                       #:description "An overview of the aesthetic modelling, design, and loading requirements to build a cantilevered entry way sign."
                       #:artifacts (list (Link #f (u "https://github.com/RavenGrant/CatAlley")))
                       #:website #f
@@ -305,7 +305,7 @@
              #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
              #:talks
              (list (T #:speaker (speaker speaker-id-siraaj-khandkar)
-                      #:title "gg - the gitter of gits"
+                      #:title "gg: the gitter of gits"
                       #:description "A tool to locate, compare and cross-reference all your git repositories accross machines."
                       #:artifacts (list (Link #f (u "https://github.com/xandkar/gg/")))
                       #:website #f
