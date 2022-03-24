@@ -1,5 +1,6 @@
-According to legends, Grant posted a message in [`#us-new-hampshire`][1]
-channel of [Helium Discord server][2] on September 10th, 2021:
+According to legends, [Grant](/speakers/grant-peret/) posted a message in
+[`#us-new-hampshire`][1] channel of [Helium Discord server][2] on
+September 10th, 2021:
 
 > Would anyone be interested in a NH Helium meetup sometime?  Would love to
 > meet everyone and forecast Helium's growth in NH!
