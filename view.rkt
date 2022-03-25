@@ -169,7 +169,7 @@
                             (td ,(g:~t (Meeting-date m) "yyyy MMM dd"))
                             (td (a ([href ,(path-meeting (Meeting-seq m))]) ,(Meeting-codename m)))
                             (td (a ([href ,(url:url->string (Host-url h))]) ,(Host-name h)))))
-                       (sort data:meetings-past
+                       (sort data:meetings
                              (λ (a b) (> (Meeting-seq a)
                                          (Meeting-seq b))))))))))
 
@@ -414,7 +414,27 @@
                               [class "text-white"])
                              "NYC Hack && Tell")))))))
 
-(define nav
+(define (nav)
+  (define (meetings->dropdown meetings nav-title)
+    `(li ([class "nav-item dropdown"])
+      (a ([class "nav-link dropdown-toggle"]
+          [href ,path-meetings]
+          [id "navbarDarkDropdownMenuLink"]
+          [role "button"]
+          [data-bs-toggle "dropdown"]
+          [aria-expanded "false"])
+         ,nav-title)
+      (ul ([class "dropdown-menu dropdown-menu-dark"]
+           [aria-labelledby "navbarDarkDropdownMenuLink"])
+          ,@(map (λ (m)
+                    `(li (a ([class "dropdown-item"]
+                             [href ,(path-meeting (Meeting-seq m))])
+                            ,(let ([date (g:~t (Meeting-date m)
+                                               "yyyy MMM dd")]
+                                   [host (Host-name (Meeting-host m))])
+                               (format "~a @ ~a : ~a" date host (Meeting-codename m))))))
+                 (sort meetings (λ (a b) (> (Meeting-seq a)
+                                            (Meeting-seq b))))))))
   `(nav ([class "navbar navbar-expand-lg navbar-dark bg-dark float-md-end"])
     (div ([class "container-fluid"])
 
@@ -437,27 +457,8 @@
               (ul ([class "navbar-nav"])
 
                   ; Meetings
-                  (li ([class "nav-item dropdown"])
-                      (a ([class "nav-link dropdown-toggle"]
-                          [href ,path-meetings]
-                          [id "navbarDarkDropdownMenuLink"]
-                          [role "button"]
-                          [data-bs-toggle "dropdown"]
-                          [aria-expanded "false"])
-                         "meetings")
-
-                      (ul ([class "dropdown-menu dropdown-menu-dark"]
-                           [aria-labelledby "navbarDarkDropdownMenuLink"])
-                          ,@(map (λ (m)
-                                    `(li (a ([class "dropdown-item"]
-                                             [href ,(path-meeting (Meeting-seq m))])
-                                            ,(let ([date (g:~t (Meeting-date m)
-                                                               "yyyy-MMM-dd")]
-                                                   [name (Meeting-codename m)])
-                                               (format "~a : ~a" date name)))))
-                                 (sort data:meetings-past
-                                       (λ (a b) (> (Meeting-seq a)
-                                                   (Meeting-seq b)))))))
+                  ,(meetings->dropdown data:meetings-future "upcoming")
+                  ,(meetings->dropdown data:meetings-past "past")
 
                   ; Hosts
                   (li ([class "nav-item dropdown"])
@@ -510,14 +511,14 @@
           (map (λ (p)
                   (define page-file
                     (File (build-path (Page-path p) "index.html")
-                          (xml:xexpr->string (assemble #:nav nav
+                          (xml:xexpr->string (assemble #:nav (nav)
                                                        #:title (Page-title p)
                                                        #:content (Page-content p)))))
                   (define dep-files (Page-deps p))
                   (cons page-file dep-files))
                (append (list (page-home))
                        (list (page-meetings))
-                       (map page-meeting data:meetings-past)
+                       (map page-meeting data:meetings)
                        (map page-host data:hosts)
                        (map page-speaker data:speakers)
                        )))))

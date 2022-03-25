@@ -5,6 +5,8 @@
            [speakers (listof Speaker?)]
            [speaker->talks (-> Speaker? (listof (cons/c integer? Talk?)))]
            [meeting-next (or/c #f Meeting?)]
+           [meetings (listof Meeting?)]
+           [meetings-future (listof Meeting?)]
            [meetings-past (listof Meeting?)]))
 
 (require (prefix-in url: net/url))
