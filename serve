@@ -12,20 +12,33 @@
 ;; TODO Consider app interface/implementation unit.
 
 (module+ main
-  ; TODO CLI opts: port-num, log-file
-  (let ([program (path->string (find-system-path 'run-file))]
-        [paths-to-serve '()]
-        [dev? #f])
+  (let* ([program (path->string (find-system-path 'run-file))]
+         [log-file (string-append program ".log")]
+         [listen-addr "0.0.0.0"]
+         [listen-port 8000]
+         [paths-to-serve '()]
+         [dev? #f])
     (command-line
       #:program program
       #:once-each
       [("-d" "--dev")
        "Development mode: open browser, show stack traces, etc."
        (set! dev? #t)]
+      [("-a" "--addr")
+       ip-addr "Listen address."
+       (set! listen-addr ip-addr)]
+      [("-p" "--port")
+       port-number "Listen port."
+       (set! listen-port port-number)]
+      [("-l" "--log")
+       file "Log file."
+       (set! log-file file)]
       #:args (path . paths)
       (set! paths-to-serve (cons path paths)))
     (env:serve/servlet
       app:dispatch
+      #:listen-ip listen-addr
+      #:port listen-port
       #:launch-browser? dev?
       #:extra-files-paths paths-to-serve
       #:file-not-found-responder app:handle-error-not-found
@@ -37,7 +50,7 @@
       (if dev?
           res:servlet-loading-responder
           app:handle-error-crash)
-      #:log-file (string-append program ".log")
+      #:log-file log-file
       #:log-format log:paren-format
       #:servlet-path ""
       #:servlet-regexp #rx"")))
