@@ -80,6 +80,7 @@
 (define u url:string->url)
 
 (define/contract url-raven-labs url:url? (u "ravenlabsnh.com"))
+(define/contract url-manchester-maker-space url:url? (u "https://manchestermakerspace.org"))
 
 (define (tbl #:key key . xs)
   (define seen (make-hash))
@@ -102,6 +103,10 @@
 (define speaker-id-brandon-simpson "brandon-simpson")
 (define speaker-id-brian-gray      "brian-gray")
 
+(define speaker-id-kevin-kadow      "kevin-kadow")
+(define speaker-id-thaddeus-hughes  "thaddeus-hughes")
+(define speaker-id-jake             "jake") ; Discord: ta11ey#6015
+
 (define host-id-raven-labs            "raven-labs")
 (define host-id-manchester-makerspace "manchester-makerspace")
 
@@ -114,46 +119,77 @@
                   #:website #f
                   #:affiliated-links (list (u "https://github.com/kwrobert")
                                            url-raven-labs))
+
                (S #:id speaker-id-jeff-nelson
                   #:name "Jeff Nelson"
                   #:email "jeff@ravenlabsnh.com"
                   #:website #f
                   #:affiliated-links (list url-raven-labs))
+
                (S #:id speaker-id-zach-taylor
                   #:name "Zach Taylor"
                   #:email "zach@taylorzr.com"
                   #:website (u "http://taylorzr.com")
                   #:affiliated-links (list (u "https://www.reddit.com/user/taylorzr")
                                            (u "https://github.com/taylorzr")))
+
                (S #:id speaker-id-siraaj-khandkar
                   #:name "Siraaj Khandkar"
                   #:email "siraaj@khandkar.net"
                   #:website (u "https://xandkar.net")
                   #:affiliated-links (list (u "https://github.com/xandkar")))
+
                (S #:id speaker-id-bob-peret
                   #:name "Bob Peret"
                   #:email ""
                   #:email-show? #f
                   #:website #f
                   #:affiliated-links (list url-raven-labs))
+
                (S #:id speaker-id-kyle-roucis
                   #:name "Kyle Roucis"
                   #:email "kyle@kyleroucis.com"
                   #:website (u "https://www.kyleroucis.com")
                   #:affiliated-links (list (u "https://github.com/kroucis")))
+
                (S #:id speaker-id-grant-peret
                   #:name "Grant Peret"
                   #:email "grant@ravenlabsnh.com"
                   #:website #f
                   #:affiliated-links (list url-raven-labs))
+
                (S #:id speaker-id-brandon-simpson
                   #:name "Brandon Simpson"
                   #:email "2boog25@gmail.com"
                   #:email-show? #f
                   #:website (u "https://bgsimpson.wixsite.com/brandon")
                   #:affiliated-links (list (u "https://github.com/vermontolympian/")))
+
                (S #:id speaker-id-brian-gray
                   #:name "Brian Gray"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+
+               (S #:id speaker-id-kevin-kadow
+                  #:name "Kevin Kadow"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links (list url-manchester-maker-space))
+
+               (S #:id speaker-id-thaddeus-hughes
+                  #:name "Thaddeus Hughes"
+                  #:email "hughes.thad@gmail.com"
+                  #:email-show? #f
+                  #:website (u "http://thadhughes.xyz")
+                  #:affiliated-links
+                  (list (u "https://github.com/Thaddeus-Maximus")
+                        url-manchester-maker-space))
+
+               (S #:id speaker-id-jake
+                  #:name "Jake"
                   #:email ""
                   #:email-show? #f
                   #:website #f
@@ -185,7 +221,7 @@
                            "0301"
                            "USA"
                            (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.609093458723!2d-71.46651978372435!3d42.98650747914976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24ed838cd5e57%3A0x511bc564be09b62b!2sManchester%20Makerspace!5e0!3m2!1sen!2sus!4v1647814467210!5m2!1sen!2sus"))
-                     (u "https://manchestermakerspace.org")))])
+                     url-manchester-maker-space))])
     (λ (id) (hash-ref hosts id))))
 
 (define/contract (inc file)
@@ -351,13 +387,65 @@
                    ))
 
           (M #:seq 3
-             #:codename "TBD"
+             #:codename "The Sign"
              #:date (d 2022 04 07)
              #:time (t 18 00)
              #:host (host host-id-manchester-makerspace)
              #:registration-url (u "https://forms.gle/uwTZM4gcWc6RcQyq6")
              #:talks
-             '())
+             (list
+                   (T #:speaker (speaker speaker-id-siraaj-khandkar)
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+
+                   (T #:speaker (speaker speaker-id-kyle-robertson)
+                      #:title "GPT-2: An outdated language generation model"
+                      #:description "A fun hack using the GPT-2 natural language generation neural network to automate generating marketing content for my wife's job"
+                      #:artifacts (list (Link #f (u "https://github.com/kwrobert/scarlett")))
+                      #:website #f
+                      #:references '())
+
+                   (T #:speaker (speaker speaker-id-thaddeus-hughes)
+                      #:title "EveryCalc"
+                      #:description "Online analysis tools for common tasks"
+                      #:artifacts (list (Link #f (u "https://github.com/Thaddeus-Maximus/everycalc")))
+                      #:website (u "http://everycalc.thadhughes.xyz/")
+                      #:references '())
+
+                   (T #:speaker (speaker speaker-id-kevin-kadow)
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+
+                   (T #:speaker (speaker speaker-id-jake)
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references (list (Link #f (u "https://meshtastic.org/"))))
+
+                   (T #:speaker (speaker speaker-id-grant-peret)
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+               ))
+
+          ;(M #:seq 4
+          ;   #:codename "TBD"
+          ;   #:date (d 2022 04 07)
+          ;   #:time (t 18 00)
+          ;   #:host (host host-id-manchester-makerspace)
+          ;   #:registration-url (u "")
+          ;   #:talks
+          ;   '())
+
           )))
 
 (define hosts
