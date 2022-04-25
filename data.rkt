@@ -437,14 +437,14 @@
                       #:references '())
                ))
 
-          ;(M #:seq 4
-          ;   #:codename "TBD"
-          ;   #:date (d 2022 04 07)
-          ;   #:time (t 18 00)
-          ;   #:host (host host-id-manchester-makerspace)
-          ;   #:registration-url (u "")
-          ;   #:talks
-          ;   '())
+          (M #:seq 4
+             #:codename "TBD"
+             #:date (d 2022 05 12)
+             #:time (t 19 00)
+             #:host (host host-id-manchester-makerspace)
+             #:registration-url (u "https://forms.gle/kU5bYdTi1im8bdy4A")
+             #:talks
+             '())
 
           )))
 
