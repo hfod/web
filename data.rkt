@@ -394,47 +394,47 @@
              #:registration-url (u "https://forms.gle/uwTZM4gcWc6RcQyq6")
              #:talks
              (list
-                   (T #:speaker (speaker speaker-id-siraaj-khandkar)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
-                      #:references '())
+               (T #:speaker (speaker speaker-id-siraaj-khandkar)
+                  #:title ""
+                  #:description ""
+                  #:artifacts '()
+                  #:website #f
+                  #:references '())
 
-                   (T #:speaker (speaker speaker-id-kyle-robertson)
-                      #:title "GPT-2: An outdated language generation model"
-                      #:description "A fun hack using the GPT-2 natural language generation neural network to automate generating marketing content for my wife's job"
-                      #:artifacts (list (Link #f (u "https://github.com/kwrobert/scarlett")))
-                      #:website #f
-                      #:references '())
+               (T #:speaker (speaker speaker-id-kyle-robertson)
+                  #:title "GPT-2: An outdated language generation model"
+                  #:description "A fun hack using the GPT-2 natural language generation neural network to automate generating marketing content for my wife's job"
+                  #:artifacts (list (Link #f (u "https://github.com/kwrobert/scarlett")))
+                  #:website #f
+                  #:references '())
 
-                   (T #:speaker (speaker speaker-id-thaddeus-hughes)
-                      #:title "EveryCalc"
-                      #:description "Online analysis tools for common tasks"
-                      #:artifacts (list (Link #f (u "https://github.com/Thaddeus-Maximus/everycalc")))
-                      #:website (u "http://everycalc.thadhughes.xyz/")
-                      #:references '())
+               (T #:speaker (speaker speaker-id-thaddeus-hughes)
+                  #:title "EveryCalc"
+                  #:description "Online analysis tools for common tasks"
+                  #:artifacts (list (Link #f (u "https://github.com/Thaddeus-Maximus/everycalc")))
+                  #:website (u "http://everycalc.thadhughes.xyz/")
+                  #:references '())
 
-                   (T #:speaker (speaker speaker-id-kevin-kadow)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
-                      #:references '())
+               (T #:speaker (speaker speaker-id-kevin-kadow)
+                  #:title ""
+                  #:description ""
+                  #:artifacts '()
+                  #:website #f
+                  #:references '())
 
-                   (T #:speaker (speaker speaker-id-jake)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
-                      #:references (list (Link #f (u "https://meshtastic.org/"))))
+               (T #:speaker (speaker speaker-id-jake)
+                  #:title ""
+                  #:description ""
+                  #:artifacts '()
+                  #:website #f
+                  #:references (list (Link #f (u "https://meshtastic.org/"))))
 
-                   (T #:speaker (speaker speaker-id-grant-peret)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
-                      #:references '())
+               (T #:speaker (speaker speaker-id-grant-peret)
+                  #:title ""
+                  #:description ""
+                  #:artifacts '()
+                  #:website #f
+                  #:references '())
                ))
 
           (M #:seq 4
