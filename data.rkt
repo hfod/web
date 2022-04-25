@@ -395,9 +395,9 @@
              #:talks
              (list
                (T #:speaker (speaker speaker-id-siraaj-khandkar)
-                  #:title ""
-                  #:description ""
-                  #:artifacts '()
+                  #:title "probe-me - a self port scanning service"
+                  #:description "A generalized prototype for a Helium hotspot monitoring service, which started as an exercise of writing an HTTP server in Racket from scratch."
+                  #:artifacts (list (Link #f (u "https://github.com/xandkar/probe-me")))
                   #:website #f
                   #:references '())
 
@@ -423,15 +423,16 @@
                   #:references '())
 
                (T #:speaker (speaker speaker-id-jake)
-                  #:title ""
-                  #:description ""
+                  #:title "Walkie-textie over LoRa"
+                  #:description "Have you ever gone sky-diving with your friends, only to be disappointed that you can't text them mid-air? Jake's got you covered!"
                   #:artifacts '()
                   #:website #f
-                  #:references (list (Link #f (u "https://meshtastic.org/"))))
+                  #:references (list (Link #f (u "https://meshtastic.org/"))
+                                     (Link #f (u "https://en.wikipedia.org/wiki/LoRa"))))
 
                (T #:speaker (speaker speaker-id-grant-peret)
-                  #:title ""
-                  #:description ""
+                  #:title "Surgical battery-repair"
+                  #:description "Live dangerously - replace your own battery cells!"
                   #:artifacts '()
                   #:website #f
                   #:references '())
