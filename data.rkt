@@ -439,7 +439,7 @@
                ))
 
           (M #:seq 4
-             #:codename "TBD"
+             #:codename "Three Musketeers"
              #:date (d 2022 05 12)
              #:time (t 19 00)
              #:host (host host-id-manchester-makerspace)
