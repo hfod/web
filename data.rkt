@@ -232,7 +232,9 @@
   (listof Meeting?)
   (let ([d g:date]
         [t g:time])
-    (list (M #:seq -1
+    (list
+          ; TODO format: general-discussion
+          (M #:seq -1
              #:codename "Prehistory"
              #:date (d 2021 10 14)
              #:time (t 19 00)
@@ -240,6 +242,7 @@
              #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
              #:talks '())
 
+          ; TODO format: general-discussion
           (M #:seq 0
              #:codename "Ground Zero"
              #:date (d 2022 01 10)
@@ -248,6 +251,7 @@
              #:registration-url (u "")
              #:talks '())
 
+          ; TODO format: hack-and-tell.
           (M #:seq 1
              #:codename "Genesis Block"
              #:date (d 2022 02 10)
@@ -335,6 +339,7 @@
                             (Link "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/"))))
                    ))
 
+          ; TODO format: hack-and-tell.
           (M #:seq 2
              #:codename "Tuna Pizza"
              #:date (d 2022 03 10)
@@ -386,6 +391,7 @@
                       #:references '())
                    ))
 
+          ; TODO format: hack-and-tell.
           (M #:seq 3
              #:codename "The Sign"
              #:date (d 2022 04 07)
@@ -438,6 +444,7 @@
                   #:references '())
                ))
 
+          ; TODO format: problem-talks.
           (M #:seq 4
              #:codename "Three Musketeers"
              #:date (d 2022 05 12)
@@ -445,7 +452,11 @@
              #:host (host host-id-manchester-makerspace)
              #:registration-url (u "https://forms.gle/kU5bYdTi1im8bdy4A")
              #:talks
-             '())
+             '(
+               ; - [ ] kevin-kadow on resetting safety device
+               ; - [ ] kyle-roucis on game design
+               ; - [ ] siraaj-khandkar on parallelizing blockchain deserialization
+               ))
 
           (M #:seq 5
              #:codename "TBD"
