@@ -459,7 +459,7 @@
                ))
 
           (M #:seq 5
-             #:codename "TBD"
+             #:codename "Autolace"
              #:date (d 2022 06 09)
              #:time (t 19 00)
              #:host (host host-id-manchester-makerspace)
