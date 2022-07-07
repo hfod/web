@@ -233,250 +233,250 @@
   (let ([d g:date]
         [t g:time])
     (list
-          ; TODO format: general-discussion
-          (M #:seq -1
-             #:codename "Prehistory"
-             #:date (d 2021 10 14)
-             #:time (t 19 00)
-             #:host (host host-id-raven-labs)
-             #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
-             #:talks '())
+      ; TODO format: general-discussion
+      (M #:seq -1
+         #:codename "Prehistory"
+         #:date (d 2021 10 14)
+         #:time (t 19 00)
+         #:host (host host-id-raven-labs)
+         #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
+         #:talks '())
 
-          ; TODO format: general-discussion
-          (M #:seq 0
-             #:codename "Ground Zero"
-             #:date (d 2022 01 10)
-             #:time (t 18 00)
-             #:host (host host-id-raven-labs)
-             #:registration-url (u "")
-             #:talks '())
+      ; TODO format: general-discussion
+      (M #:seq 0
+         #:codename "Ground Zero"
+         #:date (d 2022 01 10)
+         #:time (t 18 00)
+         #:host (host host-id-raven-labs)
+         #:registration-url (u "")
+         #:talks '())
 
-          ; TODO format: hack-and-tell.
-          (M #:seq 1
-             #:codename "Genesis Block"
-             #:date (d 2022 02 10)
-             #:time (t 18 00)
-             #:host (host host-id-raven-labs)
-             #:registration-url
-             (let* ([file "join-us-button-mailto.txt"]
-                    ; FIXME Tangled abstractions - we're not in a view!!!
-                    [path (build-path "view" "web" "inc" file)]
-                    [mailto (file->string path)])
-               (u mailto))
-             #:talks
-             ; TODO Talks:
-             ; - [x] Kyle Robertson: optimization
-             ; - [x] Jeff Nelson: BTC/Lightening POS on Raspberry Pi
-             ; - [x] Zach Taylor: DIY keyboard on a cardboard
-             ; - [x] Siraaj Khandkar: pista
-             ; - [ ] Bob Peret: interns making mirrors
-             ; - [x] Kyle Roucis: Lobjan
-             ; - [x] Grant Peret: Cat Alley sign story
-             (list (T #:speaker (speaker speaker-id-kyle-robertson)
-                      #:title "Mathematical Programming and Optimization with Python and Pyomo"
-                      #:description "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem."
-                      #:artifacts (list (Link #f (u "https://github.com/kwrobert/pyomo-presentation")))
-                      #:website #f
-                      #:references
-                      '())
+      ; TODO format: hack-and-tell.
+      (M #:seq 1
+         #:codename "Genesis Block"
+         #:date (d 2022 02 10)
+         #:time (t 18 00)
+         #:host (host host-id-raven-labs)
+         #:registration-url
+         (let* ([file "join-us-button-mailto.txt"]
+                ; FIXME Tangled abstractions - we're not in a view!!!
+                [path (build-path "view" "web" "inc" file)]
+                [mailto (file->string path)])
+           (u mailto))
+         #:talks
+         ; TODO Talks:
+         ; - [x] Kyle Robertson: optimization
+         ; - [x] Jeff Nelson: BTC/Lightening POS on Raspberry Pi
+         ; - [x] Zach Taylor: DIY keyboard on a cardboard
+         ; - [x] Siraaj Khandkar: pista
+         ; - [ ] Bob Peret: interns making mirrors
+         ; - [x] Kyle Roucis: Lobjan
+         ; - [x] Grant Peret: Cat Alley sign story
+         (list (T #:speaker (speaker speaker-id-kyle-robertson)
+                  #:title "Mathematical Programming and Optimization with Python and Pyomo"
+                  #:description "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem."
+                  #:artifacts (list (Link #f (u "https://github.com/kwrobert/pyomo-presentation")))
+                  #:website #f
+                  #:references
+                  '())
 
-                   (T #:speaker (speaker speaker-id-jeff-nelson)
-                      #:title "RaspiBLitz w/ pay server"
-                      #:description "Raspberry pi setup running raspiblitz with other services like pay server and exlplorers."
-                      #:artifacts (list (Link #f (u "https://github.com/rootzoll/raspiblitz")))
-                      #:website #f
-                      #:references
-                      '() ; TODO Links to all component artifacts.
-                      )
+               (T #:speaker (speaker speaker-id-jeff-nelson)
+                  #:title "RaspiBLitz w/ pay server"
+                  #:description "Raspberry pi setup running raspiblitz with other services like pay server and exlplorers."
+                  #:artifacts (list (Link #f (u "https://github.com/rootzoll/raspiblitz")))
+                  #:website #f
+                  #:references
+                  '() ; TODO Links to all component artifacts.
+                  )
 
-                   (T #:speaker (speaker speaker-id-zach-taylor)
-                      #:title "DIY mechanical split keyboard from cardboard!"
-                      #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring."
-                      #:artifacts (list (Link #f (u "https://github.com/taylorzr/qmk_firmware")))
-                      #:website #f
-                      #:references
-                      ; TODO Need some links to components
-                      (list
-                        (Link #f (u "https://www.reddit.com/r/ErgoMechKeyboards/comments/shy8hz/6_column_splay_split_handwired_cardboard/"))))
+               (T #:speaker (speaker speaker-id-zach-taylor)
+                  #:title "DIY mechanical split keyboard from cardboard!"
+                  #:description "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring."
+                  #:artifacts (list (Link #f (u "https://github.com/taylorzr/qmk_firmware")))
+                  #:website #f
+                  #:references
+                  ; TODO Need some links to components
+                  (list
+                    (Link #f (u "https://www.reddit.com/r/ErgoMechKeyboards/comments/shy8hz/6_column_splay_split_handwired_cardboard/"))))
 
-                   (T #:speaker (speaker speaker-id-siraaj-khandkar)
-                      #:title "pista: a hacker's status bar"
-                      #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar."
-                      #:artifacts (list (Link #f (u "https://github.com/xandkar/pista")))
-                      #:website #f
-                      #:references
-                      (list
-                        (Link "dwm" (u "https://dwm.suckless.org/"))
-                        (Link "ii" (u "https://tools.suckless.org/ii/"))
-                        (Link "status experiments" (u "https://github.com/xandkar/khatus/"))))
-
-                   ; TODO Get details from Bob.
-                   (T #:speaker (speaker speaker-id-bob-peret)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
-                      #:references
-                      '())
-
-                   (T #:speaker (speaker speaker-id-kyle-roucis)
-                      #:title "Lojban: the logical language for nerds"
-                      #:description "Lojban is an \"open source\" logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
-                      #:artifacts (list (Link #f (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u")))
-                      #:website #f
-                      #:references
-                      (list (Link #f           (u "Lojban.org"))
-                            (Link "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
-                            (Link "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html"))))
-
-                   (T #:speaker (speaker speaker-id-grant-peret)
-                      #:title "Cat Alley: Creation of an Entryway"
-                      #:description "An overview of the aesthetic modelling, design, and loading requirements to build a cantilevered entry way sign."
-                      #:artifacts (list (Link #f (u "https://github.com/RavenGrant/CatAlley")))
-                      #:website #f
-                      #:references
-                      (list (Link "Atlas Obscura" (u "https://www.atlasobscura.com/places/cat-alley"))
-                            (Link "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/"))))
-                   ))
-
-          ; TODO format: hack-and-tell.
-          (M #:seq 2
-             #:codename "Tuna Pizza"
-             #:date (d 2022 03 10)
-             #:time (t 18 00)
-             #:host (host host-id-raven-labs)
-             #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
-             #:talks
-             (list (T #:speaker (speaker speaker-id-siraaj-khandkar)
-                      #:title "gg: the gitter of gits"
-                      #:description "A tool to locate, compare and cross-reference all your git repositories accross machines."
-                      #:artifacts (list (Link #f (u "https://github.com/xandkar/gg/")))
-                      #:website #f
-                      #:references '())
-                   (T #:speaker (speaker speaker-id-jeff-nelson)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
-                      #:references '())
-                   (T #:speaker (speaker speaker-id-brian-gray)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
-                      #:references '())
-                   (T #:speaker (speaker speaker-id-grant-peret)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
-                      #:references '())
-                   (T #:speaker (speaker speaker-id-brandon-simpson)
-                      #:title "3 DOF Robotic Arm"
-                      #:description "In this project, my team and I used a 3 DOF robotic manipulator and a USB webcam to implement an automated pick and place system. Through image processing, the system was able to detect and locate objects of a specific color. Using forward and inverse position and velocity kinematics, my team and Ideveloped a program to command a robotic arm to pick and place colored spheres until there were none remaining in the workspace. This system was also capable of sorting a specific non-spherical random object and able to dynamically track an object."
-                      #:artifacts (list (Link #f (u "https://bgsimpson.wixsite.com/brandon/post/unified-robotics-iii")))
-                      #:website #f
-                      #:references '())
-                   (T #:speaker (speaker speaker-id-kyle-roucis)
-                      #:title "KroucisVM"
-                      #:description "A bytecode-driven dynamic-dispatched object-oriented so-many-hyphens virtual machine built in C and based on the Objective-C dynamic dispatch object model."
-                      #:artifacts (list (Link #f (u "https://github.com/kroucis/KroucisVM")))
-                      #:website #f
-                      #:references '())
-                   (T #:speaker (speaker speaker-id-bob-peret)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
-                      #:website #f
-                      #:references '())
-                   ))
-
-          ; TODO format: hack-and-tell.
-          (M #:seq 3
-             #:codename "The Sign"
-             #:date (d 2022 04 07)
-             #:time (t 18 00)
-             #:host (host host-id-manchester-makerspace)
-             #:registration-url (u "https://forms.gle/uwTZM4gcWc6RcQyq6")
-             #:talks
-             (list
                (T #:speaker (speaker speaker-id-siraaj-khandkar)
-                  #:title "probe-me - a self port scanning service"
-                  #:description "A generalized prototype for a Helium hotspot monitoring service, which started as an exercise of writing an HTTP server in Racket from scratch."
-                  #:artifacts (list (Link #f (u "https://github.com/xandkar/probe-me")))
+                  #:title "pista: a hacker's status bar"
+                  #:description "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar."
+                  #:artifacts (list (Link #f (u "https://github.com/xandkar/pista")))
+                  #:website #f
+                  #:references
+                  (list
+                    (Link "dwm" (u "https://dwm.suckless.org/"))
+                    (Link "ii" (u "https://tools.suckless.org/ii/"))
+                    (Link "status experiments" (u "https://github.com/xandkar/khatus/"))))
+
+               ; TODO Get details from Bob.
+               (T #:speaker (speaker speaker-id-bob-peret)
+                  #:title ""
+                  #:description ""
+                  #:artifacts '()
+                  #:website #f
+                  #:references
+                  '())
+
+               (T #:speaker (speaker speaker-id-kyle-roucis)
+                  #:title "Lojban: the logical language for nerds"
+                  #:description "Lojban is an \"open source\" logical language built on predicate logic. Its grammar is unambiguous, logically constructed, and simple to learn. It has about 1300 root words from which sentences and compound works can be created. It’s a fun little toy language with 300-500 active learners across the globe. Lojban is so simple and easy, I have taught a number of people who were able to parse and understand complete sentences in just 1 hour."
+                  #:artifacts (list (Link #f (u "https://gist.githubusercontent.com/kroucis/c1587dc09b5b9b33c880/raw/b792965f9eb17f1247ae96dd349119d67f03f4a0/lo%2520nu%2520tumfakli%27u")))
+                  #:website #f
+                  #:references
+                  (list (Link #f           (u "Lojban.org"))
+                        (Link "book"       (u "https://lojban.org/publications/cll/cll_v1.1_book.pdf"))
+                        (Link "dictionary" (u "https://la-lojban.github.io/sutysisku/lojban/index.html"))))
+
+               (T #:speaker (speaker speaker-id-grant-peret)
+                  #:title "Cat Alley: Creation of an Entryway"
+                  #:description "An overview of the aesthetic modelling, design, and loading requirements to build a cantilevered entry way sign."
+                  #:artifacts (list (Link #f (u "https://github.com/RavenGrant/CatAlley")))
+                  #:website #f
+                  #:references
+                  (list (Link "Atlas Obscura" (u "https://www.atlasobscura.com/places/cat-alley"))
+                        (Link "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/"))))
+               ))
+
+      ; TODO format: hack-and-tell.
+      (M #:seq 2
+         #:codename "Tuna Pizza"
+         #:date (d 2022 03 10)
+         #:time (t 18 00)
+         #:host (host host-id-raven-labs)
+         #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
+         #:talks
+         (list (T #:speaker (speaker speaker-id-siraaj-khandkar)
+                  #:title "gg: the gitter of gits"
+                  #:description "A tool to locate, compare and cross-reference all your git repositories accross machines."
+                  #:artifacts (list (Link #f (u "https://github.com/xandkar/gg/")))
                   #:website #f
                   #:references '())
-
-               (T #:speaker (speaker speaker-id-kyle-robertson)
-                  #:title "GPT-2: An outdated language generation model"
-                  #:description "A fun hack using the GPT-2 natural language generation neural network to automate generating marketing content for my wife's job"
-                  #:artifacts (list (Link #f (u "https://github.com/kwrobert/scarlett")))
-                  #:website #f
-                  #:references '())
-
-               (T #:speaker (speaker speaker-id-thaddeus-hughes)
-                  #:title "EveryCalc"
-                  #:description "Online analysis tools for common tasks"
-                  #:artifacts (list (Link #f (u "https://github.com/Thaddeus-Maximus/everycalc")))
-                  #:website (u "http://everycalc.thadhughes.xyz/")
-                  #:references '())
-
-               (T #:speaker (speaker speaker-id-kevin-kadow)
+               (T #:speaker (speaker speaker-id-jeff-nelson)
                   #:title ""
                   #:description ""
                   #:artifacts '()
                   #:website #f
                   #:references '())
-
-               (T #:speaker (speaker speaker-id-jake)
-                  #:title "Walkie-textie over LoRa"
-                  #:description "Have you ever gone sky-diving with your friends, only to be disappointed that you can't text them mid-air? Jake's got you covered!"
+               (T #:speaker (speaker speaker-id-brian-gray)
+                  #:title ""
+                  #:description ""
                   #:artifacts '()
                   #:website #f
-                  #:references (list (Link #f (u "https://meshtastic.org/"))
-                                     (Link #f (u "https://en.wikipedia.org/wiki/LoRa"))))
-
+                  #:references '())
                (T #:speaker (speaker speaker-id-grant-peret)
-                  #:title "Surgical battery-repair"
-                  #:description "Live dangerously - replace your own battery cells!"
+                  #:title ""
+                  #:description ""
+                  #:artifacts '()
+                  #:website #f
+                  #:references '())
+               (T #:speaker (speaker speaker-id-brandon-simpson)
+                  #:title "3 DOF Robotic Arm"
+                  #:description "In this project, my team and I used a 3 DOF robotic manipulator and a USB webcam to implement an automated pick and place system. Through image processing, the system was able to detect and locate objects of a specific color. Using forward and inverse position and velocity kinematics, my team and Ideveloped a program to command a robotic arm to pick and place colored spheres until there were none remaining in the workspace. This system was also capable of sorting a specific non-spherical random object and able to dynamically track an object."
+                  #:artifacts (list (Link #f (u "https://bgsimpson.wixsite.com/brandon/post/unified-robotics-iii")))
+                  #:website #f
+                  #:references '())
+               (T #:speaker (speaker speaker-id-kyle-roucis)
+                  #:title "KroucisVM"
+                  #:description "A bytecode-driven dynamic-dispatched object-oriented so-many-hyphens virtual machine built in C and based on the Objective-C dynamic dispatch object model."
+                  #:artifacts (list (Link #f (u "https://github.com/kroucis/KroucisVM")))
+                  #:website #f
+                  #:references '())
+               (T #:speaker (speaker speaker-id-bob-peret)
+                  #:title ""
+                  #:description ""
                   #:artifacts '()
                   #:website #f
                   #:references '())
                ))
 
-          ; TODO format: problem-talks.
-          (M #:seq 4
-             #:codename "Three Musketeers"
-             #:date (d 2022 05 12)
-             #:time (t 19 00)
-             #:host (host host-id-manchester-makerspace)
-             #:registration-url (u "https://forms.gle/kU5bYdTi1im8bdy4A")
-             #:talks
-             '(
-               ; - [ ] kevin-kadow on resetting safety device
-               ; - [ ] kyle-roucis on game design
-               ; - [ ] siraaj-khandkar on parallelizing blockchain deserialization
-               ))
+      ; TODO format: hack-and-tell.
+      (M #:seq 3
+         #:codename "The Sign"
+         #:date (d 2022 04 07)
+         #:time (t 18 00)
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "https://forms.gle/uwTZM4gcWc6RcQyq6")
+         #:talks
+         (list
+           (T #:speaker (speaker speaker-id-siraaj-khandkar)
+              #:title "probe-me - a self port scanning service"
+              #:description "A generalized prototype for a Helium hotspot monitoring service, which started as an exercise of writing an HTTP server in Racket from scratch."
+              #:artifacts (list (Link #f (u "https://github.com/xandkar/probe-me")))
+              #:website #f
+              #:references '())
 
-          (M #:seq 5
-             #:codename "Autolace"
-             #:date (d 2022 06 09)
-             #:time (t 19 00)
-             #:host (host host-id-manchester-makerspace)
-             #:registration-url (u "https://forms.gle/TweJ2J23A7KGkRFCA")
-             #:talks
-             '())
+           (T #:speaker (speaker speaker-id-kyle-robertson)
+              #:title "GPT-2: An outdated language generation model"
+              #:description "A fun hack using the GPT-2 natural language generation neural network to automate generating marketing content for my wife's job"
+              #:artifacts (list (Link #f (u "https://github.com/kwrobert/scarlett")))
+              #:website #f
+              #:references '())
 
-          (M #:seq 6
-             #:codename "777"
-             #:date (d 2022 07 07)
-             #:time (t 19 00)
-             #:host (host host-id-raven-labs)
-             #:registration-url (u "https://forms.gle/HsnNpgkpRUdKSXvk9")
-             #:talks
-             '())
+           (T #:speaker (speaker speaker-id-thaddeus-hughes)
+              #:title "EveryCalc"
+              #:description "Online analysis tools for common tasks"
+              #:artifacts (list (Link #f (u "https://github.com/Thaddeus-Maximus/everycalc")))
+              #:website (u "http://everycalc.thadhughes.xyz/")
+              #:references '())
 
-          )))
+           (T #:speaker (speaker speaker-id-kevin-kadow)
+              #:title ""
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-jake)
+              #:title "Walkie-textie over LoRa"
+              #:description "Have you ever gone sky-diving with your friends, only to be disappointed that you can't text them mid-air? Jake's got you covered!"
+              #:artifacts '()
+              #:website #f
+              #:references (list (Link #f (u "https://meshtastic.org/"))
+                                 (Link #f (u "https://en.wikipedia.org/wiki/LoRa"))))
+
+           (T #:speaker (speaker speaker-id-grant-peret)
+              #:title "Surgical battery-repair"
+              #:description "Live dangerously - replace your own battery cells!"
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           ))
+
+      ; TODO format: problem-talks.
+      (M #:seq 4
+         #:codename "Three Musketeers"
+         #:date (d 2022 05 12)
+         #:time (t 19 00)
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "https://forms.gle/kU5bYdTi1im8bdy4A")
+         #:talks
+         '(
+           ; - [ ] kevin-kadow on resetting safety device
+           ; - [ ] kyle-roucis on game design
+           ; - [ ] siraaj-khandkar on parallelizing blockchain deserialization
+           ))
+
+      (M #:seq 5
+         #:codename "Autolace"
+         #:date (d 2022 06 09)
+         #:time (t 19 00)
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "https://forms.gle/TweJ2J23A7KGkRFCA")
+         #:talks
+         '())
+
+      (M #:seq 6
+         #:codename "777"
+         #:date (d 2022 07 07)
+         #:time (t 19 00)
+         #:host (host host-id-raven-labs)
+         #:registration-url (u "https://forms.gle/HsnNpgkpRUdKSXvk9")
+         #:talks
+         '())
+
+      )))
 
 (define hosts
   (map host
