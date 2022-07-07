@@ -432,7 +432,11 @@
                             ,(let ([date (g:~t (Meeting-date m)
                                                "yyyy MMM dd")]
                                    [host (Host-name (Meeting-host m))])
-                               (format "~a @ ~a : ~a" date host (Meeting-codename m))))))
+                               (format "[~a] ~a @ ~a : ~a"
+                                       (Meeting-seq m)
+                                       date
+                                       host
+                                       (Meeting-codename m))))))
                  (sort meetings (λ (a b) (> (Meeting-seq a)
                                             (Meeting-seq b))))))))
   `(nav ([class "navbar navbar-expand-lg navbar-dark bg-dark float-md-end"])
