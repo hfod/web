@@ -471,7 +471,7 @@
              #:codename "777"
              #:date (d 2022 07 07)
              #:time (t 19 00)
-             #:host (host host-id-manchester-makerspace)
+             #:host (host host-id-raven-labs)
              #:registration-url (u "https://forms.gle/HsnNpgkpRUdKSXvk9")
              #:talks
              '())
