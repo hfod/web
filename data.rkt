@@ -515,7 +515,7 @@
 
 (define/contract meetings-future
   (listof Meeting?)
-  (meetings-filter-by-date g:date>?))
+  (meetings-filter-by-date g:date>=?))
 
 (define/contract meeting-next
   (or/c #f Meeting?)
