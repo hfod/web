@@ -468,7 +468,7 @@
          '())
 
       (M #:seq 6
-         #:codename "777"
+         #:codename "7"
          #:date (d 2022 07 07)
          #:time (t 19 00)
          #:host (host host-id-raven-labs)
