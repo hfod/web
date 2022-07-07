@@ -42,8 +42,8 @@ clean:
 preview: rebuild
 	$(MAKE) serve
 
-.PHONY: deploy
-deploy:
+.PHONY: publish
+publish:
 	rsync \
 		-avz \
 		--delete \
@@ -54,8 +54,8 @@ deploy:
 		$(USER_AT_HOST):$(DIR_WEB_SERVER)
 	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX $(DIR_WEB_SERVER)
 
-.PHONY: install_deps
-install_deps:
+.PHONY: deps
+deps:
 	raco pkg install --skip-installed --auto gregor markdown text-block
 
 .PHONY: TODO
