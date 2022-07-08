@@ -1,3 +1,17 @@
-- Configs to support both server setups:
-    - Racket serves both static and dynamic paths;
-    - nginx serves static paths and forwards dynamic paths to the Racket server.
+- [ ] Configs to support both server setups:
+    - [ ] Racket serves both static and dynamic paths;
+    - [ ] nginx serves static paths and forwards dynamic paths to the Racket server.
+- [ ] recurring meetings
+    - [ ] description
+    - [ ] sched
+- [ ] cal link
+- [ ] caldev
+- [ ] add meeting details/photos
+    - [ ] 5
+        - [ ] description
+        - [ ] presentations
+        - [ ] photos
+    - [ ] 6
+        - [ ] description
+        - [ ] presentations
+        - [ ] photos
