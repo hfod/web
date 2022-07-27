@@ -476,6 +476,15 @@
          #:talks
          '())
 
+      (M #:seq 7
+         #:codename ""
+         #:date (d 2022 08 04)
+         #:time (t 19 00)
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "")
+         #:talks
+         '())
+
       )))
 
 (define hosts
