@@ -485,6 +485,15 @@
          #:talks
          '())
 
+      (M #:seq 8
+         #:codename "TBD"
+         #:date (d 2022 09 01)
+         #:time (t 19 00)
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "")
+         #:talks
+         '())
+
       )))
 
 (define hosts
