@@ -93,6 +93,7 @@
     (hash)
     xs))
 
+(define speaker-id-bill-the-shoelace-hater "bill-the-shoelace-hater")
 (define speaker-id-kyle-robertson  "kyle-robertson")
 (define speaker-id-jeff-nelson     "jeff-nelson")
 (define speaker-id-zach-taylor     "zach-taylor")
@@ -194,6 +195,14 @@
                   #:email-show? #f
                   #:website #f
                   #:affiliated-links '())
+
+               (S #:id speaker-id-bill-the-shoelace-hater
+                  #:name "Bill"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+
                )])
     (λ (id) (hash-ref speakers id))))
 
@@ -480,7 +489,35 @@
          #:host (host host-id-manchester-makerspace)
          #:registration-url (u "https://forms.gle/TweJ2J23A7KGkRFCA")
          #:talks
-         '())
+         (list
+           (T #:speaker (speaker speaker-id-kyle-roucis)
+              #:title "A game written in experimental style of C - functional!"
+              #:description "Every structure update, instead of mutation would create a new copy of the structure. It worked surprisingly well!"
+              #:artifacts (list (Link #f (u "https://github.com/kroucis/stupid-pong")))
+              #:website #f
+              #:references '())
+           (T #:speaker (speaker speaker-id-kyle-robertson)
+              #:title "Data center efficiency optimization."
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           (T #:speaker (speaker speaker-id-bill-the-shoelace-hater)
+              #:title "Autolace"
+              #:description "Bill loves shoes with laces, but hates tying them, so he designed and 3d-printed a solution - see photos!"
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           (T #:speaker (speaker speaker-id-siraaj-khandkar)
+              #:title "tt: a more-unixy twtxt client"
+              #:description "twtxt is a dead-simple, peer-to-peer micro-blogging network/protocol. tt is a client which supports multiple peer lists and crawling to discover new peers."
+              #:artifacts (list (Link #f (u "https://github.com/xandkar/tt")))
+              #:website #f
+              #:references (list (Link "tt-discovered peer directory" (u "https://xandkar.net/twtxt/peers/"))
+                                 (Link "tt-collected nick usage stats" (u "https://xandkar.net/twtxt/nicks/"))
+                                 (Link "the original twtxt client" (u "https://github.com/buckket/twtxt"))
+                                 ))
+           ))
 
       (M #:seq 6
          #:codename "7"
