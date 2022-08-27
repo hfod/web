@@ -22,3 +22,5 @@
     - full-talks
     - hybrid nights
 - [ ] front page carousel of randomly selected photos
+- [ ] strip metadata from photos (like location, camera, etc.)
+- [ ] auto reduce photo quality?
