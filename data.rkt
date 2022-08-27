@@ -452,10 +452,25 @@
          #:host (host host-id-manchester-makerspace)
          #:registration-url (u "https://forms.gle/kU5bYdTi1im8bdy4A")
          #:talks
-         '(
-           ; - [ ] kevin-kadow on resetting safety device
-           ; - [ ] kyle-roucis on game design
-           ; - [ ] siraaj-khandkar on parallelizing blockchain deserialization
+         (list
+           (T #:speaker (speaker speaker-id-kevin-kadow)
+              #:title "Resetting a disposable safety device."
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           (T #:speaker (speaker speaker-id-kyle-roucis)
+              #:title "Online game multiplayer matching engine."
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           (T #:speaker (speaker speaker-id-siraaj-khandkar)
+              #:title "Parallelizing blockchain deserialization."
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
            ))
 
       (M #:seq 5
