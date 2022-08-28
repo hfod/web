@@ -93,20 +93,23 @@
     (hash)
     xs))
 
-(define speaker-id-bill-the-shoelace-hater "bill-the-shoelace-hater")
-(define speaker-id-kyle-robertson  "kyle-robertson")
-(define speaker-id-jeff-nelson     "jeff-nelson")
-(define speaker-id-zach-taylor     "zach-taylor")
-(define speaker-id-siraaj-khandkar "siraaj-khandkar")
-(define speaker-id-bob-peret       "bob-peret")
-(define speaker-id-kyle-roucis     "kyle-roucis")
-(define speaker-id-grant-peret     "grant-peret")
-(define speaker-id-brandon-simpson "brandon-simpson")
-(define speaker-id-brian-gray      "brian-gray")
-
-(define speaker-id-kevin-kadow      "kevin-kadow")
-(define speaker-id-thaddeus-hughes  "thaddeus-hughes")
-(define speaker-id-jake             "jake") ; Discord: ta11ey#6015
+(define speaker-id-ian                      "ian")
+(define speaker-id-max-sklar                "max-sklar")
+(define speaker-id-jonathan-hales           "jonathan-hales")
+(define speaker-id-perry-e-metzger          "perry-e-metzger")
+(define speaker-id-bill-the-shoelace-hater  "bill-the-shoelace-hater")
+(define speaker-id-kyle-robertson           "kyle-robertson")
+(define speaker-id-jeff-nelson              "jeff-nelson")
+(define speaker-id-zach-taylor              "zach-taylor")
+(define speaker-id-siraaj-khandkar          "siraaj-khandkar")
+(define speaker-id-bob-peret                "bob-peret")
+(define speaker-id-kyle-roucis              "kyle-roucis")
+(define speaker-id-grant-peret              "grant-peret")
+(define speaker-id-brandon-simpson          "brandon-simpson")
+(define speaker-id-brian-gray               "brian-gray")
+(define speaker-id-kevin-kadow              "kevin-kadow")
+(define speaker-id-thaddeus-hughes          "thaddeus-hughes")
+(define speaker-id-jake                     "jake")  ; Discord: ta11ey#6015
 
 (define host-id-raven-labs            "raven-labs")
 (define host-id-manchester-makerspace "manchester-makerspace")
@@ -114,6 +117,42 @@
 (define speaker
   (let ([speakers
           (tbl #:key Speaker-id
+               ;(S #:id speaker-id-
+               ;   #:name ""
+               ;   #:email ""
+               ;   #:email-show? #f
+               ;   #:website #f
+               ;   #:affiliated-links '())
+
+               (S #:id speaker-id-ian
+                  #:name "Ian"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+               (S #:id speaker-id-max-sklar
+                  #:name "Max Sklar"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links (list (u "https://twitter.com/maxsklar")
+                                           (u "https://www.localmaxradio.com/")))
+               (S #:id speaker-id-jonathan-hales
+                  #:name "Jonathan Hales"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links (list (u "https://twitter.com/jayjayHales")
+                                           (u "https://github.com/jkhales")))
+
+               (S #:id speaker-id-perry-e-metzger
+                  #:name "Perry E. Metzger"
+                  #:email "perry@piermont.com"
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links (list (u "https://twitter.com/perrymetzger")
+                                           (u "https://github.com/pmetzger")))
+
                (S #:id speaker-id-kyle-robertson
                   #:name "Kyle Robertson"
                   #:email "kyle.wesley@me.com"
@@ -526,7 +565,51 @@
          #:host (host host-id-raven-labs)
          #:registration-url (u "https://forms.gle/HsnNpgkpRUdKSXvk9")
          #:talks
-         '())
+         (list
+           (T #:speaker (speaker speaker-id-jeff-nelson)
+              #:title "Challanges of an energy-efficient, mobile location tracker"
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           (T #:speaker (speaker speaker-id-grant-peret)
+              #:title "Challanges of an energy-efficient, mobile location tracker"
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           (T #:speaker (speaker speaker-id-perry-e-metzger)
+              #:title "Radio hacking"
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references (list (Link #f (u "https://www.usenix.org/legacy/event/sec11/tech/full_papers/Clark.pdf"))))
+           (T #:speaker (speaker speaker-id-jonathan-hales)
+              #:title "Machine Learning for Drug Discovery"
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references (list (Link #f (u "https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system"))
+                                 (Link #f (u "https://postera.ai/"))))
+           (T #:speaker (speaker speaker-id-ian)
+              #:title ""
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           (T #:speaker (speaker speaker-id-max-sklar)
+              #:title "Beta-distribution Analysis"
+              #:description ""
+              #:artifacts (list (Link #f (u "https://github.com/maxsklar/BayesPy/blob/master/DirichletLogisticRegression/findDirichletLogisticModel.py")))
+              #:website #f
+              #:references '())
+           (T #:speaker (speaker speaker-id-thaddeus-hughes)
+              #:title "Maslow CNC Router"
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           ))
 
       (M #:seq 7
          #:codename "Swerve"
