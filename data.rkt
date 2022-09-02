@@ -710,7 +710,7 @@
               #:references '())
 
            (T #:speaker (speaker speaker-id-kyle-robertson)
-              #:title "Data pipelines simulation"
+              #:title "Data pipeline setup"
               #:description ""
               #:artifacts '()
               #:website #f
