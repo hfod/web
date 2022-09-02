@@ -110,6 +110,10 @@
 (define speaker-id-kevin-kadow              "kevin-kadow")
 (define speaker-id-thaddeus-hughes          "thaddeus-hughes")
 (define speaker-id-jake                     "jake")  ; Discord: ta11ey#6015
+(define speaker-id-nick-FreakyNobleGas      "nick-FreakyNobleGas")
+(define speaker-id-lam                      "lam")
+(define speaker-id-jim-roucis               "jim-roucis")
+(define speaker-id-jared                    "jared")
 
 (define host-id-raven-labs            "raven-labs")
 (define host-id-manchester-makerspace "manchester-makerspace")
@@ -237,6 +241,34 @@
 
                (S #:id speaker-id-bill-the-shoelace-hater
                   #:name "Bill"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+
+               (S #:id speaker-id-nick-FreakyNobleGas
+                  #:name "Nick"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+
+               (S #:id speaker-id-lam
+                  #:name "Lam"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+
+               (S #:id speaker-id-jim-roucis
+                  #:name "Jim Roucis"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+
+               (S #:id speaker-id-jared
+                  #:name "Jared"
                   #:email ""
                   #:email-show? #f
                   #:website #f
@@ -621,13 +653,69 @@
          '())
 
       (M #:seq 8
-         #:codename "TBD"
+         #:codename "Think and Swim"
          #:date (d 2022 09 01)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
          #:registration-url (u "")
          #:talks
-         '())
+         (list
+           (T #:speaker (speaker speaker-id-kyle-roucis)
+              #:title "Porting Swift code to Android"
+              #:description
+              "How I adapted a game written in Swift to run on Android with no chnages to the game engine."
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-siraaj-khandkar)
+              #:title "Solana programming model"
+              #:description
+              "Intro to Solana programming model and demo of some minimal smart contracts."
+              #:artifacts
+              (list
+                (Link #f (u "https://github.com/xandkar/solana-hello-world"))
+                (Link #f (u "https://github.com/xandkar/solana-ping-pong"))
+                (Link #f (u "https://github.com/xandkar/solana-echo-dyn"))
+                (Link #f (u "https://github.com/xandkar/solana-echo-fixed")))
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-nick-FreakyNobleGas)
+              #:title "File synchronization"
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-lam)
+              #:title ""
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-jim-roucis)
+              #:title "Trading with thinkorswim"
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-jared)
+              #:title ""
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-kyle-robertson)
+              #:title "Data pipelines simulation"
+              #:description ""
+              #:artifacts '()
+              #:website #f
+              #:references '())
+           ))
 
       )))
 
