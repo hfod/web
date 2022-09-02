@@ -624,7 +624,7 @@
               #:references (list (Link #f (u "https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system"))
                                  (Link #f (u "https://postera.ai/"))))
            (T #:speaker (speaker speaker-id-ian)
-              #:title ""
+              #:title "Combinatorial optimization with quantum computers"
               #:description ""
               #:artifacts '()
               #:website #f
