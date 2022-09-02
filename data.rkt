@@ -717,6 +717,15 @@
               #:references '())
            ))
 
+      (M #:seq 9
+         #:codename "TBD"
+         #:date (d 2022 10 06)
+         #:time (t 19 00)
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "")
+         #:talks
+         '())
+
       )))
 
 (define hosts
