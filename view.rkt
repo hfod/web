@@ -190,10 +190,11 @@
           `((p ([class "lead"])
                ; TODO Google maps link
                ,date (br) ,time " at " ,host-link " in " ,host-town)
-            (p ([class "lead"])
-               (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
-                   [href ,(url:url->string (Meeting-registration-url m))])
-                  "RSVP"))))]))
+            ;(p ([class "lead"])
+            ;   (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
+            ;       [href ,(url:url->string (Meeting-registration-url m))])
+            ;      "RSVP"))
+            ))]))
   (define id "home")
   (P #:id id
      #:path path-home
@@ -217,9 +218,9 @@
        ;(p ([class "lead"])
        ;   "After the presentations we hangout and discuss whatever.")
        (p ([class "lead"])
-          (a ([class "btn btn-lg btn-secondary fw-bold"]
+          (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
               [href "https://discord.gg/NsEwkfCHgv"])
-             "Discord"))
+             "Join us"))
        (h3 "Next meeting")
        ,@next-meeting
        (script ,(inc "bs-enable-tooltips.js")))))
