@@ -710,8 +710,8 @@
               #:references '())
 
            (T #:speaker (speaker speaker-id-kyle-robertson)
-              #:title "Data pipeline setup"
-              #:description ""
+              #:title "Data pipeline experiments"
+              #:description "Trying to talk about building a data platform purely on Kubernetes but ended up chatting about my home lab network topology and routing setup I hacked together to play around with data platform ideas."
               #:artifacts '()
               #:website #f
               #:references '())
