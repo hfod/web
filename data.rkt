@@ -93,7 +93,7 @@
     (hash)
     xs))
 
-(define speaker-id-ian                      "ian")
+(define speaker-id-ian-mac                  "ian-mac")
 (define speaker-id-max-sklar                "max-sklar")
 (define speaker-id-jonathan-hales           "jonathan-hales")
 (define speaker-id-perry-e-metzger          "perry-e-metzger")
@@ -128,7 +128,7 @@
                ;   #:website #f
                ;   #:affiliated-links '())
 
-               (S #:id speaker-id-ian
+               (S #:id speaker-id-ian-mac
                   #:name "Ian"
                   #:email ""
                   #:email-show? #f
@@ -623,7 +623,7 @@
               #:website #f
               #:references (list (Link #f (u "https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system"))
                                  (Link #f (u "https://postera.ai/"))))
-           (T #:speaker (speaker speaker-id-ian)
+           (T #:speaker (speaker speaker-id-ian-mac)
               #:title "Combinatorial optimization with quantum computers"
               #:description ""
               #:artifacts '()
