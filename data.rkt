@@ -696,8 +696,8 @@
               #:references '())
 
            (T #:speaker (speaker speaker-id-jim-roucis)
-              #:title "Trading with thinkorswim"
-              #:description ""
+              #:title "thinkorswim plugins"
+              #:description "Building custom plugins for thinkorswim in ThinkScript to analyze stock market trends."
               #:artifacts '()
               #:website #f
               #:references '())
