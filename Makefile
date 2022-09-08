@@ -67,3 +67,10 @@ TODO:
 		--exclude-dir=.git \
 		--color=always \
 		-rIHn TODO .
+
+.PHONY: strip
+strip:
+	# Strip metadata from photos:
+	find data/meetings -maxdepth 2 -type d -name photos \
+	| xargs -I% find % -maxdepth 1 -type f -iname '*.jp*g' \
+	| xargs -P $(N_CPUS) -I% sh -c 'exiftool -all= % && rm %_original'
