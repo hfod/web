@@ -718,8 +718,28 @@
            ))
 
       (M #:seq 9
-         #:codename "TBD"
+         #:codename "Modem"
          #:date (d 2022 10 06)
+         #:time (t 19 00)
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "")
+         #:talks
+         '())
+
+      (M #:seq 10
+         #:codename "Sake"
+         #:date (d 2022 11 03)
+         #:time (t 19 00)
+         ; FIXME We were actually in Kisaki, not Makerspace,
+         ;       but does that count as proper hosting?
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "")
+         #:talks
+         '())
+
+      (M #:seq 11
+         #:codename "AoC Kickoff"
+         #:date (d 2022 12 01)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
          #:registration-url (u "")
