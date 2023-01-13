@@ -745,6 +745,15 @@
          #:registration-url (u "")
          #:talks
          '())
+      
+      (M #:seq 12
+         #:codename "Siraaj Needs a Break"
+         #:date (d 2023 02 02)
+         #:time (t 19 00)
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "")
+         #:talks
+         '())
 
       )))
 
