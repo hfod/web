@@ -114,9 +114,13 @@
 (define speaker-id-lam                      "lam")
 (define speaker-id-jim-roucis               "jim-roucis")
 (define speaker-id-jared                    "jared")
+(define speaker-id-tigran-khandkar          "tigran-khandkar")
+(define speaker-id-jack-jutzi               "jack-jutzi")
+(define speaker-id-lisa-???                 "lisa-???")
+(define speaker-id-daniel-krol              "daniel-krol")
 
-(define host-id-raven-labs            "raven-labs")
-(define host-id-manchester-makerspace "manchester-makerspace")
+(define host-id-raven-labs                  "raven-labs")
+(define host-id-manchester-makerspace       "manchester-makerspace")
 
 (define speaker
   (let ([speakers
@@ -269,6 +273,33 @@
 
                (S #:id speaker-id-jared
                   #:name "Jared"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+
+               (S #:id speaker-id-tigran-khandkar
+                  #:name "Tigran Khandkar"
+                  #:email ""
+                  #:website #f
+                  #:affiliated-links '())
+
+               (S #:id speaker-id-daniel-krol
+                  #:name "Daniel Krol"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links (list (u "https://danielkrol.com/")))
+
+               (S #:id speaker-id-jack-jutzi
+                  #:name "Jack Jutzi"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+
+               (S #:id speaker-id-lisa-???
+                  #:name "Lisa ???"
                   #:email ""
                   #:email-show? #f
                   #:website #f
@@ -753,7 +784,49 @@
          #:host (host host-id-manchester-makerspace)
          #:registration-url (u "")
          #:talks
-         '())
+         (list
+           (T #:speaker (speaker speaker-id-tigran-khandkar)
+              #:title "Item and Effect Creation in Minecraft"
+              #:description "Custom super-powerful items in Minecraft using command scripts and scoreboards."
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-kevin-kadow)
+              #:title "Manchester Makerspace's Custom Doorbell"
+              #:description "A networked and remote doorbell and surveillance system for the Manchester Makerspace."
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-lisa-???)
+              #:title "PiHole and self-hosted DNS"
+              #:description "Using PiHole to control DNS resolution, monitoring ads and tracking requests from apps as well as potentially blacklisting sites and providing fine-grained parental controls."
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-kyle-roucis)
+              #:title "Unreal's Blueprint visual scripting"
+              #:description "Visual scripting's sordid history and Epic's bizarre but seemingly successful creation and adoption of its Blueprints visual scripting system."
+              #:artifacts '()
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-jack-jutzi)
+              #:title "Rust Web Service from Scratch"
+              #:description "A learning email newsletter and web service written from scratch in the Rust programming language."
+              #:artifacts (list (Link #f (u "https://github.com/jsjutzi/rust-zero-backend")))
+              #:website #f
+              #:references '())
+
+           (T #:speaker (speaker speaker-id-daniel-krol)
+              #:title "Self-hosted Navigation Maps."
+              #:description "Using Sandstorm and other distributed technologies to host your own Google Maps replacement with social features and more!"
+              #:artifacts '()
+              #:website #f
+              #:references '())
+         ))
 
       )))
 
