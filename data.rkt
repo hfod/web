@@ -119,8 +119,8 @@
 (define speaker-id-lisa-???                 "lisa-???")
 (define speaker-id-daniel-krol              "daniel-krol")
 
-(define host-id-raven-labs                  "raven-labs")
-(define host-id-manchester-makerspace       "manchester-makerspace")
+(define host-id-raven-labs            "raven-labs")
+(define host-id-manchester-makerspace "manchester-makerspace")
 
 (define speaker
   (let ([speakers
@@ -288,8 +288,8 @@
                   #:name "Daniel Krol"
                   #:email ""
                   #:email-show? #f
-                  #:website #f
-                  #:affiliated-links (list (u "https://danielkrol.com/")))
+                  #:website (u "https://danielkrol.com/")
+                  #:affiliated-links '())
 
                (S #:id speaker-id-jack-jutzi
                   #:name "Jack Jutzi"
@@ -797,14 +797,14 @@
               #:description "A networked and remote doorbell and surveillance system for the Manchester Makerspace."
               #:artifacts '()
               #:website #f
-              #:references '())
+              #:references (list (Link #f (u "https://en.wikipedia.org/wiki/ESP32"))))
 
            (T #:speaker (speaker speaker-id-lisa-???)
               #:title "PiHole and self-hosted DNS"
               #:description "Using PiHole to control DNS resolution, monitoring ads and tracking requests from apps as well as potentially blacklisting sites and providing fine-grained parental controls."
               #:artifacts '()
               #:website #f
-              #:references '())
+              #:references (list (Link #f (u "https://pi-hole.net/"))))
 
            (T #:speaker (speaker speaker-id-kyle-roucis)
               #:title "Unreal's Blueprint visual scripting"
