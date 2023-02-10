@@ -289,7 +289,10 @@
                   #:email ""
                   #:email-show? #f
                   #:website (u "https://danielkrol.com/")
-                  #:affiliated-links '())
+                  #:affiliated-links (list (u "https://github.com/orblivion")
+                                           (u "https://gitlab.com/orblivion")
+                                           (u "https://www.linkedin.com/in/danielkrol/")))
+
 
                (S #:id speaker-id-jack-jutzi
                   #:name "Jack Jutzi"
@@ -825,7 +828,7 @@
               #:description "Using Sandstorm and other distributed technologies to host your own Google Maps replacement with social features and more!"
               #:artifacts (list (Link #f (u "https://github.com/orblivion/sandstorm-share-a-map")))
               #:website #f
-              #:references '())
+              #:references (list (Link #f (u "https://sandstorm.io/"))))
            ))
 
       )))
