@@ -822,8 +822,8 @@
               #:references '())
 
            (T #:speaker (speaker speaker-id-daniel-krol)
-              #:title "Self-hosted Navigation Maps."
-              #:description "Using Sandstorm and other distributed technologies to host your own Google Maps replacement with social features and more!"
+              #:title "Easy Self-hosted Maps."
+              #:description "Using Sandstorm to host your own Google Maps replacement with collaborative trip planning and more!"
               #:artifacts (list (Link #f (u "https://github.com/orblivion/sandstorm-share-a-map")))
               #:website #f
               #:references (list (Link #f (u "https://sandstorm.io/"))))
