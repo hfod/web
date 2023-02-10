@@ -776,7 +776,7 @@
          #:registration-url (u "")
          #:talks
          '())
-      
+
       (M #:seq 12
          #:codename "Siraaj Needs a Break"
          #:date (d 2023 02 02)
@@ -826,7 +826,7 @@
               #:artifacts '()
               #:website #f
               #:references '())
-         ))
+           ))
 
       )))
 
