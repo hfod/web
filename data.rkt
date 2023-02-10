@@ -823,7 +823,7 @@
            (T #:speaker (speaker speaker-id-daniel-krol)
               #:title "Self-hosted Navigation Maps."
               #:description "Using Sandstorm and other distributed technologies to host your own Google Maps replacement with social features and more!"
-              #:artifacts '()
+              #:artifacts (list (Link #f (u "https://github.com/orblivion/sandstorm-share-a-map")))
               #:website #f
               #:references '())
            ))
