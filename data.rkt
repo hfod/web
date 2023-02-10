@@ -293,13 +293,11 @@
                                            (u "https://gitlab.com/orblivion")
                                            (u "https://www.linkedin.com/in/danielkrol/")))
 
-
                (S #:id speaker-id-jack-jutzi
                   #:name "Jack Jutzi"
-                  #:email ""
-                  #:email-show? #f
+                  #:email "jsjutzi@gmail.com"
                   #:website #f
-                  #:affiliated-links '())
+                  #:affiliated-links (list (u "https://github.com/jsjutzi")))
 
                (S #:id speaker-id-lisa
                   #:name "Lisa"
