@@ -116,7 +116,7 @@
 (define speaker-id-jared                    "jared")
 (define speaker-id-tigran-khandkar          "tigran-khandkar")
 (define speaker-id-jack-jutzi               "jack-jutzi")
-(define speaker-id-lisa-???                 "lisa-???")
+(define speaker-id-lisa                     "lisa")
 (define speaker-id-daniel-krol              "daniel-krol")
 
 (define host-id-raven-labs            "raven-labs")
@@ -298,8 +298,8 @@
                   #:website #f
                   #:affiliated-links '())
 
-               (S #:id speaker-id-lisa-???
-                  #:name "Lisa ???"
+               (S #:id speaker-id-lisa
+                  #:name "Lisa"
                   #:email ""
                   #:email-show? #f
                   #:website #f
@@ -799,7 +799,7 @@
               #:website #f
               #:references (list (Link #f (u "https://en.wikipedia.org/wiki/ESP32"))))
 
-           (T #:speaker (speaker speaker-id-lisa-???)
+           (T #:speaker (speaker speaker-id-lisa)
               #:title "PiHole and self-hosted DNS"
               #:description "Using PiHole to control DNS resolution, monitoring ads and tracking requests from apps as well as potentially blacklisting sites and providing fine-grained parental controls."
               #:artifacts '()
