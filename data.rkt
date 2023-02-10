@@ -221,7 +221,7 @@
                   #:affiliated-links '())
 
                (S #:id speaker-id-kevin-kadow
-                  #:name "Kevin Kadow"
+                  #:name "Kevin"
                   #:email ""
                   #:email-show? #f
                   #:website #f
