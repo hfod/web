@@ -863,7 +863,7 @@
          #:date (d 2023 03 13)
          #:time (t 18 30)
          #:host (host host-id-red-oak-hanover)
-         #:registration-url (u "")
+         #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/291843757")
          #:talks (list (T #:speaker (speaker speaker-id-fare)
                           #:title "The essence of OOP: Prototype OO in two functions"
                           #:description "Francois-Rene Rideau (a.k.a. `@ngnghm`, `@phanaero`) will share his deep insights into the essence of OOP: Prototype OO in two functions.
