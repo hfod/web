@@ -220,7 +220,11 @@
        (p ([class "lead"])
           (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
               [href "https://discord.gg/NsEwkfCHgv"])
-             "Join us"))
+             "Discord")
+          " "
+          (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
+              [href "https://www.meetup.com/hack-free-or-die/"])
+             "Meetup"))
        (h3 "Next meeting")
        ,@next-meeting
        (script ,(inc "bs-enable-tooltips.js")))))
