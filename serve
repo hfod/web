@@ -29,7 +29,7 @@
        (set! listen-addr ip-addr)]
       [("-p" "--port")
        port-number "Listen port."
-       (set! listen-port port-number)]
+       (set! listen-port (string->number port-number))]
       [("-l" "--log")
        file "Log file."
        (set! log-file file)]
