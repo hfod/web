@@ -118,8 +118,10 @@
 (define speaker-id-jack-jutzi               "jack-jutzi")
 (define speaker-id-lisa                     "lisa")
 (define speaker-id-daniel-krol              "daniel-krol")
+(define speaker-id-fare                     "fare")
 
 (define host-id-raven-labs            "raven-labs")
+(define host-id-red-oak-hanover       "red-oak-hanover")
 (define host-id-manchester-makerspace "manchester-makerspace")
 
 (define speaker
@@ -306,6 +308,14 @@
                   #:website #f
                   #:affiliated-links '())
 
+               (S #:id speaker-id-fare
+                  #:name "François-René \"Faré\" Rideau"
+                  #:email "fahree@gmail.com"
+                  #:email-show? #t
+                  #:website (u "http://fare.tunes.org/")
+                  #:affiliated-links (list (u "https://github.com/fare")
+                                           (u "https://twitter.com/Ngnghm")))
+
                )])
     (λ (id) (hash-ref speakers id))))
 
@@ -322,7 +332,18 @@
                            "03101"
                            "USA"
                            (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.5021479285165!2d-71.46491045831543!3d42.98875989907271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24fece398a01f%3A0xd63afeaabdeeb64d!2sRaven%20Laboratory%2C%20LLC!5e0!3m2!1sen!2sus!4v1647814700969!5m2!1sen!2sus"))
-                     (u "https://www.ravenlabsnh.com"))
+                     url-raven-labs)
+               (Host host-id-red-oak-hanover
+                     "Red Oak Coworking Offices"
+                     (Addr "66"
+                           "Hanover St"
+                           "Suite 200"
+                           "Manchester"
+                           "NH"
+                           "03101"
+                           "USA"
+                           (u "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1933.9391187294636!2d-71.46238682768785!3d42.98960320228865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24f2480bf4587%3A0xec5c87bd4c8bc022!2sRed%20Oak%20Coworking%20Offices!5e0!3m2!1sen!2sus!4v1677192211322!5m2!1sen!2sus"))
+                     (u "https://redoakcoworking.com"))
                (Host host-id-manchester-makerspace
                      "Manchester Makerspace"
                      (Addr "36"
@@ -828,6 +849,29 @@
               #:website #f
               #:references (list (Link #f (u "https://sandstorm.io/"))))
            ))
+
+      (M #:seq 13
+         #:codename "TBD"
+         #:date (d 2023 03 02)
+         #:time (t 19 00)
+         #:host (host host-id-manchester-makerspace)
+         #:registration-url (u "")
+         #:talks '())
+
+      (M #:seq 14
+         #:codename "INVITED TALK - The Essence of OOP"
+         #:date (d 2023 03 13)
+         #:time (t 18 30)
+         #:host (host host-id-red-oak-hanover)
+         #:registration-url (u "")
+         #:talks (list (T #:speaker (speaker speaker-id-fare)
+                          #:title "The essence of OOP: Prototype OO in two functions"
+                          #:description "Francois-Rene Rideau (a.k.a. `@ngnghm`, `@phanaero`) will share his deep insights into the essence of OOP: Prototype OO in two functions.
+
+François-René \"Faré\" Rideau has been making programming languages and distributed systems usable for 25 years. Alumnus of the École Normale Supérieure, Former Senior Engineer at ITA Software, he also worked at Google and Bridgewater Associates. While working in the industry, he notably maintained and rewrote ASDF, the build system at the heart of the Common Lisp open source community; he also kept publishing academic papers and speaking at programming language conferences; early in his career, he even proved in Coq the correctness of a (centralized) payment protocol. Eventually, his interests in economics and software security converged with his experience in open source software and formal methods and he started working on Layer 2 solutions for the Blockchain. Since January 2018, he has made plenty of mistakes as co-founder of startups."
+                          #:artifacts '()
+                          #:website #f
+                          #:references '())))
 
       )))
 

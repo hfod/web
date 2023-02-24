@@ -416,7 +416,7 @@
                              "NYC Hack && Tell")))))))
 
 (define (nav)
-  (define (meetings->dropdown meetings nav-title)
+  (define (meetings->dropdown nav-title meetings)
     `(li ([class "nav-item dropdown"])
       (a ([class "nav-link dropdown-toggle"]
           [href ,path-meetings]
@@ -438,8 +438,7 @@
                                        date
                                        host
                                        (Meeting-codename m))))))
-                 (sort meetings (λ (a b) (> (Meeting-seq a)
-                                            (Meeting-seq b))))))))
+                 meetings))))
   `(nav ([class "navbar navbar-expand-lg navbar-dark bg-dark float-md-end"])
     (div ([class "container-fluid"])
 
@@ -462,8 +461,18 @@
               (ul ([class "navbar-nav"])
 
                   ; Meetings
-                  ,(meetings->dropdown data:meetings-future "upcoming")
-                  ,(meetings->dropdown data:meetings-past "past")
+                  ,(meetings->dropdown
+                     "upcoming"
+                     (sort data:meetings-future
+                           (λ (a b)
+                              (< (Meeting-seq a)
+                                 (Meeting-seq b)))))
+                  ,(meetings->dropdown
+                     "past"
+                     (sort data:meetings-past
+                           (λ (a b)
+                              (> (Meeting-seq a)
+                                 (Meeting-seq b)))))
 
                   ; Hosts
                   (li ([class "nav-item dropdown"])
