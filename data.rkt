@@ -312,7 +312,7 @@
                   #:name "François-René \"Faré\" Rideau"
                   #:email "fahree@gmail.com"
                   #:email-show? #t
-                  #:website (u "http://fare.tunes.org/")
+                  #:website (u "https://ngnghm.github.io/")
                   #:affiliated-links (list (u "https://github.com/fare")
                                            (u "https://twitter.com/Ngnghm")))
 
