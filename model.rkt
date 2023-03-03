@@ -31,6 +31,7 @@
                   [addr Addr?]
                   [url url:url?]))
 
+; TODO Rename to a more general "member"? else?
 (struct/contract Speaker
                  ([id string?]
                   [name string?]
@@ -62,6 +63,7 @@
                   [date g:date?]
                   [time g:time?]
                   [host Host?]
+                  [organizer Speaker?] ; HBIC of arrangements, promotion and logging.
                   [talks (listof Talk?)]
                   [recap string?]
                   [photos (listof Photo?)]

@@ -104,12 +104,22 @@
               (ul ([class "text-start"])
                   ,@(links->list-items (map u->l (Speaker-affiliated-links s))))))
        (p ([class "text-start"])
-          (strong "talks:")
+          (strong "presented:")
           (ul ([class "text-start"])
               ,@(map (λ (meet-id-talk)
-                        (match-define (cons mid t) meet-id-talk)
-                        `(li (a ([href ,(path-meeting mid)]) ,(Talk-title t))))
+                        (match-define (cons meeting-seq t) meet-id-talk)
+                        `(li (a ([href ,(path-meeting meeting-seq)])
+                                ,(format "~a: ~a" meeting-seq (Talk-title t)))))
                      (data:speaker->talks s))))
+       (p ([class "text-start"])
+          (strong "organized:")
+          (ul ([class "text-start"])
+              ,@(map (λ (m)
+                        `(li (a ([href ,(path-meeting (Meeting-seq m))])
+                                ,(format "~a: ~a"
+                                         (Meeting-seq m)
+                                         (Meeting-codename m)))))
+                     (data:speaker->meetings-organized s))))
        ; TODO Maybe talks should have their own pages?
        )))
 
@@ -292,14 +302,18 @@
       ))
   (define photos (Meeting-photos m))
   (define h (Meeting-host m))
+  (define o (Meeting-organizer m))
   (define content
     `((h1 ,(Meeting-codename m))
+      ; (a ([href ,(path-speaker  s)]) ,(Speaker-name s))
       (h6 ,(g:~t (Meeting-date m) "EEEE, MMMM d, y"))
       (h6 ,(g:~t (Meeting-time m) "HH:mm")
           " at "
           (a ([href ,(path-host h)]) ,(Host-name h))
           " in "
           ,(Addr-town (Host-addr h)))
+      (h6 " organized by "
+          (a ([href ,(path-speaker o)]) ,(Speaker-name o)))
 
       ,(if (empty? photos)
            ""

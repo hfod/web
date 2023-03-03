@@ -4,6 +4,7 @@
            [hosts (listof Host?)]
            [speakers (listof Speaker?)]
            [speaker->talks (-> Speaker? (listof (cons/c integer? Talk?)))]
+           [speaker->meetings-organized (-> Speaker? (listof Meeting?))]
            [meeting-next (or/c #f Meeting?)]
            [meetings (listof Meeting?)]
            [meetings-future (listof Meeting?)]
@@ -41,6 +42,7 @@
            #:date date
            #:time time
            #:host host
+           #:organizer organizer
            #:talks talks
            #:registration-url reg-url)
   (define meeting-dir (build-path "data" "meetings" (number->string seq)))
@@ -75,7 +77,7 @@
       (if (file-exists? recap-file)
           (file->string recap-file)
           "")))
-  (Meeting seq codename date time host talks recap photos reg-url))
+  (Meeting seq codename date time host organizer talks recap photos reg-url))
 
 (define u url:string->url)
 
@@ -124,6 +126,7 @@
 (define host-id-red-oak-hanover       "red-oak-hanover")
 (define host-id-manchester-makerspace "manchester-makerspace")
 
+; TODO Rename to "member", "person" or anything else more applicably general.
 (define speaker
   (let ([speakers
           (tbl #:key Speaker-id
@@ -372,6 +375,7 @@
          #:date (d 2021 10 14)
          #:time (t 19 00)
          #:host (host host-id-raven-labs)
+         #:organizer (speaker speaker-id-grant-peret)
          #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
          #:talks '())
 
@@ -381,6 +385,7 @@
          #:date (d 2022 01 10)
          #:time (t 18 00)
          #:host (host host-id-raven-labs)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "")
          #:talks '())
 
@@ -390,6 +395,7 @@
          #:date (d 2022 02 10)
          #:time (t 18 00)
          #:host (host host-id-raven-labs)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url
          (let* ([file "join-us-button-mailto.txt"]
                 ; FIXME Tangled abstractions - we're not in a view!!!
@@ -478,6 +484,7 @@
          #:date (d 2022 03 10)
          #:time (t 18 00)
          #:host (host host-id-raven-labs)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "https://forms.gle/nYPmUnhkDEro9Nft8")
          #:talks
          (list (T #:speaker (speaker speaker-id-siraaj-khandkar)
@@ -530,6 +537,7 @@
          #:date (d 2022 04 07)
          #:time (t 18 00)
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "https://forms.gle/uwTZM4gcWc6RcQyq6")
          #:talks
          (list
@@ -583,6 +591,7 @@
          #:date (d 2022 05 12)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "https://forms.gle/kU5bYdTi1im8bdy4A")
          #:talks
          (list
@@ -611,6 +620,7 @@
          #:date (d 2022 06 09)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "https://forms.gle/TweJ2J23A7KGkRFCA")
          #:talks
          (list
@@ -648,6 +658,7 @@
          #:date (d 2022 07 07)
          #:time (t 19 00)
          #:host (host host-id-raven-labs)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "https://forms.gle/HsnNpgkpRUdKSXvk9")
          #:talks
          (list
@@ -701,6 +712,7 @@
          #:date (d 2022 08 04)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "")
          #:talks
          '())
@@ -710,6 +722,7 @@
          #:date (d 2022 09 01)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "")
          #:talks
          (list
@@ -775,6 +788,7 @@
          #:date (d 2022 10 06)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "")
          #:talks
          '())
@@ -786,6 +800,7 @@
          ; FIXME We were actually in Kisaki, not Makerspace,
          ;       but does that count as proper hosting?
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "")
          #:talks
          '())
@@ -795,6 +810,7 @@
          #:date (d 2022 12 01)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "")
          #:talks
          '())
@@ -804,6 +820,7 @@
          #:date (d 2023 02 02)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-kyle-roucis)
          #:registration-url (u "")
          #:talks
          (list
@@ -855,6 +872,7 @@
          #:date (d 2023 03 02)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-kyle-roucis)
          #:registration-url (u "")
          #:talks '())
 
@@ -863,6 +881,7 @@
          #:date (d 2023 03 13)
          #:time (t 18 30)
          #:host (host host-id-red-oak-hanover)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/291843757")
          #:talks (list (T #:speaker (speaker speaker-id-fare)
                           #:title "The essence of OOP: Prototype OO in two functions"
@@ -885,8 +904,9 @@ François-René \"Faré\" Rideau has been making programming languages and distr
        (remove-duplicates (map (compose Speaker-id Talk-speaker)
                                (append* (map Meeting-talks meetings))))))
 
-;; TODO Something nicer than (meeing-id talk) pair? TalkInfo? MeetingInfo?
-(define speaker->talks
+;; TODO Something nicer than (meeting-id talk) pair? TalkInfo? MeetingInfo?
+(define/contract speaker->talks
+  (-> Speaker? (listof (cons/c integer? Talk?)))
   (let ([s2t (foldl
                (λ (mt s2t)
                   (define t (cdr mt))
@@ -898,6 +918,21 @@ François-René \"Faré\" Rideau has been making programming languages and distr
                                      (Meeting-talks m)))
                              meetings)))])
     (λ (s) (hash-ref s2t (Speaker-id s)))))  ; XXX not found => not a speaker
+
+(define/contract speaker->meetings-organized
+  (-> Speaker? (listof Meeting?))
+  (let ([speaker2meetings-organized
+          (foldl
+            (λ (m speaker2meetings-organized)
+               (hash-update speaker2meetings-organized
+                            (Speaker-id (Meeting-organizer m))
+                            (λ (meetings)
+                               (cons m meetings))
+                            '()))
+            (hash)
+            meetings)])
+    (λ (s)
+       (hash-ref speaker2meetings-organized (Speaker-id s) '()))))
 
 (define/contract (meetings-filter-by-date compares?)
   (-> (-> g:date? g:date? boolean?) (listof Meeting?))
