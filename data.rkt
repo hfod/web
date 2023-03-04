@@ -121,6 +121,8 @@
 (define speaker-id-lisa                     "lisa")
 (define speaker-id-daniel-krol              "daniel-krol")
 (define speaker-id-fare                     "fare")
+(define speaker-id-meg                      "meg-truesdale")
+(define speaker-id-wayne                    "wayne-kenney")
 
 (define host-id-raven-labs            "raven-labs")
 (define host-id-red-oak-hanover       "red-oak-hanover")
@@ -318,6 +320,20 @@
                   #:website (u "https://ngnghm.github.io/")
                   #:affiliated-links (list (u "https://github.com/fare")
                                            (u "https://twitter.com/Ngnghm")))
+
+               (S #:id speaker-id-meg
+                  #:name "Meg Truesdale"
+                  #:email "megtruesdale@gmail.com"
+                  #:email-show? #t
+                  #:website #f
+                  #:affiliated-links (list (u "https://github.com/megtruesdale")))
+
+               (S #:id speaker-id-wayne
+                  #:name "Wayne Kenney"
+                  #:email ""
+                  #:email-show? #f
+                  #:website (u "https://wayne.cool/")
+                  #:affiliated-links (list (u "https://github.com/LogicPy")))
 
                )])
     (λ (id) (hash-ref speakers id))))
@@ -868,13 +884,44 @@
            ))
 
       (M #:seq 13
-         #:codename "TBD"
+         #:codename "Arecibo"
          #:date (d 2023 03 02)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
          #:organizer (speaker speaker-id-kyle-roucis)
          #:registration-url (u "")
-         #:talks '())
+         #:talks (list
+                   (T #:speaker (speaker speaker-id-kyle-roucis)
+                      #:title "Quick game with Unreal Blueprints"
+                      #:description "Kyle's latest 1-day game creation using Unreal Engine's Blueprint Visual Scripting system."
+                      #:artifacts '()
+                      #:website #f
+                      #:references (list (Link #f (u "https://en.wikipedia.org/wiki/Unreal_Engine"))
+                                         (Link #f (u "https://docs.unrealengine.com/5.0/en-US/blueprints-visual-scripting-in-unreal-engine/"))))
+
+                   (T #:speaker (speaker speaker-id-meg)
+                      #:title "3D 2048 game with a twist"
+                      #:description "Meg realized that plain old 2048 is boring, so the natural solution is to make it 3d and only movable by a ball. Implemented in C# and Unity game engine."
+                      #:artifacts (list (Link #f (u "https://github.com/megtruesdale/2048Game")))
+                      #:website #f
+                      #:references (list (Link #f (u "https://en.wikipedia.org/wiki/2048_(video_game)"))
+                                         (Link #f (u "https://en.wikipedia.org/wiki/Unity_(game_engine)"))))
+
+                   (T #:speaker (speaker speaker-id-wayne)
+                      #:title "Remote shell via Twitter and aNotepad"
+                      #:description "Wayne was fed up with corporate firewalls blocking port 22 and preventing good old ssh, so he decided to Hack The Planet and send commands via Twitter (a local bot listens for tweets and executes them as commands, forwarding the output to an internet pasting service), but then Twitter closed their API, so ... he wrote his own Twitter clone!"
+                      #:artifacts (list (Link #f (u ""))) ; TODO Need source URL from Wayne
+                      #:website #f
+                      #:references (list (Link #f (u "https://anotepad.com/"))
+                                         (Link #f (u "https://en.wikipedia.org/wiki/Hackers_(film)"))))
+
+                   (T #:speaker (speaker speaker-id-siraaj-khandkar)
+                      #:title "Epidemic simulation"
+                      #:description "Siraaj was as excited and bored as anyone else during the 2020 COVID-19 quarantine, but also curious and hungry for experimentation, so set-out to write an epidemic simulator (and learn C for good measure). Sadly only the cellular automata version was implemented and agent mobility is in its 3rd year as a rusting TODO item."
+                      #:artifacts (list (Link #f (u "https://github.com/xandkar/epidemic-sim")))
+                      #:website #f
+                      #:references (list (Link #f (u "https://en.wikipedia.org/wiki/Forest-fire_model"))))
+                   ))
 
       (M #:seq 14
          #:codename "INVITED TALK - The Essence of OOP"
