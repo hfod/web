@@ -177,7 +177,8 @@
                   #:name "Jeff Nelson"
                   #:email "jeff@ravenlabsnh.com"
                   #:website #f
-                  #:affiliated-links (list url-raven-labs))
+                  #:affiliated-links (list (u "https://github.com/jnelson614")
+                                           url-raven-labs))
 
                (S #:id speaker-id-zach-taylor
                   #:name "Zach Taylor"
