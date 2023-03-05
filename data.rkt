@@ -494,11 +494,14 @@
                   #:website #f
                   #:references '())
                (T #:speaker (speaker speaker-id-jeff-nelson)
-                  #:title ""
-                  #:description ""
+                  #:title "Pi Bramble"
+                  #:description "A cluster or Rasberry Pi's managed by kubernetes to deploy a drupal website."
                   #:artifacts '()
                   #:website #f
-                  #:references '())
+                  #:references
+                  (list
+                    (Link #f (u "https://github.com/geerlingguy/raspberry-pi-dramble"))
+                    (Link #f (u "https://www.pidramble.com/"))))
                (T #:speaker (speaker speaker-id-brian-gray)
                   #:title ""
                   #:description ""
