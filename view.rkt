@@ -126,6 +126,7 @@
 (define/contract (page-host h)
   (-> Host? Page?)
   (define a (Host-addr h))
+  (define c (Host-contact h))
   (define title (Host-name h))
   (define url (url:url->string (Host-url h)))
   (P #:id title
@@ -145,6 +146,8 @@
           ,(Addr-state a)
           " "
           ,(Addr-zipcode a))
+       (hr) ; TODO A better distinguisher than an <hr>?
+       (p "point of contact: " (a ([href ,(path-speaker  c)]) ,(Speaker-name c)))
        (p (iframe ([width "600"]
                    [height "450"]
                    [style "border:0"]

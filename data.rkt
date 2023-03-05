@@ -336,7 +336,8 @@
                            "03101"
                            "USA"
                            (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.5021479285165!2d-71.46491045831543!3d42.98875989907271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24fece398a01f%3A0xd63afeaabdeeb64d!2sRaven%20Laboratory%2C%20LLC!5e0!3m2!1sen!2sus!4v1647814700969!5m2!1sen!2sus"))
-                     url-raven-labs)
+                     url-raven-labs
+                     (speaker speaker-id-grant-peret))
                (Host host-id-red-oak-hanover
                      "Red Oak Coworking Offices"
                      (Addr "66"
@@ -347,7 +348,8 @@
                            "03101"
                            "USA"
                            (u "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1933.9391187294636!2d-71.46238682768785!3d42.98960320228865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24f2480bf4587%3A0xec5c87bd4c8bc022!2sRed%20Oak%20Coworking%20Offices!5e0!3m2!1sen!2sus!4v1677192211322!5m2!1sen!2sus"))
-                     (u "https://redoakcoworking.com"))
+                     (u "https://redoakcoworking.com")
+                     (speaker speaker-id-siraaj-khandkar))
                (Host host-id-manchester-makerspace
                      "Manchester Makerspace"
                      (Addr "36"
@@ -358,7 +360,8 @@
                            "0301"
                            "USA"
                            (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.609093458723!2d-71.46651978372435!3d42.98650747914976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24ed838cd5e57%3A0x511bc564be09b62b!2sManchester%20Makerspace!5e0!3m2!1sen!2sus!4v1647814467210!5m2!1sen!2sus"))
-                     url-manchester-maker-space))])
+                     url-manchester-maker-space
+                     (speaker speaker-id-kevin-kadow)))])
     (λ (id) (hash-ref hosts id))))
 
 (define/contract (inc file)

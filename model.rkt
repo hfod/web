@@ -25,12 +25,6 @@
                   ;     and potentially costs, but making them manually is free.
                   [google-maps-embed-url url:url?]))
 
-(struct/contract Host
-                 ([id string?]
-                  [name string?]
-                  [addr Addr?]
-                  [url url:url?]))
-
 ; TODO Rename to a more general "member"? else?
 (struct/contract Speaker
                  ([id string?]
@@ -39,6 +33,14 @@
                   [email-show? boolean?]
                   [website (or/c #f url:url?)]
                   [affiliated-links (listof url:url?)]))
+
+(struct/contract Host
+                 ([id string?]
+                  [name string?]
+                  [addr Addr?]
+                  [url url:url?]
+                  [contact Speaker?]))
+; TODO Replace Speaker? copies with references by Speaker-id.
 
 (struct/contract Link
                  ([name (or/c #f string?)]
