@@ -910,7 +910,7 @@
                    (T #:speaker (speaker speaker-id-wayne)
                       #:title "Remote shell via Twitter and aNotepad"
                       #:description "Wayne was fed up with corporate firewalls blocking port 22 and preventing good old ssh, so he decided to Hack The Planet and send commands via Twitter (a local bot listens for tweets and executes them as commands, forwarding the output to an internet pasting service), but then Twitter closed their API, so ... he wrote his own Twitter clone!"
-                      #:artifacts (list (Link #f (u ""))) ; TODO Need source URL from Wayne
+                      #:artifacts (list (Link #f (u "https://github.com/LogicPy/Python/tree/master/TORB")))
                       #:website #f
                       #:references (list (Link #f (u "https://anotepad.com/"))
                                          (Link #f (u "https://en.wikipedia.org/wiki/Hackers_(film)"))))
