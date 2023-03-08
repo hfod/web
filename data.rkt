@@ -81,7 +81,7 @@
 
 (define u url:string->url)
 
-(define/contract url-raven-labs url:url? (u "ravenlabsnh.com"))
+(define/contract url-raven-labs url:url? (u "https://ravenlabsnh.com"))
 (define/contract url-manchester-maker-space url:url? (u "https://manchestermakerspace.org"))
 
 (define (tbl #:key key . xs)
