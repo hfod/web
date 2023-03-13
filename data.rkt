@@ -939,7 +939,7 @@
          #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/291843757")
          #:talks (list (T #:speaker (speaker speaker-id-fare)
                           #:title "The essence of OOP: Prototype OO in two functions"
-                          #:description "Francois-Rene Rideau (a.k.a. `@ngnghm`, `@phanaero`) will share his deep insights into the essence of OOP: Prototype OO in two functions.
+                          #:description "Francois-Rene Rideau (a.k.a. [`@ngnghm`](https://twitter.com/ngnghm), [`@phanaero`](https://twitter.com/phanaero)) will share his deep insights into the essence of OOP: Prototype OO in two functions.
 
 François-René \"Faré\" Rideau has been making programming languages and distributed systems usable for 25 years. Alumnus of the École Normale Supérieure, Former Senior Engineer at ITA Software, he also worked at Google and Bridgewater Associates. While working in the industry, he notably maintained and rewrote ASDF, the build system at the heart of the Common Lisp open source community; he also kept publishing academic papers and speaking at programming language conferences; early in his career, he even proved in Coq the correctness of a (centralized) payment protocol. Eventually, his interests in economics and software security converged with his experience in open source software and formal methods and he started working on Layer 2 solutions for the Blockchain. Since January 2018, he has made plenty of mistakes as co-founder of startups."
                           #:artifacts '()

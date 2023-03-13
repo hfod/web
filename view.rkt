@@ -288,7 +288,7 @@
            (h5 ([class "card-title text-center"])
                ,(Talk-title t))
            (p ([class "card-text text-start"])
-              ,(Talk-description t))
+              ,@(md:parse-markdown (Talk-description t)))
            ,(if (empty? (Talk-artifacts t))
                 ""
                 `(p ([class "card-text text-start"])
