@@ -957,6 +957,16 @@ François-René \"Faré\" Rideau has been making programming languages and distr
                           #:website #f
                           #:references '())))
 
+      (M #:seq 15
+         #:format 'show-and-tell
+         #:codename "Show and tell"
+         #:date (d 2023 05 04)
+         #:time (t 19 00)
+         #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
+         #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/292476735/")
+         #:talks '())
+
       )))
 
 (define hosts
