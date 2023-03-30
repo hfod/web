@@ -3,6 +3,7 @@
 (provide (struct-out Addr)
          (struct-out Host)
          (struct-out Meeting)
+         MeetingFormat?
          (struct-out Photo)
          (struct-out Speaker)
          (struct-out Link)
@@ -58,9 +59,15 @@
                   [artifacts (listof Link?)] ; XXX We really should not allow this to be empty.
                   [references (listof Link?)]))
 
+(define MeetingFormat? (or/c 'meet-and-greet
+                             'show-and-tell
+                             'problem-share
+                             'talk))
+
 (struct/contract Meeting
                  ; TODO Model attendees.
                  ([seq integer?]
+                  [format MeetingFormat?]
                   [codename string?]
                   [date g:date?]
                   [time g:time?]

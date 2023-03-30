@@ -38,6 +38,7 @@
   (Talk speaker title description website artifacts references))
 
 (define (M #:seq seq
+           #:format fmt
            #:codename codename
            #:date date
            #:time time
@@ -77,7 +78,7 @@
       (if (file-exists? recap-file)
           (file->string recap-file)
           "")))
-  (Meeting seq codename date time host organizer talks recap photos reg-url))
+  (Meeting seq fmt codename date time host organizer talks recap photos reg-url))
 
 (define u url:string->url)
 
@@ -389,8 +390,8 @@
   (let ([d g:date]
         [t g:time])
     (list
-      ; TODO format: general-discussion
       (M #:seq -1
+         #:format 'meet-and-greet
          #:codename "Prehistory"
          #:date (d 2021 10 14)
          #:time (t 19 00)
@@ -399,8 +400,8 @@
          #:registration-url (u "https://discord.com/channels/404106811252408320/824002124899811347")
          #:talks '())
 
-      ; TODO format: general-discussion
       (M #:seq 0
+         #:format 'meet-and-greet
          #:codename "Ground Zero"
          #:date (d 2022 01 10)
          #:time (t 18 00)
@@ -409,8 +410,8 @@
          #:registration-url (u "")
          #:talks '())
 
-      ; TODO format: hack-and-tell.
       (M #:seq 1
+         #:format 'show-and-tell
          #:codename "Genesis Block"
          #:date (d 2022 02 10)
          #:time (t 18 00)
@@ -498,8 +499,8 @@
                         (Link "Hidden New England" (u "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/"))))
                ))
 
-      ; TODO format: hack-and-tell.
       (M #:seq 2
+         #:format 'show-and-tell
          #:codename "Tuna Pizza"
          #:date (d 2022 03 10)
          #:time (t 18 00)
@@ -554,8 +555,8 @@
                   #:references '())
                ))
 
-      ; TODO format: hack-and-tell.
       (M #:seq 3
+         #:format 'show-and-tell
          #:codename "The Sign"
          #:date (d 2022 04 07)
          #:time (t 18 00)
@@ -608,8 +609,8 @@
               #:references '())
            ))
 
-      ; TODO format: problem-talks.
       (M #:seq 4
+         #:format 'problem-share
          #:codename "Three Musketeers"
          #:date (d 2022 05 12)
          #:time (t 19 00)
@@ -639,6 +640,7 @@
            ))
 
       (M #:seq 5
+         #:format 'show-and-tell
          #:codename "Autolace"
          #:date (d 2022 06 09)
          #:time (t 19 00)
@@ -677,6 +679,7 @@
            ))
 
       (M #:seq 6
+         #:format 'show-and-tell
          #:codename "7"
          #:date (d 2022 07 07)
          #:time (t 19 00)
@@ -731,6 +734,7 @@
            ))
 
       (M #:seq 7
+         #:format 'show-and-tell
          #:codename "Swerve"
          #:date (d 2022 08 04)
          #:time (t 19 00)
@@ -741,6 +745,7 @@
          '())
 
       (M #:seq 8
+         #:format 'show-and-tell
          #:codename "Think and Swim"
          #:date (d 2022 09 01)
          #:time (t 19 00)
@@ -807,6 +812,7 @@
            ))
 
       (M #:seq 9
+         #:format 'meet-and-greet
          #:codename "Modem"
          #:date (d 2022 10 06)
          #:time (t 19 00)
@@ -817,6 +823,7 @@
          '())
 
       (M #:seq 10
+         #:format 'meet-and-greet
          #:codename "Sake"
          #:date (d 2022 11 03)
          #:time (t 19 00)
@@ -829,6 +836,7 @@
          '())
 
       (M #:seq 11
+         #:format 'meet-and-greet
          #:codename "AoC Kickoff"
          #:date (d 2022 12 01)
          #:time (t 19 00)
@@ -839,6 +847,7 @@
          '())
 
       (M #:seq 12
+         #:format 'show-and-tell
          #:codename "Siraaj Needs a Break"
          #:date (d 2023 02 02)
          #:time (t 19 00)
@@ -891,6 +900,7 @@
            ))
 
       (M #:seq 13
+         #:format 'show-and-tell
          #:codename "Arecibo"
          #:date (d 2023 03 02)
          #:time (t 19 00)
@@ -931,6 +941,7 @@
                    ))
 
       (M #:seq 14
+         #:format 'talk
          #:codename "INVITED TALK - The Essence of OOP"
          #:date (d 2023 03 13)
          #:time (t 18 30)
