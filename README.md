@@ -1,3 +1,8 @@
+[![Discord][discord-badge]][discord-url]
+
+[discord-badge]: https://img.shields.io/discord/940290830067961928?label=discord&logo=discord&style=for-the-badge
+[discord-url]: https://discord.gg/NsEwkfCHgv
+
 Hack Free Or Die website
 ========================
 
