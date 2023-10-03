@@ -101,6 +101,7 @@
 (define speaker-id-jonathan-hales           "jonathan-hales")
 (define speaker-id-perry-e-metzger          "perry-e-metzger")
 (define speaker-id-bill-the-shoelace-hater  "bill-the-shoelace-hater")
+(define speaker-id-bill-sanders             "bill-sanders")
 (define speaker-id-kyle-robertson           "kyle-robertson")
 (define speaker-id-jeff-nelson              "jeff-nelson")
 (define speaker-id-zach-taylor              "zach-taylor")
@@ -254,6 +255,13 @@
 
                (S #:id speaker-id-bill-the-shoelace-hater
                   #:name "Bill"
+                  #:email ""
+                  #:email-show? #f
+                  #:website #f
+                  #:affiliated-links '())
+
+               (S #:id speaker-id-bill-sanders
+                  #:name "Bill Sanders"
                   #:email ""
                   #:email-show? #f
                   #:website #f
@@ -963,9 +971,25 @@ François-René \"Faré\" Rideau has been making programming languages and distr
          #:date (d 2023 05 04)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
-         #:organizer (speaker speaker-id-siraaj-khandkar)
+         #:organizer (speaker speaker-id-kyle-roucis)
          #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/292476735/")
-         #:talks '())
+         #:talks (list
+
+                   (T #:speaker (speaker speaker-id-daniel-krol)
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+
+                   (T #:speaker (speaker speaker-id-bill-sanders)
+                      #:title ""
+                      #:description ""
+                      #:artifacts '()
+                      #:website #f
+                      #:references '())
+
+                   ))
 
       )))
 
