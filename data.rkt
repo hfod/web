@@ -993,13 +993,22 @@ François-René \"Faré\" Rideau has been making programming languages and distr
 
       (M #:seq 16
          #:format 'show-and-tell
-         #:codename "Short Notice"
+         #:codename "Grimless Metal"
          #:date (d 2023 10 05)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
          #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/296518122/")
-         #:talks '())
+         #:talks (list
+                   (T #:speaker (speaker speaker-id-kyle-roucis)
+                      #:title "Metal REPL"
+                      #:description "Kyle introduced us to basic ideas behind Apple's GPU API - Metal, while showcasing the sandbox he made for live experimentation with it."
+                      #:artifacts '()
+                      #:website #f
+                      #:references
+                      (list (Link #f (u "https://en.wikipedia.org/wiki/Metal_(API)"))
+                            (Link #f (u "https://developer.apple.com/metal/"))))
+                   ))
 
       )))
 
