@@ -967,7 +967,7 @@ François-René \"Faré\" Rideau has been making programming languages and distr
 
       (M #:seq 15
          #:format 'show-and-tell
-         #:codename "Show and tell"
+         #:codename "Webz"
          #:date (d 2023 05 04)
          #:time (t 19 00)
          #:host (host host-id-manchester-makerspace)
@@ -976,15 +976,18 @@ François-René \"Faré\" Rideau has been making programming languages and distr
          #:talks (list
 
                    (T #:speaker (speaker speaker-id-daniel-krol)
-                      #:title ""
-                      #:description ""
-                      #:artifacts '()
+                      #:title "Argument Clinic"
+                      #:description "Managed debate website. Two sides and a moderator. The moderator formalizes agreed on definitions and conclusions. Also, spawns sub-debates if one claim is really premised on three other claims. So we can get to the heart of everything."
+                      #:artifacts
+                      (list
+                        (Link "archive"
+                              (u "https://web.archive.org/web/20140103105431/http://argumentclinic.net/")))
                       #:website #f
                       #:references '())
 
                    (T #:speaker (speaker speaker-id-bill-sanders)
                       #:title ""
-                      #:description ""
+                      #:description "Website that allows users to input song lyrics with notes and change those notes based on a guitar capo moving up or down."
                       #:artifacts '()
                       #:website #f
                       #:references '())
