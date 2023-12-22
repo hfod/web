@@ -1013,6 +1013,16 @@ François-René \"Faré\" Rideau has been making programming languages and distr
                             (Link #f (u "https://developer.apple.com/metal/"))))
                    ))
 
+      (M #:seq 17
+         #:format 'show-and-tell
+         #:codename "New Year New Rules"
+         #:date (d 2024 01 04)
+         #:time (t 18 00)
+         #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
+         #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/298093316/")
+         #:talks '())
+
       )))
 
 (define hosts
