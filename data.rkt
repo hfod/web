@@ -111,7 +111,7 @@
 (define speaker-id-grant-peret              "grant-peret")
 (define speaker-id-brandon-simpson          "brandon-simpson")
 (define speaker-id-brian-gray               "brian-gray")
-(define speaker-id-kevin-kadow              "kevin-kadow")
+(define speaker-id-kevin                    "kevin") ; Kadow
 (define speaker-id-thaddeus-hughes          "thaddeus-hughes")
 (define speaker-id-jake                     "jake")  ; Discord: ta11ey#6015
 (define speaker-id-nick-FreakyNobleGas      "nick-FreakyNobleGas")
@@ -230,7 +230,7 @@
                   #:website #f
                   #:affiliated-links '())
 
-               (S #:id speaker-id-kevin-kadow
+               (S #:id speaker-id-kevin
                   #:name "Kevin"
                   #:email ""
                   #:email-show? #f
@@ -386,7 +386,7 @@
                            "USA"
                            (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.609093458723!2d-71.46651978372435!3d42.98650747914976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24ed838cd5e57%3A0x511bc564be09b62b!2sManchester%20Makerspace!5e0!3m2!1sen!2sus!4v1647814467210!5m2!1sen!2sus"))
                      url-manchester-maker-space
-                     (speaker speaker-id-kevin-kadow)))])
+                     (speaker speaker-id-kevin)))])
     (λ (id) (hash-ref hosts id))))
 
 (define/contract (inc file)
@@ -594,7 +594,7 @@
               #:website (u "http://everycalc.thadhughes.xyz/")
               #:references '())
 
-           (T #:speaker (speaker speaker-id-kevin-kadow)
+           (T #:speaker (speaker speaker-id-kevin)
               #:title ""
               #:description ""
               #:artifacts '()
@@ -627,7 +627,7 @@
          #:registration-url (u "https://forms.gle/kU5bYdTi1im8bdy4A")
          #:talks
          (list
-           (T #:speaker (speaker speaker-id-kevin-kadow)
+           (T #:speaker (speaker speaker-id-kevin)
               #:title "Resetting a disposable safety device."
               #:description ""
               #:artifacts '()
@@ -871,7 +871,7 @@
               #:website #f
               #:references '())
 
-           (T #:speaker (speaker speaker-id-kevin-kadow)
+           (T #:speaker (speaker speaker-id-kevin)
               #:title "Manchester Makerspace's Custom Doorbell"
               #:description "A networked and remote doorbell and surveillance system for the Manchester Makerspace."
               #:artifacts '()
