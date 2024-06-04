@@ -1035,12 +1035,22 @@ François-René \"Faré\" Rideau has been making programming languages and distr
 
       (M #:seq 19
          #:format 'show-and-tell
-         #:codename "TBD"
+         #:codename "Just Beers"
          #:date (d 2024 03 07)
          #:time (t 18 00)
          #:host (host host-id-manchester-makerspace)
          #:organizer (speaker speaker-id-siraaj-khandkar)
          #:registration-url (u "")
+         #:talks '())
+
+      (M #:seq 20
+         #:format 'show-and-tell
+         #:codename "Beast"
+         #:date (d 2024 06 06)
+         #:time (t 18 00)
+         #:host (host host-id-manchester-makerspace)
+         #:organizer (speaker speaker-id-kevin)
+         #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/301443931/")
          #:talks '())
 
       )))
