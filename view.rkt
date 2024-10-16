@@ -203,10 +203,10 @@
           `((p ([class "lead"])
                ; TODO Google maps link
                ,date (br) ,time " at " ,host-link " in " ,host-town)
-            ;(p ([class "lead"])
-            ;   (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
-            ;       [href ,(url:url->string (Meeting-registration-url m))])
-            ;      "RSVP"))
+            (p ([class "lead"])
+               (a ([class "btn btn-lg btn-secondary fw-bold border-white bg-white"]
+                   [href ,(url:url->string (Meeting-registration-url m))])
+                  "RSVP"))
             ))]))
   (define id "home")
   (P #:id id
