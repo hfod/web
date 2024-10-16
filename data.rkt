@@ -129,6 +129,7 @@
 (define host-id-raven-labs            "raven-labs")
 (define host-id-red-oak-hanover       "red-oak-hanover")
 (define host-id-manchester-makerspace "manchester-makerspace")
+(define host-id-bob-peret             "bob-peret")
 
 ; TODO Rename to "member", "person" or anything else more applicably general.
 (define speaker
@@ -364,6 +365,19 @@
                            (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.5021479285165!2d-71.46491045831543!3d42.98875989907271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24fece398a01f%3A0xd63afeaabdeeb64d!2sRaven%20Laboratory%2C%20LLC!5e0!3m2!1sen!2sus!4v1647814700969!5m2!1sen!2sus"))
                      url-raven-labs
                      (speaker speaker-id-grant-peret))
+
+               (Host host-id-bob-peret
+                     "Bob Peret"
+                     (Addr "34"
+                           "Birchwood Cir"
+                           ""
+                           "Bedford"
+                           "NH"
+                           "03110"
+                           "USA"
+                           (u "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2921.096421392338!2d-71.54028939999999!3d42.934094099999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24a5b247c07a5%3A0x480e1428103076f0!2s34%20Birchwood%20Cir%2C%20Bedford%2C%20NH%2003110!5e0!3m2!1sen!2sus!4v1729022720394!5m2!1sen!2sus"))
+                     url-raven-labs
+                     (speaker speaker-id-bob-peret))
 
                (Host host-id-red-oak-hanover
                      "Red Oak Coworking Offices"
@@ -1056,6 +1070,16 @@ François-René \"Faré\" Rideau has been making programming languages and distr
          #:host (host host-id-manchester-makerspace)
          #:organizer (speaker speaker-id-kevin)
          #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/301443931/")
+         #:talks '())
+
+      (M #:seq 21
+         #:format 'show-and-tell
+         #:codename "Bob Peret on Analog Data & Signal Processing"
+         #:date (d 2024 10 30)
+         #:time (t 18 00)
+         #:host (host host-id-bob-peret)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
+         #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/304030261/")
          #:talks '())
 
       )))
