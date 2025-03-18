@@ -8,24 +8,18 @@ HOST         := hackfreeordie.org
 PORT         := 22222
 USER_AT_HOST := $(USER)@$(HOST)
 
-DIR_EMAIL      := email
 DIR_WEB_LOCAL  := www
 DIR_SERVER     := /var/www/hackfreeordie.org
 
-CMD_GENERATE := ./generate
+CMD_GENERATE := # TODO
 
 .PHONY: build
-build: web email
+build: web
 
 .PHONY: web
 web:
 	mkdir -p $(DIR_WEB_LOCAL)
-	$(CMD_GENERATE) -o $(DIR_WEB_LOCAL) web
-
-.PHONY: email
-email:
-	mkdir -p $(DIR_EMAIL)
-	$(CMD_GENERATE) -o $(DIR_EMAIL) email
+	$(CMD_GENERATE) # -o $(DIR_WEB_LOCAL) web
 
 .PHONY: serve
 serve:
