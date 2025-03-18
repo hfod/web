@@ -2,14 +2,15 @@ N_CPUS := $(shell nproc 2> /dev/null || gnproc 2> /dev/null || sysctl -n hw.ncpu
 
 MAKEFLAGS := --no-builtin-rules -j $(N_CPUS)
 
-USER         := xand
+USER         := armenfirman
+GROUP        := www-data
 HOST         := hackfreeordie.org
-PORT         := 22
+PORT         := 22222
 USER_AT_HOST := $(USER)@$(HOST)
 
 DIR_EMAIL      := email
 DIR_WEB_LOCAL  := www
-DIR_WEB_SERVER := /var/www
+DIR_SERVER     := /var/www/hackfreeordie.org
 
 CMD_GENERATE := ./generate
 
@@ -49,10 +50,11 @@ publish:
 		--delete \
 		--omit-dir-times \
 		--copy-links \
-		./$(DIR_WEB_LOCAL)/* \
+		./$(DIR_WEB_LOCAL) \
 		-e 'ssh -p $(PORT)' \
-		$(USER_AT_HOST):$(DIR_WEB_SERVER)
-	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX $(DIR_WEB_SERVER)
+		$(USER_AT_HOST):$(DIR_SERVER)
+	ssh -p $(PORT) $(USER_AT_HOST) chown -R $(USER):$(GROUP) $(DIR_SERVER)
+	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX $(DIR_SERVER)
 
 .PHONY: deps
 deps:
