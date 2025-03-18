@@ -416,6 +416,10 @@
                (meta ([name "description"]
                       [content ""]))
                (script ([src ,path-bootstrap-js]))
+               (script ([defer ""]
+                        [data-api "/api/event"]
+                        [data-domain "hackfreeordie.org"]
+                        [src "/js/script.js"]))
                (link ([href ,path-bootstrap-css]
                       [rel "stylesheet"]))
                (link ([href ,path-local-css]
