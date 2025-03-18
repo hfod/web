@@ -1082,6 +1082,16 @@ François-René \"Faré\" Rideau has been making programming languages and distr
          #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/304030261/")
          #:talks '())
 
+      (M #:seq 22
+         #:format 'show-and-tell
+         #:codename "Siraaj Khandkar on Linked Lists in Rust"
+         #:date (d 2025 03 13)
+         #:time (t 18 00)
+         #:host (host host-id-red-oak-hanover)
+         #:organizer (speaker speaker-id-siraaj-khandkar)
+         #:registration-url (u "https://www.meetup.com/hack-free-or-die/events/306664926/")
+         #:talks '())
+
       )))
 
 (define hosts
