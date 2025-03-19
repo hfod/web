@@ -1,0 +1,10 @@
+{
+    "name": "Zach Taylor",
+    "email": "zach@taylorzr.com",
+    "email_show": false,
+    "website": "http://taylorzr.com",
+    "affiliated_links": [
+        {"url": "https://github.com/taylorzr"},
+        {"url": "https://www.reddit.com/user/taylorzr"}
+    ]
+}

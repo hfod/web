@@ -1,0 +1,10 @@
+{
+    "name": "François-René \"Faré\" Rideau",
+    "email": "fahree@gmail.com",
+    "email_show": true,
+    "website": "https://ngnghm.github.io/",
+    "affiliated_links": [
+        {"url": "https://github.com/fare"},
+        {"url": "https://twitter.com/Ngnghm"}
+    ]
+}

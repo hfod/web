@@ -1,0 +1,9 @@
+{
+    "name": "Wayne Kenney",
+    "email": "",
+    "email_show": false,
+    "website": "https://wayne.cool/",
+    "affiliated_links": [
+        {"url": "https://github.com/LogicPy"}
+    ]
+}
