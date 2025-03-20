@@ -12,3 +12,16 @@ Have photos to add?
 Submit a PR adding your photo files to `data/meetings/$date/photos/`.
 
 Given a photo file `foo.jpeg`, its caption, if any, shall go into text file `foo.txt`.
+
+Design
+------
+
+### Back-end
+
+The main idea: file tree as UI.
+
+### Front-end
+
+- <https://motherfuckingwebsite.com/>
+- <http://bettermotherfuckingwebsite.com/>
+- <https://thebestmotherfucking.website/>
