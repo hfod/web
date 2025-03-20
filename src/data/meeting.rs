@@ -1,4 +1,4 @@
-use std::{fs, path::Path};
+use std::{ffi::OsStr, fs, path::Path};
 
 use anyhow::{anyhow, bail, Context};
 
@@ -74,12 +74,13 @@ impl Meeting {
                 let talk_file_path = entry.path();
                 let ctx = talk_file_path.display().to_string();
                 let typ = entry.file_type().context(ctx.clone())?;
-                if !typ.is_file() {
-                    bail!("Invalid talk entry: {talk_file_path:?}");
+                if typ.is_file()
+                    && matches!(talk_file_path.extension(), Some(ext) if ext.eq(OsStr::new("json5")))
+                {
+                    let data: Vec<u8> = fs::read(&talk_file_path).context(ctx.clone())?;
+                    let talk: Talk = serde_json5::from_slice(&data[..]).context(ctx.clone())?;
+                    selph.talks.push(talk);
                 }
-                let data: Vec<u8> = fs::read(&talk_file_path).context(ctx.clone())?;
-                let talk: Talk = serde_json5::from_slice(&data[..]).context(ctx.clone())?;
-                selph.talks.push(talk);
             }
         }
         let mut objects = Vec::new();
