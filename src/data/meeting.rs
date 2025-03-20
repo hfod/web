@@ -46,7 +46,26 @@ impl Meeting {
             let selph: Self = serde_json5::from_slice(&data[..]).context(ctx.clone())?;
             selph
         };
-        assert_eq!(dir_name, selph.date.to_string());
+        // "YYYY-mm-dd--seq"
+        match dir_name.split("--").collect::<Vec<&str>>()[..] {
+            [date, seq] => {
+                if date != selph.date.to_string() {
+                    bail!(
+                        "Meeting dates mismatch \
+                        between dir name and info file. dir_path={dir_path:?}."
+                    )
+                }
+                if seq != selph.seq.to_string() {
+                    bail!(
+                        "Meeting sequence numbers mismatch \
+                        between dir name and info file. dir_path={dir_path:?}."
+                    )
+                }
+            }
+            _ => {
+                bail!("Invalid meeting dir name format. dir_name={dir_name:?}, meeting={selph:?}.")
+            }
+        }
         if talks_dir_path.try_exists()? {
             for entry_result in
                 fs::read_dir(&talks_dir_path).context(talks_dir_path.display().to_string())?
