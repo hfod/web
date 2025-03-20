@@ -26,6 +26,7 @@ impl Photo {
         let caption_file_path = photo_file_path.with_extension("txt");
         let caption = if caption_file_path.try_exists()? {
             let caption = fs::read_to_string(&caption_file_path)?;
+            let caption = caption.trim().to_string();
             Some(caption)
         } else {
             None
