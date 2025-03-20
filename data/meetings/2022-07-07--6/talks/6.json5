@@ -1,0 +1,8 @@
+{
+    speaker_id: "max-sklar",
+    title: "Beta-distribution Analysis",
+    description: "",
+    artifacts: [
+        {url: "https://github.com/maxsklar/BayesPy/blob/master/DirichletLogisticRegression/findDirichletLogisticModel.py"}
+    ]
+}

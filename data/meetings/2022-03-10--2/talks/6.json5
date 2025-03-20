@@ -1,0 +1,8 @@
+{
+    speaker_id: "kyle-roucis",
+    title: "KroucisVM",
+    description: "A bytecode-driven dynamic-dispatched object-oriented so-many-hyphens virtual machine built in C and based on the Objective-C dynamic dispatch object model.",
+    artifacts: [
+        {url: "https://github.com/kroucis/KroucisVM"}
+    ]
+}

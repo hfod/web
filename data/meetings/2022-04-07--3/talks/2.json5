@@ -1,0 +1,8 @@
+{
+    speaker_id: "kyle-robertson",
+    title: "GPT-2: An outdated language generation model",
+    description: "A fun hack using the GPT-2 natural language generation neural network to automate generating marketing content for my wife's job",
+    artifacts: [
+        {url: "https://github.com/kwrobert/scarlett"}
+    ]
+}

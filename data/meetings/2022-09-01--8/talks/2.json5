@@ -1,0 +1,14 @@
+{
+    speaker_id: "siraaj-khandkar",
+    title: "Solana programming model",
+    description: "Intro to Solana programming model and demo of some minimal smart contracts.",
+    artifacts: [
+        {url: "https://github.com/xandkar/solana-hello-world"},
+        {url: "https://github.com/xandkar/solana-ping-pong"},
+        {url: "https://github.com/xandkar/solana-echo-dyn"},
+        {url: "https://github.com/xandkar/solana-echo-fixed"}
+    ],
+    references: [
+        {url: "https://solana.com/docs"}
+    ]
+}

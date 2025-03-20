@@ -1,0 +1,5 @@
+{
+    speaker_id: "jim-roucis",
+    title: "thinkorswim plugins",
+    description: "Building custom plugins for thinkorswim in ThinkScript to analyze stock market trends.",
+}

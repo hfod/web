@@ -1,0 +1,8 @@
+{
+    speaker_id: "siraaj-khandkar",
+    title: "probe-me - a self port scanning service",
+    description: "A generalized prototype for a Helium hotspot monitoring service, which started as an exercise of writing an HTTP server in Racket from scratch.",
+    artifacts: [
+        {url: "https://github.com/xandkar/probe-me"}
+    ]
+}

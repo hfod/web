@@ -1,0 +1,9 @@
+{
+    speaker_id: "jake",
+    title: "Walkie-textie over LoRa",
+    description: "Have you ever gone sky-diving with your friends, only to be disappointed that you can't text them mid-air? Jake's got you covered!",
+    references: [
+        {url: "https://meshtastic.org/"},
+        {url: "https://en.wikipedia.org/wiki/LoRa"}
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    speaker_id: "kyle-roucis",
+    title: "Quick game with Unreal Blueprints",
+    description: "Kyle's latest 1-day game creation using Unreal Engine's Blueprint Visual Scripting system.",
+    references: [
+        {url: "https://en.wikipedia.org/wiki/Unreal_Engine"},
+        {url: "https://docs.unrealengine.com/5.0/en-US/blueprints-visual-scripting-in-unreal-engine/"}
+    ]
+}

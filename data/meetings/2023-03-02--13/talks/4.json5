@@ -1,0 +1,11 @@
+{
+    speaker_id: "siraaj-khandkar",
+    title: "Epidemic simulation",
+    description: "Siraaj was as excited and bored as anyone else during the 2020 COVID-19 quarantine, but also curious and hungry for experimentation, so set-out to write an epidemic simulator (and learn C for good measure). Sadly only the cellular automata version was implemented and agent mobility is in its 3rd year as a rusting TODO item.",
+    artifacts: [
+        {url: "https://github.com/xandkar/epidemic-sim"}
+    ],
+    references: [
+        {url: "https://en.wikipedia.org/wiki/Forest-fire_model"}
+    ]
+}

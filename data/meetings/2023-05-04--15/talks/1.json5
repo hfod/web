@@ -1,0 +1,8 @@
+{
+    speaker_id: "daniel-krol",
+    title: "Argument Clinic",
+    description: "Managed debate website. Two sides and a moderator. The moderator formalizes agreed on definitions and conclusions. Also, spawns sub-debates if one claim is really premised on three other claims. So we can get to the heart of everything.",
+    artifacts: [
+        {url: "https://web.archive.org/web/20140103105431/http://argumentclinic.net/"}
+    ]
+}

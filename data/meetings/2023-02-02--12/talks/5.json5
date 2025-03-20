@@ -1,0 +1,8 @@
+{
+    speaker_id: "jack-jutzi",
+    title: "Rust Web Service from Scratch",
+    description: "A learning email newsletter and web service written from scratch in the Rust programming language.",
+    artifacts: [
+        {url: "https://github.com/jsjutzi/rust-zero-backend"}
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    speaker_id: "kevin",
+    title: "Manchester Makerspace's Custom Doorbell",
+    description: "A networked and remote doorbell and surveillance system for the Manchester Makerspace.",
+    references: [
+        {url: "https://en.wikipedia.org/wiki/ESP32"}
+    ]
+}

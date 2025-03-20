@@ -1,0 +1,11 @@
+{
+    speaker_id: "daniel-krol",
+    title: "Easy Self-hosted Maps.",
+    description: "Using Sandstorm to host your own Google Maps replacement with collaborative trip planning and more!",
+    artifacts: [
+        {url: "https://github.com/orblivion/sandstorm-share-a-map"}
+    ],
+    references: [
+        {url: "https://sandstorm.io/"}
+    ]
+}
