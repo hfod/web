@@ -17,8 +17,17 @@ impl Obj {
 fn sha2_256_hex(data: &[u8]) -> String {
     use sha2::Digest;
 
-    sha2::Sha256::digest(data)
-        .iter()
-        .map(|byte| format!("{byte:02x}"))
-        .collect()
+    let bytes: Vec<u8> = sha2::Sha256::digest(data).to_vec();
+    hex_encode(bytes.as_slice())
+}
+
+fn hex_encode(bytes: &[u8]) -> String {
+    use std::fmt::Write;
+
+    // Ref: https://rust-lang.github.io/rust-clippy/master/index.html#format_collect
+    bytes.iter().fold(String::new(), |mut hex, byte| {
+        write!(hex, "{byte:02X}")
+            .unwrap_or_else(|e| unreachable!("Writes to a string failed: {e:?}"));
+        hex
+    })
 }
