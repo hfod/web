@@ -1,0 +1,13 @@
+{
+    name: "Bob Peret",
+    addr: {
+        building: "34",
+        street: "Birchwood Cir",
+        town: "Bedford",
+        state: "NH",
+        zipcode: "03110",
+        country: "USA",
+        google_maps_embed_url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2921.096421392338!2d-71.54028939999999!3d42.934094099999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24a5b247c07a5%3A0x480e1428103076f0!2s34%20Birchwood%20Cir%2C%20Bedford%2C%20NH%2003110!5e0!3m2!1sen!2sus!4v1729022720394!5m2!1sen!2sus",
+    },
+    contact_id: "bob-peret"
+}

@@ -1,0 +1,8 @@
+{
+    speaker_id: "kyle-robertson",
+    title: "Mathematical Programming and Optimization with Python and Pyomo",
+    description: "A quick 5 minute introduction to using Python and the Pyomo library to set up and solve combinatorial optimization problems by demonstrating the solution of an example optimal scheduling problem.",
+    artifacts: [
+        {url: "https://github.com/kwrobert/pyomo-presentation"}
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    speaker_id: "zach-taylor",
+    title: "DIY mechanical split keyboard from cardboard!",
+    description: "A demo of the current experiment and an overviewing of the many leading up prototyping experiments with cardboard and handwiring.",
+    artifacts: [{url: "https://github.com/taylorzr/qmk_firmware"}],
+    references: [{url: "https://www.reddit.com/r/ErgoMechKeyboards/comments/shy8hz/6_column_splay_split_handwired_cardboard/"}],
+    // TODO Need some links to components
+}

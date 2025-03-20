@@ -1,0 +1,10 @@
+{
+    seq: 4,
+    format: "MeetAndGreet",
+    codename: "Three Musketeers",
+    date: "2022-05-12",
+    time: "19:00",
+    venue_id: "manchester-makerspace",
+    organizer_id: "siraaj-khandkar",
+    registration_url: "https://forms.gle/kU5bYdTi1im8bdy4A",
+}

@@ -1,0 +1,10 @@
+{
+    seq: 6,
+    format: "ShowAndTell",
+    codename: "7",
+    date: "2022-07-07",
+    time: "19:00",
+    venue_id: "raven-labs",
+    organizer_id: "siraaj-khandkar",
+    registration_url: "https://forms.gle/HsnNpgkpRUdKSXvk9",
+}

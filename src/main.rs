@@ -1,27 +1,18 @@
-use std::{fs, path::PathBuf};
+use std::path::PathBuf;
 
-use anyhow::anyhow;
 use clap::Parser;
 use tracing::level_filters::LevelFilter;
 
-type Url = String; // TODO Something better?
-
-#[derive(serde::Serialize, serde::Deserialize, Debug)]
-struct Person {
-    #[serde(default = "String::new")]
-    id: String,
-    name: String,
-    email: String,
-    email_show: bool,
-    website: Url,
-    affiliated_links: Vec<Url>,
-}
+use hfod_website::data;
 
 #[derive(Parser, Debug)]
 #[command(version, about)]
 struct Cli {
     #[clap(short, long = "log", default_value_t = LevelFilter::ERROR)]
     log_level: LevelFilter,
+
+    #[clap(short, long = "data", default_value = "./data")]
+    data_dir: PathBuf,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -31,23 +22,19 @@ fn main() -> anyhow::Result<()> {
     let _span_guard = span.enter();
     tracing::debug!(?cli, "Starting.");
 
-    let people_dir = PathBuf::from("./data/people");
-    for file_result in fs::read_dir(&people_dir)? {
-        let file = file_result?;
-        let meta = file.metadata()?;
-        assert!(meta.is_file());
-        let path = file.path();
-        let id = file
-            .file_name()
-            .to_str()
-            .ok_or(anyhow!("Invalid filename for a person file: {path:?}"))?
-            .strip_suffix(".toml")
-            .ok_or(anyhow!("Missing file extension in person file: {path:?}"))?
-            .to_string();
-        let data = fs::read_to_string(&path)?;
-        let mut person: Person = toml::from_str(&data)?;
-        person.id = id;
-        dbg!(&person);
+    let data_dir = cli.data_dir.canonicalize()?;
+    let store = data::Store::connect(&data_dir)?;
+    for person in store.people()? {
+        dbg!(person);
+    }
+    for venue in store.venues()? {
+        dbg!(venue);
+    }
+    for meeting in store.meetings()? {
+        dbg!(meeting);
+    }
+    for obj in store.objects()? {
+        dbg!((&obj.hash, &obj.ext));
     }
     Ok(())
 }

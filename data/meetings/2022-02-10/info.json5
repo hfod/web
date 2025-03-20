@@ -1,0 +1,16 @@
+{
+    seq: 1,
+    format: "ShowAndTell",
+    codename: "Genesis Block",
+    date: "2022-02-10",
+    time: "08:00",
+    venue_id: "raven-labs",
+    organizer_id: "siraaj-khandkar",
+    // registration_url: "",
+    // TODO See original for registration_url:
+    //     (let* ([file "join-us-button-mailto.txt"]
+    //            ; FIXME Tangled abstractions - we're not in a view!!!
+    //            [path (build-path "view" "web" "inc" file)]
+    //            [mailto (file->string path)])
+    //       (u mailto))
+}

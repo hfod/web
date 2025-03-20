@@ -1,0 +1,9 @@
+{
+    seq: 7,
+    format: "ShowAndTell",
+    codename: "Swerve",
+    date: "2022-08-04",
+    time: "19:00",
+    venue_id: "manchester-makerspace",
+    organizer_id: "siraaj-khandkar",
+}
