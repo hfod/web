@@ -36,14 +36,37 @@ impl Store {
             load_meetings(&meetings_dir_path).context(meetings_dir_path.display().to_string())?;
 
         for venue in venues.values() {
-            assert!(people.get(&venue.contact_id).is_some());
+            if !people.contains_key(&venue.contact_id) {
+                bail!(
+                    "Invalid venue: contact_id not found in people set.
+                    venue={venue:?}."
+                );
+            }
         }
 
-        for meeting in meetings.values() {
-            assert!(people.get(&meeting.organizer_id).is_some());
-            assert!(venues.get(&meeting.venue_id).is_some());
+        let mut meetings_sorted: Vec<Meeting> = meetings.values().cloned().collect();
+        meetings_sorted.sort_by_key(|m| m.seq);
+        for meeting in meetings_sorted {
+            if !people.contains_key(&meeting.organizer_id) {
+                bail!(
+                    "Invalid meeting: organizer_id not found in people set.
+                    meeting={meeting:?}"
+                );
+            }
+            if !venues.contains_key(&meeting.venue_id) {
+                bail!(
+                    "Invalid meeting: venue_id not found in venues set.
+                    meeting={meeting:?}"
+                );
+            }
             for talk in &meeting.talks {
-                assert!(people.get(&talk.speaker_id).is_some());
+                if !people.contains_key(&talk.speaker_id) {
+                    bail!(
+                        "Invalid talk: speaker_id not found in people set.
+                        talk={talk:?},
+                        meeting={meeting:?}"
+                    );
+                }
             }
         }
 
