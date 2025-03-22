@@ -11,7 +11,7 @@ use crate::{
 pub struct Meeting {
     pub seq: i32, // Not usize because we need -1 :)
     pub format: Format,
-    pub codename: String,
+    pub codename: String, // TODO Rename "codename" to simply "title"?
     pub date: time::Date,
     pub time: time::Time,
     pub venue_id: String, // Venue. Formerly: [host Host?]

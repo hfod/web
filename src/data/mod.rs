@@ -24,6 +24,9 @@ pub struct Store {
 
 impl Store {
     pub fn connect(data_dir: &Path) -> anyhow::Result<Self> {
+        let data_dir = data_dir
+            .canonicalize()
+            .context(data_dir.display().to_string())?;
         let people_dir_path = data_dir.join("people");
         let venues_dir_path = data_dir.join("venues");
         let meetings_dir_path = data_dir.join("meetings");

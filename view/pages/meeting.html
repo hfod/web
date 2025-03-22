@@ -1,0 +1,14 @@
+{# vim:ft=htmldjango:
+#}
+<h1>Meeting {{ meeting.seq }}: {{ meeting.codename }}</h1>
+{% for talk in meeting.talks %}
+    <h2>{{ talk.title }}</h2>
+    {# TODO: Lookup speaker name. #}
+    <p>by <a href="{{ talk.speaker_id }}">{{ talk.speaker_id }}</a></p>
+    <p>{{ talk.description }}</p>
+    {# TODO: Show website if available. #}
+    {# TODO: List artifacts. #}
+    <h3>Artifacts</h3>
+    {# TODO: List references. #}
+    <h3>References</h3>
+{% endfor %}

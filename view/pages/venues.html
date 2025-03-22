@@ -1,0 +1,19 @@
+{# vim:ft=htmldjango:
+#}
+<h1>Venues</h1>
+<table class="venues-list">
+    <tr>
+        <th>name</th>
+        <th>town</th>
+        <th>contact</th>
+        {# TODO Number of meetings hosted. #}
+    </tr>
+    {% for venue in venues %}
+    <tr>
+        <td><a href="/venues/{{ venue.id }}">{{ venue.name }}</a></td>
+        <td>{{ venue.addr.town }}</td>
+        {# TODO Lookup contact name. #}
+        <td><a href="/people/{{ venue.contact_id }}">{{ venue.contact_id }}</a></td>
+    </tr>
+    {% endfor %}
+</table>

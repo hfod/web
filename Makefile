@@ -8,10 +8,9 @@ HOST         := hackfreeordie.org
 PORT         := 22222
 USER_AT_HOST := $(USER)@$(HOST)
 
+DIR_DATA       := data
 DIR_WEB_LOCAL  := www
 DIR_SERVER     := /var/www/hackfreeordie.org
-
-CMD_GENERATE := # TODO
 
 .PHONY: build
 build: web
@@ -19,7 +18,7 @@ build: web
 .PHONY: web
 web:
 	mkdir -p $(DIR_WEB_LOCAL)
-	$(CMD_GENERATE) # -o $(DIR_WEB_LOCAL) web
+	cargo run --release -- --in $(DIR_DATA) --out $(DIR_WEB_LOCAL)
 
 .PHONY: serve
 serve:
@@ -31,7 +30,7 @@ rebuild: clean
 
 .PHONY: clean
 clean:
-	rm -rf $(DIR_WEB_LOCAL) $(DIR_EMAIL)
+	rm -rf $(DIR_WEB_LOCAL)
 
 .PHONY: preview
 preview: rebuild

@@ -1,0 +1,13 @@
+{# vim:ft=htmldjango:
+#}
+<h1>People</h1>
+<table class="people-list">
+    <tr>
+        <th>name</th>
+    </tr>
+    {% for person in people %}
+    <tr>
+        <td><a href="/people/{{ person.id }}">{{ person.name }}</a></td>
+    </tr>
+    {% endfor %}
+</table>
