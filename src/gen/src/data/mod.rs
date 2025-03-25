@@ -17,7 +17,7 @@ use obj::Obj;
 use person::Person;
 use venue::Venue;
 
-pub struct Store {
+pub struct Data {
     people: HashMap<String, Person>,
     venues: HashMap<String, Venue>,
     meetings: HashMap<i32, Meeting>,
@@ -25,8 +25,8 @@ pub struct Store {
     home: Doc,
 }
 
-impl Store {
-    pub fn connect(data_dir: &Path, web_path_objects: &Path) -> anyhow::Result<Self> {
+impl Data {
+    pub fn read(data_dir: &Path, web_path_objects: &Path) -> anyhow::Result<Self> {
         let data_dir = data_dir
             .canonicalize()
             .context(data_dir.display().to_string())?;
