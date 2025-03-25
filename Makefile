@@ -18,7 +18,7 @@ build: web
 .PHONY: web
 web:
 	mkdir -p $(DIR_WEB_LOCAL)
-	cargo run --release -- --in $(DIR_DATA) --out $(DIR_WEB_LOCAL)
+	cargo run --release --bin hfod-web-gen -- --in $(DIR_DATA) --out $(DIR_WEB_LOCAL)
 
 .PHONY: serve
 serve:

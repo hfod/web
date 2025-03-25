@@ -1,9 +1,16 @@
-[package]
-name = "hfod-website"
+[workspace.package]
 version = "0.1.0"
+authors = ["Siraaj Khandkar <siraaj@khandkar.net>"]
+license = "GPL-3.0-or-later"
 edition = "2024"
 
-[dependencies]
+[workspace]
+members = [
+    "src/gen",
+]
+resolver = "2"
+
+[workspace.dependencies]
 anyhow = { version = "1.0.97", features = ["backtrace"] }
 askama = "0.12.1"
 chrono = { version = "0.4.40", features = ["serde"] }

@@ -8,7 +8,7 @@ use askama::Template;
 use clap::Parser;
 use tracing::level_filters::LevelFilter;
 
-use hfod_website::{
+use hfod_web_gen::{
     data::{self, doc::Doc, meeting::Meeting, obj::Obj, person::Person, venue::Venue},
     pages,
 };
@@ -30,7 +30,7 @@ struct Cli {
 
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
-    hfod_website::tracing::init(cli.log_level)?;
+    hfod_web_gen::tracing::init(cli.log_level)?;
     let span = tracing::debug_span!(env!("CARGO_PKG_NAME"));
     let _span_guard = span.enter();
     tracing::debug!(?cli, "Starting.");
