@@ -25,9 +25,12 @@ fn hex_encode(bytes: &[u8]) -> String {
     use std::fmt::Write;
 
     // Ref: https://rust-lang.github.io/rust-clippy/master/index.html#format_collect
-    bytes.iter().fold(String::new(), |mut hex, byte| {
-        write!(hex, "{byte:02X}")
-            .unwrap_or_else(|e| unreachable!("Writes to a string failed: {e:?}"));
-        hex
-    })
+    bytes
+        .iter()
+        .fold(String::new(), |mut hex, byte| {
+            write!(hex, "{byte:02X}")
+                .unwrap_or_else(|e| unreachable!("Writes to a string failed: {e:?}"));
+            hex
+        })
+        .to_lowercase()
 }
