@@ -147,7 +147,7 @@ where
     I: Iterator<Item = &'a Venue> + 'a,
 {
     let mut venues: Vec<Venue> = venues.cloned().collect();
-    venues.sort_by_key(|p| p.name.clone()); // TODO Possible to avoid this .clone()?
+    venues.sort_by(|a, b| a.name.cmp(&b.name));
     let file_path = dir.join("index.html");
     let page = pages::page::Page {
         path: PathBuf::from("/venues"),
