@@ -22,7 +22,7 @@ web:
 
 .PHONY: serve
 serve:
-	./serve --dev --port 8080 $(DIR_WEB_LOCAL)
+	cargo run --bin hfod-web-srv -- --addr 127.0.0.1:8080 --web-dir $(DIR_WEB_LOCAL)
 
 .PHONY: rebuild
 rebuild: clean
