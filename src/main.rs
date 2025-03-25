@@ -9,7 +9,7 @@ use clap::Parser;
 use tracing::level_filters::LevelFilter;
 
 use hfod_website::{
-    data::{self, meeting::Meeting, obj::Obj, person::Person, venue::Venue},
+    data::{self, doc::Doc, meeting::Meeting, obj::Obj, person::Person, venue::Venue},
     pages,
 };
 
@@ -35,13 +35,14 @@ fn main() -> anyhow::Result<()> {
     let _span_guard = span.enter();
     tracing::debug!(?cli, "Starting.");
 
-    let store = data::Store::connect(&cli.input_dir)?;
+    // TODO Do something better with local/web path management.
+    let store = data::Store::connect(&cli.input_dir, Path::new("_obj"))?;
 
     write_objects(&cli.output_dir.join("_obj"), store.objects()?)?;
     write_people(&cli.output_dir.join("people"), store.people()?)?;
     write_venues(&cli.output_dir.join("venues"), store.venues()?)?;
     write_meetings(&cli.output_dir.join("meetings"), store.meetings()?)?;
-    write_home(&cli.output_dir)?;
+    write_home(&cli.output_dir, store.home()?)?;
     Ok(())
 }
 
@@ -183,12 +184,12 @@ fn write_venue(dir: &Path, venue: Venue) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn write_home(dir: &Path) -> anyhow::Result<()> {
+fn write_home(dir: &Path, doc: &Doc) -> anyhow::Result<()> {
     let file_path = dir.join("index.html");
     let page = pages::page::Page {
         path: PathBuf::from("/"),
         nav: vec![],
-        body: pages::home::Home {}.render()?,
+        body: doc.text_html.clone(),
     }
     .render()?;
     if let Some(parent) = file_path.parent() {

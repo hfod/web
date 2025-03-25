@@ -1,4 +1,3 @@
-pub mod home;
 pub mod meeting;
 pub mod meetings;
 pub mod page;

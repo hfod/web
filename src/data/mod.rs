@@ -1,3 +1,4 @@
+pub mod doc;
 pub mod link;
 pub mod meeting;
 pub mod obj;
@@ -10,6 +11,7 @@ use std::{collections::HashMap, fs, path::Path};
 
 use anyhow::{bail, Context};
 
+use doc::Doc;
 use meeting::Meeting;
 use obj::Obj;
 use person::Person;
@@ -20,16 +22,18 @@ pub struct Store {
     venues: HashMap<String, Venue>,
     meetings: HashMap<i32, Meeting>,
     objects: HashMap<String, Obj>,
+    home: Doc,
 }
 
 impl Store {
-    pub fn connect(data_dir: &Path) -> anyhow::Result<Self> {
+    pub fn connect(data_dir: &Path, web_obj_dir: &Path) -> anyhow::Result<Self> {
         let data_dir = data_dir
             .canonicalize()
             .context(data_dir.display().to_string())?;
         let people_dir_path = data_dir.join("people");
         let venues_dir_path = data_dir.join("venues");
         let meetings_dir_path = data_dir.join("meetings");
+        let home_dir_path = data_dir.join("home");
 
         let (people, mut objects_from_people) =
             load_people(&people_dir_path).context(people_dir_path.display().to_string())?;
@@ -37,6 +41,8 @@ impl Store {
             load_venues(&venues_dir_path).context(venues_dir_path.display().to_string())?;
         let (meetings, mut objects_from_meetings) =
             load_meetings(&meetings_dir_path).context(meetings_dir_path.display().to_string())?;
+        let (home, mut objects_from_home) = Doc::from_dir(&home_dir_path, web_obj_dir)
+            .context(home_dir_path.display().to_string())?;
 
         for venue in venues.values() {
             if !people.contains_key(&venue.contact_id) {
@@ -76,6 +82,7 @@ impl Store {
         let mut objects = Vec::new();
         objects.append(&mut objects_from_people);
         objects.append(&mut objects_from_meetings);
+        objects.append(&mut objects_from_home);
         let objects: HashMap<String, Obj> =
             objects.into_iter().map(|o| (o.hash.clone(), o)).collect();
 
@@ -84,6 +91,7 @@ impl Store {
             venues,
             meetings,
             objects,
+            home,
         };
         Ok(selph)
     }
@@ -102,6 +110,10 @@ impl Store {
 
     pub fn objects(&self) -> anyhow::Result<impl Iterator<Item = &Obj>> {
         Ok(self.objects.values())
+    }
+
+    pub fn home(&self) -> anyhow::Result<&Doc> {
+        Ok(&self.home)
     }
 }
 
