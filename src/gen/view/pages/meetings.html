@@ -18,11 +18,11 @@
         <td>{{ meeting.date }}</td>
         <td>{{ meeting.time }}</td>
         <!-- TODO Absolute path HREFs. -->
-        <td><a href="{{ meeting.seq }}/index.html">{{ meeting.codename }}</a></td>
+        <td><a href="{{ meeting.seq }}">{{ meeting.codename }}</a></td>
         <td>{{ meeting.talks.len() }}</td>
         <td>{{ meeting.photos.len() }}</td>
         <!-- TODO Lookup venue name. -->
-        <td><a href="/venues/{{ meeting.venue_id }}/index.html">{{ meeting.venue_id }}</a></td>
+        <td><a href="/venues/{{ meeting.venue_id }}">{{ meeting.venue_id }}</a></td>
     </tr>
     {% endfor %}
 </table>

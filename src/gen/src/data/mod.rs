@@ -26,7 +26,7 @@ pub struct Store {
 }
 
 impl Store {
-    pub fn connect(data_dir: &Path, web_obj_dir: &Path) -> anyhow::Result<Self> {
+    pub fn connect(data_dir: &Path, web_path_objects: &Path) -> anyhow::Result<Self> {
         let data_dir = data_dir
             .canonicalize()
             .context(data_dir.display().to_string())?;
@@ -41,7 +41,7 @@ impl Store {
             load_venues(&venues_dir_path).context(venues_dir_path.display().to_string())?;
         let (meetings, mut objects_from_meetings) =
             load_meetings(&meetings_dir_path).context(meetings_dir_path.display().to_string())?;
-        let (home, mut objects_from_home) = Doc::from_dir(&home_dir_path, web_obj_dir)
+        let (home, mut objects_from_home) = Doc::from_dir(&home_dir_path, web_path_objects)
             .context(home_dir_path.display().to_string())?;
 
         for venue in venues.values() {

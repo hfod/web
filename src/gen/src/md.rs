@@ -12,7 +12,7 @@ use crate::data::obj::Obj;
 
 pub fn to_html_with_local_obj_refs(
     file_md: &Path,
-    web_obj_dir: &Path,
+    web_path_objects: &Path,
 ) -> anyhow::Result<(String, Vec<Obj>)> {
     let doc_dir = file_md
         .parent()
@@ -42,7 +42,7 @@ pub fn to_html_with_local_obj_refs(
                 let obj = Obj::new(file_data, file_ext);
                 let event1 = Event::Start(Tag::Image {
                     link_type,
-                    dest_url: web_obj_dir
+                    dest_url: web_path_objects
                         .join(&obj.hash)
                         .to_string_lossy()
                         .to_string()

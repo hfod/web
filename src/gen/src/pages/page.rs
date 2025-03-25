@@ -6,7 +6,7 @@ use crate::nav;
 // XXX escape="none" to avoid butchering rendered content, in body field.
 #[template(path = "page.html", escape = "none")]
 pub struct Page {
-    pub path: PathBuf,
+    pub web_path: PathBuf,
     // pub title: String,
     // pub normalize: PathBuf,
     // pub style: PathBuf,

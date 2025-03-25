@@ -24,7 +24,7 @@
     <body>
         <ul class="nav">
             {%- for link in nav -%}
-            <li>{%- if path.eq(link.path.as_path()) -%}
+            <li>{%- if web_path.eq(link.path.as_path()) -%}
                 {{- link.name -}}
                 {%- else -%}
                 <a href="{{ link.path.display() }}">{{- link.name -}}</a>
