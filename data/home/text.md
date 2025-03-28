@@ -1,7 +1,7 @@
 Hack Free Or Die
 ================
 
-![Banner](banner.jpeg)
+<!-- ![Banner](banner.jpeg) -->
 
 A show and tell for and by
 [hackers](https://datatracker.ietf.org/doc/html/rfc1392#page-21)[^1]
