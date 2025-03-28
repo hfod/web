@@ -15,7 +15,10 @@ use anyhow::Context;
 use askama::Template;
 
 use crate::{
-    data::{doc::Doc, meeting::Meeting, obj::Obj, person::Person, venue::Venue, Data},
+    data::{
+        Data, doc::Doc, meeting::Meeting, obj::Obj, person::Person,
+        venue::Venue,
+    },
     nav, path,
 };
 
@@ -38,10 +41,14 @@ pub fn generate(data_dir: &Path, artifacts_dir: &Path) -> anyhow::Result<()> {
     let web_path_people = web_path_root.join("people");
 
     let artifact_path_root = artifacts_dir;
-    let artifact_path_objects = path::reroot(&artifact_path_root, &web_path_objects)?;
-    let artifact_path_meetings = path::reroot(&artifact_path_root, &web_path_meetings)?;
-    let artifact_path_venues = path::reroot(&artifact_path_root, &web_path_venues)?;
-    let artifact_path_people = path::reroot(&artifact_path_root, &web_path_people)?;
+    let artifact_path_objects =
+        path::reroot(&artifact_path_root, &web_path_objects)?;
+    let artifact_path_meetings =
+        path::reroot(&artifact_path_root, &web_path_meetings)?;
+    let artifact_path_venues =
+        path::reroot(&artifact_path_root, &web_path_venues)?;
+    let artifact_path_people =
+        path::reroot(&artifact_path_root, &web_path_people)?;
 
     let nav = vec![
         link!("home", &web_path_root),
@@ -77,7 +84,10 @@ pub fn generate(data_dir: &Path, artifacts_dir: &Path) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn write_objects<'a, I>(artifacts_dir: &Path, objects: I) -> anyhow::Result<()>
+fn write_objects<'a, I>(
+    artifacts_dir: &Path,
+    objects: I,
+) -> anyhow::Result<()>
 where
     I: Iterator<Item = &'a Obj> + 'a,
 {
@@ -86,8 +96,9 @@ where
     for obj in objects {
         let obj_file_path = artifacts_dir.join(&obj.hash);
         // let obj_file_path = obj_file_path.with_extension(&obj.ext);
-        fs::write(&obj_file_path, &obj.data)
-            .context(format!("Failed to write object file: {obj_file_path:?}"))?;
+        fs::write(&obj_file_path, &obj.data).context(format!(
+            "Failed to write object file: {obj_file_path:?}"
+        ))?;
     }
     Ok(())
 }
@@ -115,9 +126,11 @@ where
     }
     .render()?;
     if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent).context(format!("Failed to create directory: {parent:?}"))?;
+        fs::create_dir_all(parent)
+            .context(format!("Failed to create directory: {parent:?}"))?;
     }
-    fs::write(&file_path, page).context(format!("Failed to write HTML file: {file_path:?}"))?;
+    fs::write(&file_path, page)
+        .context(format!("Failed to write HTML file: {file_path:?}"))?;
     for meeting in meetings {
         let seq = meeting.seq.to_string();
         write_meeting(
@@ -144,9 +157,11 @@ fn write_meeting(
     }
     .render()?;
     if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent).context(format!("Failed to create directory: {parent:?}"))?;
+        fs::create_dir_all(parent)
+            .context(format!("Failed to create directory: {parent:?}"))?;
     }
-    fs::write(&file_path, page).context(format!("Failed to write HTML file: {file_path:?}"))?;
+    fs::write(&file_path, page)
+        .context(format!("Failed to write HTML file: {file_path:?}"))?;
     Ok(())
 }
 
@@ -172,16 +187,22 @@ where
     }
     .render()?;
     if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent).context(format!("Failed to create directory: {parent:?}"))?;
+        fs::create_dir_all(parent)
+            .context(format!("Failed to create directory: {parent:?}"))?;
     }
-    fs::write(&file_path, page).context(format!("Failed to write HTML file: {file_path:?}"))?;
+    fs::write(&file_path, page)
+        .context(format!("Failed to write HTML file: {file_path:?}"))?;
     for person in people {
         write_person(&artifacts_dir.join(&person.id), nav, person)?;
     }
     Ok(())
 }
 
-fn write_person(dir: &Path, nav: &[nav::Link], person: Person) -> anyhow::Result<()> {
+fn write_person(
+    dir: &Path,
+    nav: &[nav::Link],
+    person: Person,
+) -> anyhow::Result<()> {
     let file_path = dir.join(STR_INDEX_HTML);
     let page = page::Page {
         web_path: PathBuf::from("/people").join(&person.id),
@@ -190,9 +211,11 @@ fn write_person(dir: &Path, nav: &[nav::Link], person: Person) -> anyhow::Result
     }
     .render()?;
     if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent).context(format!("Failed to create directory: {parent:?}"))?;
+        fs::create_dir_all(parent)
+            .context(format!("Failed to create directory: {parent:?}"))?;
     }
-    fs::write(&file_path, page).context(format!("Failed to write HTML file: {file_path:?}"))?;
+    fs::write(&file_path, page)
+        .context(format!("Failed to write HTML file: {file_path:?}"))?;
     Ok(())
 }
 
@@ -218,16 +241,22 @@ where
     }
     .render()?;
     if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent).context(format!("Failed to create directory: {parent:?}"))?;
+        fs::create_dir_all(parent)
+            .context(format!("Failed to create directory: {parent:?}"))?;
     }
-    fs::write(&file_path, page).context(format!("Failed to write HTML file: {file_path:?}"))?;
+    fs::write(&file_path, page)
+        .context(format!("Failed to write HTML file: {file_path:?}"))?;
     for venue in venues {
         write_venue(&artifacts_dir.join(&venue.id), nav, venue)?;
     }
     Ok(())
 }
 
-fn write_venue(dir: &Path, nav: &[nav::Link], venue: Venue) -> anyhow::Result<()> {
+fn write_venue(
+    dir: &Path,
+    nav: &[nav::Link],
+    venue: Venue,
+) -> anyhow::Result<()> {
     let file_path = dir.join(STR_INDEX_HTML);
     let page = page::Page {
         // FIXME Pass-in web_path!
@@ -237,9 +266,11 @@ fn write_venue(dir: &Path, nav: &[nav::Link], venue: Venue) -> anyhow::Result<()
     }
     .render()?;
     if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent).context(format!("Failed to create directory: {parent:?}"))?;
+        fs::create_dir_all(parent)
+            .context(format!("Failed to create directory: {parent:?}"))?;
     }
-    fs::write(&file_path, page).context(format!("Failed to write HTML file: {file_path:?}"))?;
+    fs::write(&file_path, page)
+        .context(format!("Failed to write HTML file: {file_path:?}"))?;
     Ok(())
 }
 
@@ -257,8 +288,10 @@ fn write_home(
     }
     .render()?;
     if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent).context(format!("Failed to create directory: {parent:?}"))?;
+        fs::create_dir_all(parent)
+            .context(format!("Failed to create directory: {parent:?}"))?;
     }
-    fs::write(&file_path, page).context(format!("Failed to write HTML file: {file_path:?}"))?;
+    fs::write(&file_path, page)
+        .context(format!("Failed to write HTML file: {file_path:?}"))?;
     Ok(())
 }

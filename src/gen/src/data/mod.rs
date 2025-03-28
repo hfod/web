@@ -9,7 +9,7 @@ pub mod venue;
 
 use std::{collections::HashMap, fs, path::Path};
 
-use anyhow::{bail, Context};
+use anyhow::{Context, bail};
 
 use doc::Doc;
 use meeting::Meeting;
@@ -26,7 +26,10 @@ pub struct Data {
 }
 
 impl Data {
-    pub fn read(data_dir: &Path, web_path_objects: &Path) -> anyhow::Result<Self> {
+    pub fn read(
+        data_dir: &Path,
+        web_path_objects: &Path,
+    ) -> anyhow::Result<Self> {
         let data_dir = data_dir
             .canonicalize()
             .context(data_dir.display().to_string())?;
@@ -35,14 +38,16 @@ impl Data {
         let meetings_dir_path = data_dir.join("meetings");
         let home_dir_path = data_dir.join("home");
 
-        let (people, mut objects_from_people) =
-            load_people(&people_dir_path).context(people_dir_path.display().to_string())?;
-        let venues =
-            load_venues(&venues_dir_path).context(venues_dir_path.display().to_string())?;
+        let (people, mut objects_from_people) = load_people(&people_dir_path)
+            .context(people_dir_path.display().to_string())?;
+        let venues = load_venues(&venues_dir_path)
+            .context(venues_dir_path.display().to_string())?;
         let (meetings, mut objects_from_meetings) =
-            load_meetings(&meetings_dir_path).context(meetings_dir_path.display().to_string())?;
-        let (home, mut objects_from_home) = Doc::from_dir(&home_dir_path, web_path_objects)
-            .context(home_dir_path.display().to_string())?;
+            load_meetings(&meetings_dir_path)
+                .context(meetings_dir_path.display().to_string())?;
+        let (home, mut objects_from_home) =
+            Doc::from_dir(&home_dir_path, web_path_objects)
+                .context(home_dir_path.display().to_string())?;
 
         for venue in venues.values() {
             if !people.contains_key(&venue.contact_id) {
@@ -53,7 +58,8 @@ impl Data {
             }
         }
 
-        let mut meetings_sorted: Vec<Meeting> = meetings.values().cloned().collect();
+        let mut meetings_sorted: Vec<Meeting> =
+            meetings.values().cloned().collect();
         meetings_sorted.sort_by_key(|m| m.seq);
         for meeting in meetings_sorted {
             if !people.contains_key(&meeting.organizer_id) {
@@ -117,14 +123,18 @@ impl Data {
     }
 }
 
-fn load_people(people_dir_path: &Path) -> anyhow::Result<(HashMap<String, Person>, Vec<Obj>)> {
+fn load_people(
+    people_dir_path: &Path,
+) -> anyhow::Result<(HashMap<String, Person>, Vec<Obj>)> {
     let mut people: HashMap<String, Person> = HashMap::new();
     let mut objects: Vec<Obj> = Vec::new();
     for entry_result in fs::read_dir(people_dir_path)? {
         let entry = entry_result?;
         let person_dir_path = entry.path();
         if !entry.file_type()?.is_dir() {
-            bail!("Invalid entry type in the people directory: {person_dir_path:?}");
+            bail!(
+                "Invalid entry type in the people directory: {person_dir_path:?}"
+            );
         }
         let (person, mut objects_i) = Person::from_dir(&person_dir_path)?;
         objects.append(&mut objects_i);
@@ -134,13 +144,17 @@ fn load_people(people_dir_path: &Path) -> anyhow::Result<(HashMap<String, Person
     Ok((people, objects))
 }
 
-fn load_venues(venues_dir_path: &Path) -> anyhow::Result<HashMap<String, Venue>> {
+fn load_venues(
+    venues_dir_path: &Path,
+) -> anyhow::Result<HashMap<String, Venue>> {
     let mut venues: HashMap<String, Venue> = HashMap::new();
     for entry_result in fs::read_dir(venues_dir_path)? {
         let entry = entry_result?;
         let venue_dir_path = entry.path();
         if !entry.file_type()?.is_dir() {
-            bail!("Invalid entry type in the venues directory: {venue_dir_path:?}");
+            bail!(
+                "Invalid entry type in the venues directory: {venue_dir_path:?}"
+            );
         }
         let venue = Venue::from_dir(&venue_dir_path)?;
         let previous_record = venues.insert(venue.id.clone(), venue);
@@ -149,7 +163,9 @@ fn load_venues(venues_dir_path: &Path) -> anyhow::Result<HashMap<String, Venue>>
     Ok(venues)
 }
 
-fn load_meetings(meetings_dir_path: &Path) -> anyhow::Result<(HashMap<i32, Meeting>, Vec<Obj>)> {
+fn load_meetings(
+    meetings_dir_path: &Path,
+) -> anyhow::Result<(HashMap<i32, Meeting>, Vec<Obj>)> {
     let mut objects = Vec::new();
     let mut seq = -1;
     let mut meetings: HashMap<i32, Meeting> = HashMap::new();
@@ -157,7 +173,9 @@ fn load_meetings(meetings_dir_path: &Path) -> anyhow::Result<(HashMap<i32, Meeti
         let entry = entry_result?;
         let meeting_dir_path = entry.path();
         if !entry.file_type()?.is_dir() {
-            bail!("Invalid entry type in the meetings directory: {meeting_dir_path:?}");
+            bail!(
+                "Invalid entry type in the meetings directory: {meeting_dir_path:?}"
+            );
         }
         let (meeting, mut objects_i) = Meeting::from_dir(&meeting_dir_path)?;
         assert_eq!(seq, meeting.seq);

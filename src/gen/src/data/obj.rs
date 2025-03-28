@@ -28,8 +28,9 @@ fn hex_encode(bytes: &[u8]) -> String {
     bytes
         .iter()
         .fold(String::new(), |mut hex, byte| {
-            write!(hex, "{byte:02X}")
-                .unwrap_or_else(|e| unreachable!("Writes to a string failed: {e:?}"));
+            write!(hex, "{byte:02X}").unwrap_or_else(|e| {
+                unreachable!("Writes to a string failed: {e:?}")
+            });
             hex
         })
         .to_lowercase()

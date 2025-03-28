@@ -10,7 +10,15 @@ const FMT_DATE: &str = "%Y-%m-%d";
 const FMT_TIME: &str = "%H:%M";
 
 #[derive(
-    Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, serde::Serialize, serde::Deserialize,
+    Debug,
+    Copy,
+    Clone,
+    Ord,
+    PartialOrd,
+    Eq,
+    PartialEq,
+    serde::Serialize,
+    serde::Deserialize,
 )]
 pub struct Time(chrono::NaiveTime);
 
@@ -32,7 +40,15 @@ impl FromStr for Time {
 }
 
 #[derive(
-    Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, serde::Serialize, serde::Deserialize,
+    Debug,
+    Copy,
+    Clone,
+    Ord,
+    PartialOrd,
+    Eq,
+    PartialEq,
+    serde::Serialize,
+    serde::Deserialize,
 )]
 pub struct Date(chrono::NaiveDate);
 
@@ -54,7 +70,15 @@ impl FromStr for Date {
 }
 
 #[derive(
-    Debug, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, serde::Serialize, serde::Deserialize,
+    Debug,
+    Copy,
+    Clone,
+    Ord,
+    PartialOrd,
+    Eq,
+    PartialEq,
+    serde::Serialize,
+    serde::Deserialize,
 )]
 pub struct DateTime(chrono::DateTime<chrono::FixedOffset>);
 

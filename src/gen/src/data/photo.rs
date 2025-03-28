@@ -11,7 +11,9 @@ pub struct Photo {
 }
 
 impl Photo {
-    pub fn from_file(photo_file_path: &Path) -> anyhow::Result<Option<(Self, Obj)>> {
+    pub fn from_file(
+        photo_file_path: &Path,
+    ) -> anyhow::Result<Option<(Self, Obj)>> {
         let data = fs::read(&photo_file_path)?;
         if !infer::is_image(&data[..]) {
             return Ok(None);

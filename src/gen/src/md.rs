@@ -5,7 +5,7 @@ use std::{
     sync::LazyLock,
 };
 
-use anyhow::{anyhow, Context};
+use anyhow::{Context, anyhow};
 use pulldown_cmark::{Event, LinkType, Tag};
 
 use crate::data::obj::Obj;

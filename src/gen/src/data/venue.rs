@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use anyhow::{anyhow, Context};
+use anyhow::{Context, anyhow};
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
 pub struct Address {
@@ -39,7 +39,8 @@ impl Venue {
         let mut selph = {
             let ctx = info_file_path.display().to_string();
             let data = fs::read(&info_file_path).context(ctx.clone())?;
-            let selph: Self = serde_json5::from_slice(&data[..]).context(ctx.clone())?;
+            let selph: Self =
+                serde_json5::from_slice(&data[..]).context(ctx.clone())?;
             selph
         };
         selph.id = id;

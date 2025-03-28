@@ -1,6 +1,6 @@
 use std::{ffi::OsStr, fs, path::Path};
 
-use anyhow::{anyhow, bail, Context};
+use anyhow::{Context, anyhow, bail};
 
 use crate::{
     data::{link, obj::Obj, photo::Photo, talk::Talk},
@@ -43,7 +43,8 @@ impl Meeting {
         let mut selph = {
             let ctx = info_file_path.display().to_string();
             let data = fs::read(&info_file_path).context(ctx.clone())?;
-            let selph: Self = serde_json5::from_slice(&data[..]).context(ctx.clone())?;
+            let selph: Self =
+                serde_json5::from_slice(&data[..]).context(ctx.clone())?;
             selph
         };
         // "YYYY-mm-dd--seq"
@@ -63,12 +64,14 @@ impl Meeting {
                 }
             }
             _ => {
-                bail!("Invalid meeting dir name format. dir_name={dir_name:?}, meeting={selph:?}.")
+                bail!(
+                    "Invalid meeting dir name format. dir_name={dir_name:?}, meeting={selph:?}."
+                )
             }
         }
         if talks_dir_path.try_exists()? {
-            for entry_result in
-                fs::read_dir(&talks_dir_path).context(talks_dir_path.display().to_string())?
+            for entry_result in fs::read_dir(&talks_dir_path)
+                .context(talks_dir_path.display().to_string())?
             {
                 let entry = entry_result?;
                 let talk_file_path = entry.path();
@@ -77,23 +80,27 @@ impl Meeting {
                 if typ.is_file()
                     && matches!(talk_file_path.extension(), Some(ext) if ext.eq(OsStr::new("json5")))
                 {
-                    let data: Vec<u8> = fs::read(&talk_file_path).context(ctx.clone())?;
-                    let talk: Talk = serde_json5::from_slice(&data[..]).context(ctx.clone())?;
+                    let data: Vec<u8> =
+                        fs::read(&talk_file_path).context(ctx.clone())?;
+                    let talk: Talk = serde_json5::from_slice(&data[..])
+                        .context(ctx.clone())?;
                     selph.talks.push(talk);
                 }
             }
         }
         let mut objects = Vec::new();
         if photos_dir_path.try_exists()? {
-            for entry_result in
-                fs::read_dir(&photos_dir_path).context(photos_dir_path.display().to_string())?
+            for entry_result in fs::read_dir(&photos_dir_path)
+                .context(photos_dir_path.display().to_string())?
             {
                 let entry = entry_result?;
                 let photo_file_path = entry.path();
                 let ctx = photo_file_path.display().to_string();
                 let typ = entry.file_type().context(ctx.clone())?;
                 if typ.is_file() {
-                    if let Some((photo, obj)) = Photo::from_file(&photo_file_path)? {
+                    if let Some((photo, obj)) =
+                        Photo::from_file(&photo_file_path)?
+                    {
                         selph.photos.push(photo);
                         objects.push(obj);
                     }
