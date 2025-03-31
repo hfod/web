@@ -1,7 +1,7 @@
 {
     seq: 21,
-    format: "ShowAndTell",
-    codename: "Bob Peret on Analog Data & Signal Processing",
+    format: "Talk",
+    codename: "Analog Data & Signal Processing",
     date: "2024-10-30",
     time: "18:00",
     venue_id: "bob-peret",

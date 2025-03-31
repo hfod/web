@@ -1,7 +1,7 @@
 {
     seq: 22,
     format: "Talk",
-    codename: "Siraaj Khandkar on Linked Lists in Rust",
+    codename: "Linked Lists in Rust",
     date: "2025-03-13",
     time: "17:30",
     venue_id: "red-oak-hanover",

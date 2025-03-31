@@ -1,7 +1,8 @@
 {
     seq: 14,
-    format: "ShowAndTell",
-    codename: "Invited talk: Fare on The Essence of OOP",
+    format: "Talk",
+    // codename: "Invited talk: Fare on The Essence of OOP",
+    codename: "Prototype OO in Two Functions",
     date: "2023-03-13",
     time: "18:30",
     venue_id: "red-oak-hanover",
