@@ -15,6 +15,8 @@ pub struct Person {
 
     pub name: String,
 
+    pub signal: Option<Link>,
+
     pub email: Option<String>,
 
     #[serde(default)]

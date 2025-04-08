@@ -2,6 +2,8 @@ use std::{fs, path::Path};
 
 use anyhow::{Context, anyhow};
 
+use crate::data::link;
+
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
 pub struct Address {
     pub building: String,
@@ -24,6 +26,7 @@ pub struct Venue {
 
     pub name: String,
     pub addr: Address,
+    pub website: Option<link::Url>,
     pub contact_id: String, // Person.id
 }
 

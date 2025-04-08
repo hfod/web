@@ -1,14 +1,125 @@
 {# vim:ft=htmldjango:
 #}
-<h1>Meeting {{ meeting.seq }}: {{ meeting.codename }}</h1>
-{% for talk in meeting.talks %}
-    <h2>{{ talk.title }}</h2>
-    {# TODO: Lookup speaker name. #}
-    <p>by <a href="{{ talk.speaker_id }}">{{ talk.speaker_id }}</a></p>
-    <p>{{ talk.description }}</p>
-    {# TODO: Show website if available. #}
-    {# TODO: List artifacts. #}
-    <h3>Artifacts</h3>
-    {# TODO: List references. #}
-    <h3>References</h3>
-{% endfor %}
+
+<h2>Meeting {{ meeting.seq }}: {{ meeting.codename }}</h2>
+
+<table class="properties">
+    <!--
+    <tr>
+        <th>property</th>
+        <th>value</th>
+    </tr>
+    -->
+    <tr>
+        <td>Date</td>
+        <td>{{ meeting.date.display_long() }}</td>
+    </tr>
+    <tr>
+        <td>Time</td>
+        <td>{{ meeting.time }}</td>
+    </tr>
+    <tr>
+        <td>Location</td>
+        <td><a href="/venues/{{ meeting.venue_id }}">{{ data.get_venue(meeting.venue_id).unwrap().name }}</a></td>
+    </tr>
+    <tr>
+        <td>Organizer</td>
+        <td><a href="/people/{{ meeting.organizer_id }}">{{ data.get_person(meeting.organizer_id).unwrap().name }}</a></td>
+    </tr>
+</table>
+
+{% if let Some(collage_obj_file_name) = meeting.collage_obj_file_name %}
+<p><img src={{ std::path::PathBuf::from("/_obj").join(collage_obj_file_name).display() }}></img></p>
+{% endif %}
+
+{#
+{# TODO Uncomment this photo section if/when we go full-bootstrap. #}
+{% if !meeting.photos.is_empty() %}
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            {% for (i, p) in meeting.photos.iter().enumerate() %}
+                <button
+                    type="button"
+                    data-bs-target="#carouselExampleControls"
+                    data-bs-slide-to={{ i }}
+                    aria-label={{ format!("Slide {i}") }}
+                    {% if i == 0 %}
+                        class="active"
+                        aria-current="true"
+                    {% endif %}
+                ></button>
+            {% endfor %}
+        </div>
+
+        <div class="carousel-inner">
+            {% for (i, p) in meeting.photos.iter().enumerate() %}
+                <div
+                    {% if i == 0 %}
+                        class="carousel-item active"
+                    {% else %}
+                        class="carousel-item"
+                    {% endif %}
+                >
+                    {# TODO objects_web_path parameter OR global URL-constructing function(s) #}
+                    <img src={{ format!("/_obj/{}", p.obj_hash) }} class="d-block w-100"></img>
+                    <div class="carousel-caption d-none d-md-block">
+                        {{ p.caption.as_deref().unwrap_or_default() }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+{% endif %}
+#}
+
+{% if let Some(recap) = meeting.recap %}
+    <h3>Recap</h3>
+    <p>{{ recap.text_html }}</p>
+{% endif %}
+
+{% if !meeting.talks.is_empty() %}
+    <h3>Talks</h3>
+    <ol>
+    {% for talk in meeting.talks %}
+        <li>
+            <h4>{{ talk.title }}</h4>
+            <p>by <a href="/people/{{ talk.speaker_id }}">{{ data.get_person(talk.speaker_id).unwrap().name }}</a></p>
+            <p>{{ talk.description }}</p>
+
+            {% if let Some(url) = talk.website %}
+                <h5>Website</h5>
+                <ul>
+                    <li><a href="{{ url }}">{{ url }}</a></li>
+                </ul>
+            {% endif %}
+
+            {% if !talk.artifacts.is_empty() %}
+                <h5>Artifacts</h5>
+                <ul>
+                {% for link in talk.artifacts %}
+                    <li><a href="{{ link.url }}">{{ link.name.as_ref().unwrap_or(link.url) }}</a></li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if !talk.references.is_empty() %}
+                <h5>References</h5>
+                <ul>
+                {% for link in talk.references %}
+                    <li><a href="{{ link.url }}">{{ link.name.as_ref().unwrap_or(link.url) }}</a></li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ol>
+{% endif %}

@@ -7,6 +7,7 @@ use std::{
 use anyhow::Context;
 
 const FMT_DATE: &str = "%Y-%m-%d";
+const FMT_DATE_LONG: &str = "%A, %B %d, %Y";
 const FMT_TIME: &str = "%H:%M";
 
 #[derive(
@@ -51,6 +52,12 @@ impl FromStr for Time {
     serde::Deserialize,
 )]
 pub struct Date(chrono::NaiveDate);
+
+impl Date {
+    pub fn display_long(&self) -> String {
+        self.0.format(FMT_DATE_LONG).to_string()
+    }
+}
 
 impl Display for Date {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -168,6 +175,20 @@ mod tests {
         assert_eq!(s1, s2);
         let d2 = Date::from_str(&s2).unwrap();
         assert_eq!(d1, d2);
+    }
+
+    #[test]
+    fn date_order() {
+        let d1 = Date::from_str("2000-01-01").unwrap();
+        let d2 = Date::from_str("2000-01-02").unwrap();
+        let d3 = Date::from_str("2000-02-01").unwrap();
+        let d4 = Date::from_str("2000-02-02").unwrap();
+        let d5 = Date::from_str("2000-03-01").unwrap();
+        let order_expected = vec![d1, d2, d3, d4, d5];
+        let mut order_actual = vec![d4, d2, d1, d5, d3];
+        assert_ne!(&order_expected, &order_actual, "Initial orders differ.");
+        order_actual.sort();
+        assert_eq!(&order_expected, &order_actual, "Final orders equal.");
     }
 
     #[test]

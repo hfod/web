@@ -1,12 +1,20 @@
-use std::{ffi::OsStr, fs, path::Path};
+use std::{
+    ffi::OsStr,
+    fmt::Display,
+    fs,
+    path::{Path, PathBuf},
+};
 
 use anyhow::{Context, anyhow, bail};
 
 use crate::{
-    data::{link, obj::Obj, photo::Photo, talk::Talk},
+    collage,
+    data::{doc::Doc, link, obj::Obj, photo::Photo, talk::Talk},
     time,
 };
 
+// TODO Perhaps have info.json5 map to a dedicated struct,
+//      then copy from it into the Meeting struct.
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
 pub struct Meeting {
     pub seq: i32, // Not usize because we need -1 :)
@@ -20,20 +28,29 @@ pub struct Meeting {
     pub organizer_id: String, // Person. Formerly: [organizer Speaker?].
 
     pub registration_url: Option<link::Url>,
-    pub recap: Option<String>, // Markdown.
+    pub recap: Option<Doc>,
 
     #[serde(default)]
     pub talks: Vec<Talk>,
 
     #[serde(skip)]
     pub photos: Vec<Photo>,
+
+    #[serde(skip)]
+    pub collage_obj_file_name: Option<PathBuf>,
 }
 
 impl Meeting {
-    pub fn from_dir(dir_path: &Path) -> anyhow::Result<(Self, Vec<Obj>)> {
+    #[tracing::instrument(name = "meeting", skip_all, fields(dir = ?dir_path))]
+    pub fn from_dir(
+        cache_dir: &Path,
+        dir_path: &Path,
+        objects_web_path: &Path,
+    ) -> anyhow::Result<(Self, Vec<Obj>)> {
         let talks_dir_path = dir_path.join("talks");
         let photos_dir_path = dir_path.join("photos");
         let info_file_path = dir_path.join("info.json5");
+        let recap_dir_path = dir_path.join("recap");
         let dir_name = dir_path
             .file_name()
             .ok_or(anyhow!("Invalid meeting dir: {dir_path:?}"))?
@@ -89,6 +106,7 @@ impl Meeting {
             }
         }
         let mut objects = Vec::new();
+        let mut photos_for_collage = Vec::new();
         if photos_dir_path.try_exists()? {
             for entry_result in fs::read_dir(&photos_dir_path)
                 .context(photos_dir_path.display().to_string())?
@@ -101,11 +119,29 @@ impl Meeting {
                     if let Some((photo, obj)) =
                         Photo::from_file(&photo_file_path)?
                     {
+                        photos_for_collage.push(obj.data.clone());
                         selph.photos.push(photo);
                         objects.push(obj);
                     }
                 }
             }
+        }
+        if recap_dir_path.try_exists()? {
+            let (recap_doc, mut recap_objects) =
+                Doc::from_dir(&recap_dir_path, objects_web_path)
+                    .context(recap_dir_path.display().to_string())?;
+            selph.recap = Some(recap_doc);
+            objects.append(&mut recap_objects);
+        }
+        let collage_file_path = cache_dir
+            .join("meeting")
+            .join(selph.seq.to_string())
+            .join("collage.png");
+        if let Some(obj) =
+            collage::object(&collage_file_path, photos_for_collage)?
+        {
+            selph.collage_obj_file_name = Some(obj.to_file_name());
+            objects.push(obj);
         }
         Ok((selph, objects))
     }
@@ -116,4 +152,15 @@ pub enum Format {
     MeetAndGreet,
     ShowAndTell,
     Talk, // TODO: Better name?
+}
+
+impl Display for Format {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            Self::MeetAndGreet => "Meet & Greet",
+            Self::ShowAndTell => "Show & Tell",
+            Self::Talk => "Talk",
+        };
+        write!(f, "{s}")
+    }
 }

@@ -1,28 +1,25 @@
 {# vim:ft=htmldjango:
 #}
-<h1>Meetings</h1>
-<table class="meetings-list">
-    <tr>
-        <th>seq ↑</th>
-        <th>date</th>
-        <th>time</th>
-        <th>codename</th>
-        <th>talks</th>
-        <th>photos</th>
-        <th>venue</th>
-        {# TODO Format/type #}
-    </tr>
-    {% for meeting in meetings %}
-    <tr>
-        <td>{{ meeting.seq }}</td>
-        <td>{{ meeting.date }}</td>
-        <td>{{ meeting.time }}</td>
-        <!-- TODO Absolute path HREFs. -->
-        <td><a href="{{ meeting.seq }}">{{ meeting.codename }}</a></td>
-        <td>{{ meeting.talks.len() }}</td>
-        <td>{{ meeting.photos.len() }}</td>
-        <!-- TODO Lookup venue name. -->
-        <td><a href="/venues/{{ meeting.venue_id }}">{{ meeting.venue_id }}</a></td>
-    </tr>
-    {% endfor %}
-</table>
+<h2>Meetings</h2>
+<div class="records-list">
+    <table>
+        <tr>
+            <th>seq ↑</th>
+            <th>date</th>
+            <th>time</th>
+            <th>format</th>
+            <th>codename</th>
+            <th>venue</th>
+        </tr>
+        {% for row in table %}
+        <tr>
+            <td>{{ row.meeting.seq }}</td>
+            <td>{{ row.meeting.date }}</td>
+            <td>{{ row.meeting.time }}</td>
+            <td>{{ row.meeting.format.to_string() }}</td>
+            <td><a href="/meetings/{{ row.meeting.seq }}">{{ row.meeting.codename }}</a></td>
+            <td><a href="/venues/{{ row.venue.id }}">{{ row.venue.name }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

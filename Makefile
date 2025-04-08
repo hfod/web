@@ -9,8 +9,9 @@ PORT         := 22222
 USER_AT_HOST := $(USER)@$(HOST)
 
 DIR_DATA       := data
+DIR_CACHE      := .cache
 DIR_WEB_LOCAL  := www
-DIR_SERVER     := /var/www/hackfreeordie.org
+DIR_SERVER     := /var/www/v2.hackfreeordie.org
 
 .PHONY: build
 build: web
@@ -31,6 +32,7 @@ rebuild: clean
 .PHONY: clean
 clean:
 	rm -rf $(DIR_WEB_LOCAL)
+	rm -rf $(DIR_CACHE)
 
 .PHONY: preview
 preview: rebuild

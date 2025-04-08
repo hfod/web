@@ -1,0 +1,8 @@
+{# vim:ft=htmldjango:
+#}
+
+{% if let Some(collage_obj_file_name) = collage_obj_file_name %}
+<p><img src={{ std::path::PathBuf::from("/_obj").join(collage_obj_file_name).display() }}></img></p>
+{% endif %}
+
+{{ description_html }}

@@ -1,5 +1,7 @@
 {
-    name: "Red Oak Coworking Offices",
+    // name: "Red Oak Coworking Offices",
+    name: "Red Oak Coworking",
+    website: "https://redoakcoworking.com",
     addr: {
         building: "66",
         street: "Hanover St",

@@ -1,9 +1,19 @@
 {# vim:ft=htmldjango:
 #}
-<h1>{{ venue.name }}</h1>
-<!--TODO address text -->
-<!--TODO contact link (to person page) -->
-<p>{{ venue.contact_id }}</p>
+<h2>{{ venue.name }}</h2>
+<p>
+{% if let Some(url) = venue.website %}
+Website: <a href="{{ url }}">{{ url }}</a><br/>
+{% endif %}
+Address:
+    {{ venue.addr.building }} {{ venue.addr.street }},
+    {% if let Some(room) = venue.addr.room %}
+        {{ room }},
+    {% endif %}
+    {{ venue.addr.town }}, {{ venue.addr.state }} {{ venue.addr.zipcode }}
+    <br/>
+Contact: <a href="/people/{{ contact.id }}">{{ contact.name }}</a><br/>
+</p>
 <hr>
 <p>
     <iframe

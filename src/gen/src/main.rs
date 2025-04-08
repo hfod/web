@@ -6,8 +6,12 @@ use tracing::level_filters::LevelFilter;
 #[derive(Parser, Debug)]
 #[command(version, about)]
 struct Cli {
-    #[clap(short, long = "log", default_value_t = LevelFilter::ERROR)]
+    #[clap(short, long = "log", default_value_t = LevelFilter::DEBUG)]
     log_level: LevelFilter,
+
+    /// Cache directory.
+    #[clap(short, long = "cache", default_value = ".cache")]
+    cache_dir: PathBuf,
 
     /// Input data directory.
     #[clap(short, long = "in", default_value = "data")]
@@ -24,6 +28,10 @@ fn main() -> anyhow::Result<()> {
     let span = tracing::debug_span!(env!("CARGO_PKG_NAME"));
     let _span_guard = span.enter();
     tracing::debug!(?cli, "Starting.");
-    hfod_web_gen::pages::generate(&cli.input_dir, &cli.output_dir)?;
+    hfod_web_gen::pages::generate(
+        &cli.cache_dir,
+        &cli.input_dir,
+        &cli.output_dir,
+    )?;
     Ok(())
 }

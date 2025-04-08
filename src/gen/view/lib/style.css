@@ -1,68 +1,167 @@
-/*
- * Globals
- */
+:root {
+    --zenburn_normal_black  : #3f3f3f;
+    --zenburn_normal_black_lighter: #454545;
+    --zenburn_bright_black  : #262626;
 
+    --zenburn_normal_blue   : #9ab8d7;
+    --zenburn_bright_blue   : #94bff3;
 
-/* Custom default button */
-.btn-secondary,
-.btn-secondary:hover,
-.btn-secondary:focus {
-  color: #333;
-  text-shadow: none; /* Prevent inheritance from `body` */
+    --zenburn_normal_cyan   : #8cd0d3;
+    --zenburn_bright_cyan   : #93e0e3;
+
+    --zenburn_normal_green  : #87af87;
+    --zenburn_bright_green  : #72d5a3;
+
+    --zenburn_normal_magenta: #dc8cc3;
+    --zenburn_bright_magenta: #ec93d3;
+
+    --zenburn_normal_red    : #705050;
+    --zenburn_bright_red    : #dca3a3;
+
+    --zenburn_normal_yellow : #dfaf8f;
+    --zenburn_bright_yellow : #f0dfaf;
+
+    --zenburn_normal_gray   : #dcdccc;
+
+    --zenburn_bright_white  : #ffffff;
+}
+
+:root {
+    --color_bg: var(--zenburn_normal_black);
+    --color_fg: var(--zenburn_normal_gray);
+    --color_fg_headings: var(--color_fg);
+
+    --color_link: var(--zenburn_normal_blue);
+    --color_link_hover: #c0dfff;
+    /*
+     */
+
+    --color_tr_even: var(--zenburn_normal_black_lighter);
+    --color_tr_odd: transparent;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.branding {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.logo {
+    height: 2em;
+    width: auto;
+}
+
+.nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1rem;
+    /* font-size: 1.25em; */
+    font-weight: bold;
 }
 
 
-/*
- * Base structure
- */
+footer {
+    border-top: 1px solid var(--color_fg);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1em 0;
+    font-size: 0.9em;
+
+}
+
+.footer-left {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.footer-logo {
+    height: 1em;
+    width: auto;
+}
+
+.footer-right {
+    display: flex;
+    list-style: none;
+    gap: 1em;
+
+    /* margin: 0; */
+    /* padding: 0; */
+    /* height: 1em; */
+}
 
 body {
-  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
-  /*box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);*/
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: monospace;
+    color: var(--color_fg);
+    background-color: var(--color_bg);
 }
 
-.hfod-container {
-  max-width: 42em;
+a {
+    color: var(--color_link);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--color_link_hover);
 }
 
+/* h1, h2, h3, h4, h5, h6 { */
+/*     color: var(--color_fg_headings); */
+/* } */
 
-/*
- * Header
- */
-
-.navbar .dropdown-item {
-  font-family: monospace;
+/* Needed for the images to scale down on mobile browsers. */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
-.nav-masthead .nav-link {
-  padding: .25rem 0;
-  font-weight: 700;
-  color: rgba(255, 255, 255, .5);
-  background-color: transparent;
-  border-bottom: .25rem solid transparent;
+.records-list table {
+    width: 100%;
+    min-width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
 }
 
-.nav-masthead .nav-link:hover,
-.nav-masthead .nav-link:focus {
-  border-bottom-color: rgba(255, 255, 255, .25);
+.records-list td, th {
+    white-space: nowrap;
 }
 
-.nav-masthead .nav-link + .nav-link {
-  margin-left: 1rem;
+/* TODO Test if we really need this - if it really helps. */
+@media (max-width: 600px) {
+    .records-list td, th {
+        font-size: 0.5rem;
+        padding: 0.3em;
+    }
 }
 
-.nav-masthead .active {
-  color: #fff;
-  border-bottom-color: #fff;
+.records-list {
+    overflow-x: auto;
+    max-width: 100%;
 }
 
-a {color: white}
-a:hover {color: grey}
+.records-list th {
+    border-bottom: 2px solid var(--color_fg);
+}
+.records-list td {
+    padding: 5px;
+}
 
-blockquote {
-  text-align: left;
-  margin: auto auto auto 1em;
-  padding-left: 1em;
-  font-style:italic;
-  border-left: 2px solid white;
+.records-list tr:nth-child(even) {
+    background-color: var(--color_tr_even);
+}
+
+.records-list tr:nth-child(odd) {
+    background-color: var(--color_tr_odd);
 }

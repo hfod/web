@@ -2,6 +2,7 @@ use std::path::Path;
 
 use crate::{data::obj::Obj, md};
 
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
 pub struct Doc {
     pub text_html: String,
 }

@@ -1,5 +1,6 @@
 {
     name: "Manchester Makerspace",
+    website: "https://manchestermakerspace.org",
     addr: {
         building: "36",
         street: "Old Granite St",

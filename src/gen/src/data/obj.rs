@@ -1,4 +1,4 @@
-use std::ffi::OsString;
+use std::{ffi::OsString, path::PathBuf};
 
 #[derive(Clone, Debug)]
 pub struct Obj {
@@ -11,6 +11,12 @@ impl Obj {
     pub fn new(data: Vec<u8>, ext: OsString) -> Self {
         let hash = sha2_256_hex(&data[..]);
         Self { hash, data, ext }
+    }
+
+    pub fn to_file_name(&self) -> PathBuf {
+        let mut file_name = PathBuf::from(&self.hash);
+        file_name.set_extension(&self.ext);
+        file_name
     }
 }
 

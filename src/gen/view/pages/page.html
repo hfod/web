@@ -4,33 +4,52 @@
 <html>
     <head>
         {#
-        <title>{{title}}</title>
-        <link rel="stylesheet" href="{{ normalize.display() }}" type="text/css" />
-        <link rel="stylesheet" href="{{ style.display() }}" type="text/css" />
-        <script defer data-api="/api/event" data-domain="hackfreeordie.org" src="/js/script.js"></script>
+        TODO: <title>{{ title }}</title>
+        TODO: <link rel="stylesheet" href="{{ normalize.display() }}" type="text/css" />
+        TODO: <link rel="stylesheet" href="{{ style.display() }}" type="text/css" />
+        TODO: <script defer data-api="/api/event" data-domain="hackfreeordie.org" src="/js/script.js"></script>
         #}
         <meta charset="utf-8" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
         <meta name="generator" content="github.com/hfod/web">
-        <style>
-            body {
-                max-width: 750px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-        </style>
+        {% for css_file_obj in css_file_names %}
+        {# TODO URL constructor function #}
+            <link href="{{ std::path::PathBuf::from("/_obj").join(css_file_obj).display() }}" rel="stylesheet" />
+        {% endfor %}
     </head>
     <body>
-        <ul class="nav">
-            {%- for link in nav -%}
-            <li>{%- if web_path.eq(link.path.as_path()) -%}
-                {{- link.name -}}
-                {%- else -%}
-                <a href="{{ link.path.display() }}">{{- link.name -}}</a>
-                {%- endif -%}</li>
-            {%- endfor -%}
-        </ul>
-    {{ body }}
+        <header>
+            <div class="branding">
+                <img src={{ std::path::PathBuf::from("/_obj").join(logo_obj_file_name).display() }} alt="Glider" class="logo"></img>
+                <h1>HFOD</h1>
+            </div>
+
+            <ul class="nav">
+                {%- for link in nav -%}
+                <li>{%- if web_path.eq(link.path.as_path()) -%}
+                    {{- link.name -}}
+                    {%- else -%}
+                    <a href="{{ link.path.display() }}">{{- link.name -}}</a>
+                    {%- endif -%}</li>
+                {%- endfor -%}
+            </ul>
+        </header>
+
+        {{ body }}
+
+        <footer>
+            <div class="footer-left">
+                <img src={{ std::path::PathBuf::from("/_obj").join(logo_obj_file_name).display() }} alt="Glider" class="footer-logo"></img>
+                Hack Free Or Die
+            </div>
+
+            <ul class="footer-right">
+                {# FIXME These links should come from database. #}
+                <li><a href="https://discord.gg/NsEwkfCHgv">Discord</a></li>
+                <li><a href="https://www.meetup.com/hack-free-or-die">Meetup</a></li>
+                <li><a href="https://signal.group/#CjQKIBPFwLLEINSJWNSCw25uTKeTdonCDt8eh9BTE9nFeyE6EhDTbDZM-W0A1XWCoBOLMHA-">Signal</a></li>
+            </ul>
+        </footer>
     </body>
 </html>
