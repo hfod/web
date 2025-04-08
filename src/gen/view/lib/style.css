@@ -44,12 +44,14 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    flex-wrap: wrap;
 }
 
 .branding {
     display: flex;
     align-items: baseline;
     gap: 0.5rem;
+    flex-shrink: 0;
 }
 
 .logo {
@@ -67,6 +69,17 @@ header {
     font-weight: bold;
 }
 
+@media (max-width: 600px) {
+    .nav {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.25rem;
+    }
+
+    header {
+        align-items: flex-start;
+    }
+}
 
 footer {
     border-top: 1px solid var(--color_fg);
