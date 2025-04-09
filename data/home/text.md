@@ -3,7 +3,7 @@ Hack Free Or Die
 
 New Hampshire's premier
 [hacker](https://datatracker.ietf.org/doc/html/rfc1392#page-21)
-meetup!
+meetup.
 
 Bringing together people who delight in having an intimate
 understanding of internal workings of systems, especially computers and
