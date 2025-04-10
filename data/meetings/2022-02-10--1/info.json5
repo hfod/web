@@ -6,11 +6,14 @@
     time: "18:00",
     venue_id: "raven-labs",
     organizer_id: "siraaj-khandkar",
-    // registration_url: "",
-    // TODO See original for registration_url:
-    //     (let* ([file "join-us-button-mailto.txt"]
-    //            ; FIXME Tangled abstractions - we're not in a view!!!
-    //            [path (build-path "view" "web" "inc" file)]
-    //            [mailto (file->string path)])
-    //       (u mailto))
+    registration_url: "mailto:siraaj@khandkar.net?subject=[hack-free-or-die] I want to present my hack!&body=
+## Hack Title (REQUIRED)%0A%0A%0A
+## Hack Description (REQUIRED)%0A%0A%0A
+## Hack Source URL (REQUIRED)%0A%0A%0A
+## Hack Website URL (optional)%0A%0A%0A
+## Special requests? (optional. e.g. audio, whiteboard, etc.)%0A%0A%0A
+## Your name for attribution (REQUIRED)%0A
+(required, but unverified - i.e. call yourself whatever you want)%0A%0A%0A
+## Your email for attribution (optional)%0A%0A%0A
+## Your website for attribution (optional)%0A%0A%0A",
 }
