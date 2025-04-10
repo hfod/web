@@ -5,14 +5,13 @@ New Hampshire's premier
 [hacker](https://datatracker.ietf.org/doc/html/rfc1392#page-21)
 meetup.
 
-For makers, breakers, and just those who simply delight in having an intimate
-understanding of internal workings of complex systems, like software,
-computers, and electronics.
+For those who delight in having an intimate understanding of internal workings
+of complex systems, like software, computers, electronics, and more.
 
-Originally, inspired by [NYC Hack && Tell](https://hackandtell.org/), we set
-out to do monthly lightening talk sessions on whatever we happened to have
-recently hacked together (or apart), but have since expanded to include longer
-talks and just dinner conversations.
+Inspired by [NYC Hack && Tell](https://hackandtell.org/), we originally set out
+to do monthly [lightning talk](https://en.wikipedia.org/wiki/Lightning_talk)
+sessions on whatever we happened to have recently hacked together (or apart),
+but have since expanded to include longer talks and just casual hangouts.
 
 ### Join us
 
