@@ -1,29 +1,11 @@
-- [ ] See if this helps with photos: https://github.com/dropbox/lepton
-- [ ] Configs to support both server setups:
-    - [ ] Racket serves both static and dynamic paths;
-    - [ ] nginx serves static paths and forwards dynamic paths to the Racket server.
+
+
+- [ ] See if lepton helps with photos:
+    - https://github.com/dropbox/lepton
+    - https://dropbox.tech/infrastructure/lepton-image-compression-saving-22-losslessly-from-images-at-15mbs
 - [ ] recurring meetings
     - [ ] description
     - [ ] sched
 - [ ] cal link
 - [ ] caldev
-- [ ] add meeting details/photos
-    - [ ] 5
-        - [ ] description
-        - [ ] presentations
-        - [ ] photos
-    - [ ] 6
-        - [ ] description
-        - [ ] presentations
-        - [ ] photos
-- [ ] meeting format descriptions
-    - problem share
-    - lightening talks
-    - half-talks
-    - full-talks
-    - hybrid nights
-- [ ] front page carousel of randomly selected photos
-- [x] strip metadata from photos (like location, camera, etc.)
-- [ ] auto reduce photo quality?
-- [ ] list speakers/hackers
 - [ ] list meetings by host at the host page
