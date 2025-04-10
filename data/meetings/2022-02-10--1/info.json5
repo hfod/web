@@ -6,14 +6,14 @@
     time: "18:00",
     venue_id: "raven-labs",
     organizer_id: "siraaj-khandkar",
-    registration_url: "mailto:siraaj@khandkar.net?subject=[hack-free-or-die] I want to present my hack!&body=
-## Hack Title (REQUIRED)%0A%0A%0A
-## Hack Description (REQUIRED)%0A%0A%0A
-## Hack Source URL (REQUIRED)%0A%0A%0A
-## Hack Website URL (optional)%0A%0A%0A
-## Special requests? (optional. e.g. audio, whiteboard, etc.)%0A%0A%0A
-## Your name for attribution (REQUIRED)%0A
-(required, but unverified - i.e. call yourself whatever you want)%0A%0A%0A
-## Your email for attribution (optional)%0A%0A%0A
+    registration_url: "mailto:siraaj@khandkar.net?subject=[hack-free-or-die] I want to present my hack!&body=\n\
+## Hack Title (REQUIRED)%0A%0A%0A\n\
+## Hack Description (REQUIRED)%0A%0A%0A\n\
+## Hack Source URL (REQUIRED)%0A%0A%0A\n\
+## Hack Website URL (optional)%0A%0A%0A\n\
+## Special requests? (optional. e.g. audio, whiteboard, etc.)%0A%0A%0A\n\
+## Your name for attribution (REQUIRED)%0A\n\
+(required, but unverified - i.e. call yourself whatever you want)%0A%0A%0A\n\
+## Your email for attribution (optional)%0A%0A%0A\n\
 ## Your website for attribution (optional)%0A%0A%0A",
 }
