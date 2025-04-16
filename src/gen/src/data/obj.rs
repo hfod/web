@@ -15,7 +15,9 @@ impl Obj {
 
     pub fn to_file_name(&self) -> PathBuf {
         let mut file_name = PathBuf::from(&self.hash);
-        file_name.set_extension(&self.ext);
+        let ext = self.ext.to_ascii_lowercase();
+        let ext = if ext == "jpeg" { "jpg".into() } else { ext };
+        file_name.set_extension(ext);
         file_name
     }
 }
