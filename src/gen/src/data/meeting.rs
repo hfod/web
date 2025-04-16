@@ -108,17 +108,21 @@ impl Meeting {
         let mut objects = Vec::new();
         let mut photos_for_collage = Vec::new();
         if photos_dir_path.try_exists()? {
-            for entry_result in fs::read_dir(&photos_dir_path)
-                .context(photos_dir_path.display().to_string())?
-            {
+            for entry_result in fs::read_dir(&photos_dir_path).context(
+                format!("Failed to list photos dir: {photos_dir_path:?}"),
+            )? {
                 let entry = entry_result?;
                 let photo_file_path = entry.path();
-                let ctx = photo_file_path.display().to_string();
-                let typ = entry.file_type().context(ctx.clone())?;
+                let typ = entry.file_type().context(format!(
+                    "Failed to lookup file type for: {photo_file_path:?}"
+                ))?;
                 if typ.is_file() {
-                    if let Some((photo, obj)) =
-                        Photo::from_file(&photo_file_path)?
-                    {
+                    if let Some((photo, obj)) = Photo::from_file(
+                        &photo_file_path,
+                    )
+                    .context(format!(
+                        "Failed to read photo from file: {photo_file_path:?}"
+                    ))? {
                         photos_for_collage.push(obj.data.clone());
                         selph.photos.push(photo);
                         objects.push(obj);
@@ -127,9 +131,13 @@ impl Meeting {
             }
         }
         if recap_dir_path.try_exists()? {
-            let (recap_doc, mut recap_objects) =
-                Doc::from_dir(&recap_dir_path, objects_web_path)
-                    .context(recap_dir_path.display().to_string())?;
+            let (recap_doc, mut recap_objects) = Doc::from_dir(
+                &recap_dir_path,
+                objects_web_path,
+            )
+            .context(format!(
+                "Failed to read recap doc from dir: {recap_dir_path:?}"
+            ))?;
             selph.recap = Some(recap_doc);
             objects.append(&mut recap_objects);
         }
@@ -138,7 +146,9 @@ impl Meeting {
             .join(selph.seq.to_string())
             .join("collage.png");
         if let Some(obj) =
-            collage::object(&collage_file_path, photos_for_collage)?
+            collage::object(&collage_file_path, photos_for_collage).context(
+                format!("Failed to build collage as {collage_file_path:?}"),
+            )?
         {
             selph.collage_obj_file_name = Some(obj.to_file_name());
             objects.push(obj);
