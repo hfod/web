@@ -3,6 +3,7 @@ use std::{ffi::OsString, fs, io::Cursor, path::Path};
 use anyhow::Context;
 use image::{
     DynamicImage, GenericImage, ImageBuffer, ImageReader, RgbaImage,
+    imageops::FilterType,
 };
 use rand::seq::SliceRandom;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
@@ -56,13 +57,24 @@ pub fn object(
     }
 }
 
+// TODO Refactor.
 #[tracing::instrument(name = "collage::build", skip_all)]
-pub fn build(
-    mut images: Vec<Vec<u8>>,
-) -> anyhow::Result<(Vec<u8>, OsString)> {
+fn build(mut images: Vec<Vec<u8>>) -> anyhow::Result<(Vec<u8>, OsString)> {
     let out_width: u32 = 800;
     let out_height: u32 = 400;
     let format: ImageFormat = ImageFormat::png();
+    let filter: FilterType = FilterType::Lanczos3;
+
+    if let [img] = &images[..] {
+        let img = ImageReader::new(Cursor::new(img))
+            .with_guessed_format()
+            .context("Failed to guess image format.")?;
+        let img = img.decode().context("Failed to decode image.")?;
+        let img = img.resize(out_width, out_height, filter);
+        let mut out = Vec::new();
+        img.write_to(&mut Cursor::new(&mut out), format.0)?;
+        return Ok((out, format.to_ext()));
+    }
 
     let mut rng = rand::rng();
     images.shuffle(&mut rng);
@@ -86,12 +98,8 @@ pub fn build(
                 .and_then(|img_reader| {
                     img_reader.decode().context("Failed to decode image.")
                 })
-                .unwrap();
-            let resized = img.resize_exact(
-                square_size,
-                square_size,
-                image::imageops::FilterType::Lanczos3,
-            );
+                .unwrap(); // FIXME Handle the error.
+            let resized = img.resize_exact(square_size, square_size, filter);
             let col = (i as u32) % grid_cols;
             let row = (i as u32) / grid_cols;
             let x = col * square_size;
@@ -103,12 +111,10 @@ pub fn build(
         collage.copy_from(&resized, x, y)?;
     }
 
-    let collage = {
-        let mut out = Vec::new();
-        collage.write_to(&mut Cursor::new(&mut out), format.0)?;
-        out
-    };
-    Ok((collage, format.to_ext()))
+    let mut out = Vec::new();
+    collage.write_to(&mut Cursor::new(&mut out), format.0)?;
+
+    Ok((out, format.to_ext()))
 }
 
 //  Determine square size and grid layout.
@@ -117,6 +123,10 @@ fn best_square_grid_fill_width(
     out_width: u32,
     out_height: u32,
 ) -> (u32, u32, u32) {
+    if n == 1 {
+        return (1, 1, out_height);
+    }
+
     let mut best_cols = 1;
     let mut best_rows = n as u32;
     let mut best_size = 0;
@@ -133,6 +143,5 @@ fn best_square_grid_fill_width(
             best_rows = rows;
         }
     }
-
     (best_cols, best_rows, best_size)
 }
