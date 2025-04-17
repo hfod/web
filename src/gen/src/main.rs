@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{fs, path::PathBuf};
 
 use clap::Parser;
 use tracing::level_filters::LevelFilter;
@@ -20,6 +20,42 @@ struct Cli {
     /// Output directory.
     #[clap(short, long = "out", default_value = "www")]
     output_dir: PathBuf,
+
+    #[clap(subcommand)]
+    command: Cmd,
+}
+
+#[derive(clap::Subcommand, Debug)]
+enum Cmd {
+    /// Generate the web site.
+    Gen,
+
+    /// Create a new data record.
+    New {
+        #[clap(subcommand)]
+        entry: Entry,
+    },
+}
+
+#[derive(clap::Subcommand, Debug)]
+enum Entry {
+    Talk {
+        #[clap(short, long = "meeting")]
+        meeting_seq: i32,
+
+        /// Must already exist.
+        #[clap(short, long = "speaker")]
+        speaker_id: String,
+
+        #[clap(short, long)]
+        title: String,
+
+        #[clap(short, long)]
+        description: String,
+
+        #[clap(short, long)]
+        website: Option<hfod_web_gen::data::link::Url>,
+    },
 }
 
 fn main() -> anyhow::Result<()> {
@@ -28,10 +64,40 @@ fn main() -> anyhow::Result<()> {
     let span = tracing::debug_span!(env!("CARGO_PKG_NAME"));
     let _span_guard = span.enter();
     tracing::debug!(?cli, "Starting.");
-    hfod_web_gen::pages::generate(
-        &cli.cache_dir,
-        &cli.input_dir,
-        &cli.output_dir,
-    )?;
+    match &cli.command {
+        Cmd::Gen => {
+            hfod_web_gen::pages::generate(
+                &cli.cache_dir,
+                &cli.input_dir,
+                &cli.output_dir,
+            )?;
+        }
+        Cmd::New {
+            entry:
+                Entry::Talk {
+                    meeting_seq,
+                    speaker_id,
+                    title,
+                    description,
+                    website,
+                },
+        } => {
+            use hfod_web_gen::data::talk::Talk;
+
+            let talk = Talk {
+                speaker_id: speaker_id.to_string(),
+                title: title.to_string(),
+                description: description.to_string(),
+                website: website.to_owned(),
+                artifacts: Vec::new(),
+                references: Vec::new(),
+            };
+            hfod_web_gen::data::write_talk(
+                &cli.input_dir,
+                *meeting_seq,
+                &talk,
+            )?;
+        }
+    }
     Ok(())
 }

@@ -11,6 +11,7 @@ use std::{
     collections::HashMap,
     fs,
     path::{Path, PathBuf},
+    str::FromStr,
 };
 
 use anyhow::{Context, anyhow, bail};
@@ -243,6 +244,111 @@ impl Data {
     ) -> anyhow::Result<Option<&Vec<Meeting>>> {
         Ok(self.index_person_organized.get(person_id))
     }
+}
+
+pub fn write_talk(
+    data_dir: &Path,
+    meeting_seq: i32,
+    talk: &Talk,
+) -> anyhow::Result<()> {
+    // TODO Centralize definitions of paths.
+    let talk_str = serde_json5::to_string(talk)?;
+    let meeting_dir = find_meeting_dir_path(data_dir, meeting_seq)?.ok_or(
+        anyhow!("No directory found for meeting sequence {meeting_seq}"),
+    )?;
+    let talks_dir = meeting_dir.join("talks");
+    fs::create_dir_all(&talks_dir)?;
+
+    let next_talk_seq = find_next_talk_seq(&talks_dir).context(format!(
+        "Failed to find the next talk seq number \
+        in talks directory: {talks_dir:?}"
+    ))?;
+    let talk_path = talks_dir
+        .join(format!("{next_talk_seq}-{}", &talk.speaker_id))
+        .with_extension("json5"); // TODO Centralize def of ext name.
+    if fs::exists(&talk_path)? {
+        bail!("File already exists: {talk_path:?}");
+    }
+    fs::write(talk_path, talk_str)?;
+    Ok(())
+}
+
+fn find_next_talk_seq(meeting_talks_dir: &Path) -> anyhow::Result<i32> {
+    let mut curr: Vec<i32> = fs::read_dir(meeting_talks_dir)?
+        .into_iter()
+        .filter_map(Result::ok)
+        .filter_map(|entry| {
+            entry
+                .path()
+                .file_name()
+                .map(|s| s.to_str().map(|s| s.to_string()))
+                .flatten()
+        })
+        .filter_map(|file_name| {
+            let fields: Vec<&str> = file_name.split(".").collect();
+            match &fields[..] {
+                [name, "json5"] => Some(name.to_string()),
+                _ => None,
+            }
+        })
+        .filter_map(|file_name| {
+            let fields: Vec<&str> = file_name.split("-").collect();
+            match &fields[..] {
+                [seq, _speaker_id] => seq.parse::<i32>().ok(),
+                [seq] => seq.parse::<i32>().ok(),
+                _ => None,
+            }
+        })
+        .collect();
+    curr.sort();
+    let prev = curr.last().copied().unwrap_or(0);
+    let next = prev + 1;
+    Ok(next)
+}
+
+fn find_meeting_dir_path(
+    data_dir: &Path,
+    meeting_seq: i32,
+) -> anyhow::Result<Option<PathBuf>> {
+    let meetings_dir = data_dir.join("meetings");
+    let dir_names: HashMap<i32, PathBuf> = fs::read_dir(&meetings_dir)?
+        .into_iter()
+        .filter_map(Result::ok)
+        .filter_map(|entry| {
+            entry
+                .file_type()
+                .ok()
+                .map(|ft| ft.is_dir().then_some(entry))
+                .flatten()
+        })
+        .filter_map(|entry| {
+            let path = entry.path();
+            path.file_name()
+                .map(|s| s.to_str().map(|s| s.to_string()))
+                .flatten()
+                .map(|name| (path, name))
+        })
+        .filter_map(|(path, name)| {
+            let fields: Vec<&str> = name.split("--").collect();
+            match &fields[..] {
+                [date, seq] => {
+                    if let Err(error) = Date::from_str(date) {
+                        tracing::warn!(
+                            seq,
+                            ?date,
+                            ?error,
+                            "Invalid date in meeting directory name."
+                        );
+                    }
+                    seq.parse::<i32>().ok().map(|seq| (seq, path))
+                }
+                _ => None,
+            }
+        })
+        .collect();
+    let meeting_dir_path =
+        dir_names.get(&meeting_seq).map(|path| path.to_owned());
+    Ok(meeting_dir_path)
 }
 
 fn read_home(

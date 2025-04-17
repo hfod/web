@@ -19,7 +19,7 @@ build: web
 .PHONY: web
 web:
 	mkdir -p $(DIR_WEB_LOCAL)
-	RUST_BACKTRACE=1 cargo run --release --bin hfod-web-gen -- --in $(DIR_DATA) --out $(DIR_WEB_LOCAL)
+	RUST_BACKTRACE=1 cargo run --release --bin hfod-web-gen -- --in $(DIR_DATA) --out $(DIR_WEB_LOCAL) gen
 
 .PHONY: serve
 serve:
