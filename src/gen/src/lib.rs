@@ -1,6 +1,5 @@
-pub mod collage;
 pub mod data;
-pub mod logo;
+pub mod images;
 pub mod md;
 pub mod nav;
 pub mod pages;

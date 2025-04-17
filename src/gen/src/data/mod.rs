@@ -24,7 +24,7 @@ use person::Person;
 use talk::Talk;
 use venue::Venue;
 
-use crate::{collage, logo, time::Date};
+use crate::{images, time::Date};
 
 pub struct Data {
     pub people: HashMap<String, Person>,
@@ -151,7 +151,7 @@ impl Data {
         objects.append(&mut objects_from_people);
         objects.append(&mut objects_from_meetings);
         objects.append(&mut objects_from_home);
-        let logo_obj = logo::object(&cache_dir.join("logo.png"))?;
+        let logo_obj = images::logo(&cache_dir.join("logo.png"))?;
         let logo_obj_file_name = logo_obj.to_file_name();
         objects.push(logo_obj);
         let objects: HashMap<String, Obj> =
@@ -369,7 +369,7 @@ fn read_home(
         Doc::from_dir(&home_dir_path, web_path_objects)
             .context(home_dir_path.display().to_string())?;
     let collage_obj_file_name =
-        match collage::object(&collage_file_path, photos)? {
+        match images::collage(&collage_file_path, photos)? {
             None => None,
             Some(obj) => {
                 let file_name = obj.to_file_name();

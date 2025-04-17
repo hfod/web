@@ -8,9 +8,8 @@ use std::{
 use anyhow::{Context, anyhow, bail};
 
 use crate::{
-    collage,
     data::{doc::Doc, link, obj::Obj, photo::Photo, talk::Talk},
-    time,
+    images, time,
 };
 
 // TODO Perhaps have info.json5 map to a dedicated struct,
@@ -146,7 +145,7 @@ impl Meeting {
             .join(selph.seq.to_string())
             .join("collage.png");
         if let Some(obj) =
-            collage::object(&collage_file_path, photos_for_collage).context(
+            images::collage(&collage_file_path, photos_for_collage).context(
                 format!("Failed to build collage as {collage_file_path:?}"),
             )?
         {
