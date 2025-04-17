@@ -1,4 +1,11 @@
-
+- [ ] /favicon.ico
+- [ ] URL rename:
+    - [ ] people --> speakers
+    - [ ] venues --> hosts
+- [ ] read --> data --> view --> file --> optimize/minimize/etc --> write
+    - struct File {type: Html | Css | Js | Img, content: Vec<u8>, path: PathBuf /* XXX Relative! */ }
+    - view::x::build(data: &Data) -> anyhow::Result<Vec<File>>
+    - then consider what subviews can be generalized and reused as data::view::x or some such
 
 - [ ] See if lepton helps with photos:
     - https://github.com/dropbox/lepton
