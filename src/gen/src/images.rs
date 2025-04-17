@@ -16,7 +16,18 @@ use crate::data::obj::Obj;
 
 #[tracing::instrument]
 pub fn logo(cache_file_path: &Path) -> anyhow::Result<Obj> {
-    cached(cache_file_path, build_logo)
+    let format: ImageFormat = ImageFormat::png();
+    let scale = 20;
+    let fg = Rgba(RGBA_OPAQUE_ZENBURN_NORMAL_GRAY);
+    cached(cache_file_path, || build_logo(format, scale, fg))
+}
+
+#[tracing::instrument]
+pub fn icon(cache_file_path: &Path) -> anyhow::Result<Obj> {
+    let format: ImageFormat = ImageFormat::png();
+    let scale = 10;
+    let fg = Rgba(RGBA_OPAQUE_BLACK);
+    cached(cache_file_path, || build_logo(format, scale, fg))
 }
 
 #[tracing::instrument(skip(images))]
@@ -36,6 +47,10 @@ pub fn collage(
 // Implementation
 // ============================================================================
 
+const RGBA_TRANSPARENT: [u8; 4] = [0, 0, 0, 0];
+const RGBA_OPAQUE_BLACK: [u8; 4] = [0, 0, 0, 255];
+const RGBA_OPAQUE_ZENBURN_NORMAL_GRAY: [u8; 4] = [220, 220, 204, 255];
+
 #[derive(Debug, Clone, Copy)]
 struct ImageFormat(image::ImageFormat);
 
@@ -44,9 +59,14 @@ impl ImageFormat {
         Self(image::ImageFormat::Png)
     }
 
+    // fn ico() -> Self {
+    //     Self(image::ImageFormat::Ico)
+    // }
+
     fn to_ext(&self) -> OsString {
         match self.0 {
             image::ImageFormat::Png => "png".into(),
+            // image::ImageFormat::Ico => "ico".into(),
             _ => unreachable!(),
         }
     }
@@ -79,14 +99,12 @@ where
 }
 
 #[tracing::instrument(skip_all)]
-fn build_logo() -> anyhow::Result<(Vec<u8>, OsString)> {
-    let format: ImageFormat = ImageFormat::png();
-
-    let rgba_transparent = Rgba([0, 0, 0, 0]);
-    // let rgba_opaque_black = Rgba([0, 0, 0, 255]);
-    let rgba_opaque_zenburn_normal_gray = Rgba([220, 220, 204, 255]);
-    let bg = rgba_transparent;
-    let fg = rgba_opaque_zenburn_normal_gray;
+fn build_logo(
+    format: ImageFormat,
+    scale: usize,
+    fg: Rgba<u8>,
+) -> anyhow::Result<(Vec<u8>, OsString)> {
+    let bg = Rgba(RGBA_TRANSPARENT);
 
     #[rustfmt::skip]
     let glider: [[Rgba<u8>; 3]; 3] = {
@@ -99,7 +117,6 @@ fn build_logo() -> anyhow::Result<(Vec<u8>, OsString)> {
         ]
     };
 
-    let scale = 20;
     let cell_size = 2 * scale;
     let grid_thickness = 1 * scale;
 

@@ -34,6 +34,7 @@ pub struct Data {
     pub home_text: Doc,
     pub home_collage_obj_file_name: Option<PathBuf>, // TODO Probbaly shouldn't be here? Is it a view?
     pub logo_obj_file_name: PathBuf, // TODO Probbaly shouldn't be here? Is it a view?
+    pub icon_obj_file_name: PathBuf, // TODO Probbaly shouldn't be here? Is it a view?
 
     index_person_organized: HashMap<String, Vec<Meeting>>,
     index_person_presented: HashMap<String, Vec<(i32, Date, Talk)>>,
@@ -147,13 +148,19 @@ impl Data {
                 })
                 .collect();
 
+        let logo_obj = images::logo(&cache_dir.join("logo.png"))?;
+        let logo_obj_file_name = logo_obj.to_file_name();
+
+        let icon_obj = images::icon(&cache_dir.join("icon.png"))?;
+        let icon_obj_file_name = icon_obj.to_file_name();
+
         let mut objects = Vec::new();
         objects.append(&mut objects_from_people);
         objects.append(&mut objects_from_meetings);
         objects.append(&mut objects_from_home);
-        let logo_obj = images::logo(&cache_dir.join("logo.png"))?;
-        let logo_obj_file_name = logo_obj.to_file_name();
         objects.push(logo_obj);
+        objects.push(icon_obj);
+
         let objects: HashMap<String, Obj> =
             objects.into_iter().map(|o| (o.hash.clone(), o)).collect();
 
@@ -165,6 +172,7 @@ impl Data {
             home_text,
             home_collage_obj_file_name,
             logo_obj_file_name,
+            icon_obj_file_name,
             index_person_organized,
             index_person_presented,
             index_person_presented_last,

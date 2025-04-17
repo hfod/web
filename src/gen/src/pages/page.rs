@@ -13,6 +13,7 @@ pub struct Page {
     // pub style: PathBuf,
     pub css_file_names: Vec<PathBuf>,
     pub logo_obj_file_name: PathBuf,
+    pub icon_obj_file_name: PathBuf,
     pub nav: Vec<nav::Link>,
     pub body: String,
 }

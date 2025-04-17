@@ -92,7 +92,6 @@ pub fn generate(
     write_objects(&artifact_path_objects, data.objects()?)?;
     // FIXME Injecting CSS like that is repetitively stupid. Should be a single step.
     write_people(
-        data.logo_obj_file_name.clone(),
         css_file_names.clone(),
         &artifact_path_people,
         &web_path_people,
@@ -100,7 +99,6 @@ pub fn generate(
         &data,
     )?;
     write_venues(
-        data.logo_obj_file_name.clone(),
         css_file_names.clone(),
         &artifact_path_venues,
         &web_path_venues,
@@ -108,7 +106,6 @@ pub fn generate(
         &data,
     )?;
     write_meetings(
-        data.logo_obj_file_name.clone(),
         css_file_names.clone(),
         &artifact_path_meetings,
         &web_path_meetings,
@@ -116,7 +113,6 @@ pub fn generate(
         &data,
     )?;
     write_home(
-        data.logo_obj_file_name.clone(),
         css_file_names.clone(),
         &artifact_path_root,
         &web_path_root,
@@ -149,7 +145,6 @@ where
 
 #[tracing::instrument(skip_all)]
 fn write_meetings<'a>(
-    logo_obj_file_name: PathBuf,
     css_file_names: Vec<PathBuf>,
     artifacts_dir: &Path,
     web_path: &Path,
@@ -158,7 +153,8 @@ fn write_meetings<'a>(
 ) -> anyhow::Result<()> {
     let file_path = artifacts_dir.join(STR_INDEX_HTML);
     let page = page::Page {
-        logo_obj_file_name: logo_obj_file_name.clone(),
+        logo_obj_file_name: data.logo_obj_file_name.clone(),
+        icon_obj_file_name: data.icon_obj_file_name.clone(),
         css_file_names: css_file_names.clone(),
         web_path: web_path.to_owned(),
         nav: nav.to_owned(),
@@ -174,7 +170,6 @@ fn write_meetings<'a>(
     for meeting in data.meetings()? {
         let seq = meeting.seq.to_string();
         write_meeting(
-            logo_obj_file_name.clone(),
             css_file_names.clone(),
             &artifacts_dir.join(&seq),
             &web_path.join(&seq),
@@ -187,7 +182,6 @@ fn write_meetings<'a>(
 }
 
 fn write_meeting(
-    logo_obj_file_name: PathBuf,
     css_file_names: Vec<PathBuf>,
     artifacts_dir: &Path,
     web_path: &Path,
@@ -197,7 +191,8 @@ fn write_meeting(
 ) -> anyhow::Result<()> {
     let file_path = artifacts_dir.join(STR_INDEX_HTML);
     let page = page::Page {
-        logo_obj_file_name,
+        logo_obj_file_name: data.logo_obj_file_name.clone(),
+        icon_obj_file_name: data.icon_obj_file_name.clone(),
         css_file_names,
         web_path: web_path.to_owned(),
         nav: nav.to_owned(),
@@ -215,7 +210,6 @@ fn write_meeting(
 
 #[tracing::instrument(skip_all)]
 fn write_people(
-    logo_obj_file_name: PathBuf,
     css_file_names: Vec<PathBuf>,
     artifacts_dir: &Path,
     web_path: &Path,
@@ -226,7 +220,8 @@ fn write_people(
     // people.sort_by_key(|p| p.name.clone()); // TODO Possible to avoid this .clone()?
     let file_path = artifacts_dir.join(STR_INDEX_HTML);
     let page = page::Page {
-        logo_obj_file_name: logo_obj_file_name.clone(),
+        logo_obj_file_name: data.logo_obj_file_name.clone(),
+        icon_obj_file_name: data.icon_obj_file_name.clone(),
         css_file_names: css_file_names.clone(),
         web_path: web_path.to_owned(),
         nav: nav.to_owned(),
@@ -241,7 +236,6 @@ fn write_people(
         .context(format!("Failed to write HTML file: {file_path:?}"))?;
     for person in data.people()? {
         write_person(
-            logo_obj_file_name.clone(),
             css_file_names.clone(),
             &artifacts_dir.join(&person.id),
             nav,
@@ -253,7 +247,6 @@ fn write_people(
 }
 
 fn write_person(
-    logo_obj_file_name: PathBuf,
     css_file_names: Vec<PathBuf>,
     dir: &Path,
     nav: &[nav::Link],
@@ -262,7 +255,8 @@ fn write_person(
 ) -> anyhow::Result<()> {
     let file_path = dir.join(STR_INDEX_HTML);
     let page = page::Page {
-        logo_obj_file_name,
+        logo_obj_file_name: data.logo_obj_file_name.clone(),
+        icon_obj_file_name: data.icon_obj_file_name.clone(),
         css_file_names,
         web_path: PathBuf::from("/people").join(&person.id),
         nav: nav.to_owned(),
@@ -280,7 +274,6 @@ fn write_person(
 
 #[tracing::instrument(skip_all)]
 fn write_venues(
-    logo_obj_file_name: PathBuf,
     css_file_names: Vec<PathBuf>,
     artifacts_dir: &Path,
     web_path: &Path,
@@ -289,7 +282,8 @@ fn write_venues(
 ) -> anyhow::Result<()> {
     let file_path = artifacts_dir.join(STR_INDEX_HTML);
     let page = page::Page {
-        logo_obj_file_name: logo_obj_file_name.clone(),
+        logo_obj_file_name: data.logo_obj_file_name.clone(),
+        icon_obj_file_name: data.icon_obj_file_name.clone(),
         css_file_names: css_file_names.clone(),
         web_path: web_path.to_owned(),
         nav: nav.to_owned(),
@@ -304,30 +298,31 @@ fn write_venues(
         .context(format!("Failed to write HTML file: {file_path:?}"))?;
     for venue in data.venues()? {
         write_venue(
-            logo_obj_file_name.clone(),
             css_file_names.clone(),
             &artifacts_dir.join(&venue.id),
             web_path.join(&venue.id),
             nav,
             venue.clone(),
             data.get_person(&venue.contact_id)?,
+            data,
         )?;
     }
     Ok(())
 }
 
 fn write_venue(
-    logo_obj_file_name: PathBuf,
     css_file_names: Vec<PathBuf>,
     dir: &Path,
     web_path: PathBuf,
     nav: &[nav::Link],
     venue: Venue,
     contact: Person,
+    data: &Data,
 ) -> anyhow::Result<()> {
     let file_path = dir.join(STR_INDEX_HTML);
     let page = page::Page {
-        logo_obj_file_name,
+        logo_obj_file_name: data.logo_obj_file_name.clone(),
+        icon_obj_file_name: data.icon_obj_file_name.clone(),
         css_file_names,
         web_path,
         nav: nav.to_owned(),
@@ -345,7 +340,6 @@ fn write_venue(
 
 #[tracing::instrument(skip_all)]
 fn write_home(
-    logo_obj_file_name: PathBuf,
     css_file_names: Vec<PathBuf>,
     artifacts_dir: &Path,
     web_path: &Path,
@@ -354,7 +348,8 @@ fn write_home(
 ) -> anyhow::Result<()> {
     let file_path = artifacts_dir.join(STR_INDEX_HTML);
     let page = page::Page {
-        logo_obj_file_name,
+        logo_obj_file_name: data.logo_obj_file_name.clone(),
+        icon_obj_file_name: data.icon_obj_file_name.clone(),
         css_file_names,
         web_path: web_path.to_owned(),
         nav: nav.to_owned(),
