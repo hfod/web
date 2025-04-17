@@ -53,15 +53,15 @@ impl Data {
         let meetings_dir_path = data_dir.join("meetings");
         let home_dir_path = data_dir.join("home");
 
-        let (people, mut objects_from_people) = load_people(&people_dir_path)
+        let (people, mut objects_from_people) = read_people(&people_dir_path)
             .context(people_dir_path.display().to_string())?;
-        let venues = load_venues(&venues_dir_path)
+        let venues = read_venues(&venues_dir_path)
             .context(venues_dir_path.display().to_string())?;
         let (meetings, mut objects_from_meetings) =
-            load_meetings(cache_dir, &meetings_dir_path, web_path_objects)
+            read_meetings(cache_dir, &meetings_dir_path, web_path_objects)
                 .context(meetings_dir_path.display().to_string())?;
         let (home_text, home_collage_obj_file_name, mut objects_from_home) =
-            load_home(
+            read_home(
                 cache_dir,
                 &home_dir_path,
                 web_path_objects,
@@ -245,7 +245,7 @@ impl Data {
     }
 }
 
-fn load_home(
+fn read_home(
     cache_dir: &Path,
     home_dir_path: &Path,
     web_path_objects: &Path,
@@ -274,7 +274,7 @@ fn load_home(
     Ok((home_text, collage_obj_file_name, objects))
 }
 
-fn load_people(
+fn read_people(
     people_dir_path: &Path,
 ) -> anyhow::Result<(HashMap<String, Person>, Vec<Obj>)> {
     let mut people: HashMap<String, Person> = HashMap::new();
@@ -295,7 +295,7 @@ fn load_people(
     Ok((people, objects))
 }
 
-fn load_venues(
+fn read_venues(
     venues_dir_path: &Path,
 ) -> anyhow::Result<HashMap<String, Venue>> {
     let mut venues: HashMap<String, Venue> = HashMap::new();
@@ -314,7 +314,7 @@ fn load_venues(
     Ok(venues)
 }
 
-fn load_meetings(
+fn read_meetings(
     cache_dir: &Path,
     meetings_dir_path: &Path,
     objects_web_path: &Path,
