@@ -39,7 +39,7 @@ pub struct Data {
 
     index_person_organized: HashMap<String, Vec<Meeting>>,
     index_person_presented: HashMap<String, Vec<(i32, Date, Talk)>>,
-    index_person_presented_last: HashMap<String, Date>,
+    index_person_presented_last: HashMap<String, (Date, Talk)>,
 }
 
 impl Data {
@@ -136,11 +136,13 @@ impl Data {
             tracing::debug!(?person_id, "Indexed meetings organized.");
         }
 
-        let index_person_presented_last: HashMap<String, Date> =
+        let index_person_presented_last: HashMap<String, (Date, Talk)> =
             index_person_presented
                 .iter()
                 .filter_map(|(id, talks)| {
-                    talks.last().map(|(_, date, _)| (id.clone(), *date))
+                    talks.last().map(|(_, date, talk)| {
+                        (id.clone(), (*date, talk.clone()))
+                    })
                 })
                 .collect();
 
@@ -232,15 +234,12 @@ impl Data {
         self.home_collage_obj_hash.as_ref().map(|h| self.get_obj(h))
     }
 
-    pub fn get_last_talk_date_by(
-        &self,
-        person_id: &str,
-    ) -> anyhow::Result<Date> {
-        let date = self
-            .index_person_presented_last
+    pub fn get_last_talk(&self, person_id: &str) -> &(Date, Talk) {
+        self.index_person_presented_last
             .get(person_id)
-            .ok_or(anyhow!("No talk dates found for: {person_id:?}"))?;
-        Ok(*date)
+            .unwrap_or_else(|| {
+                unreachable!("No talk dates found for: {person_id:?}")
+            })
     }
 
     pub fn get_talks_by(&self, person_id: &str) -> &Vec<(i32, Date, Talk)> {
