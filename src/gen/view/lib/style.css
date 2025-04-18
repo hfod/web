@@ -149,6 +149,7 @@ img {
 
 .records-list td, th {
     white-space: nowrap;
+    text-align: left;
 }
 
 /* TODO Test if we really need this - if it really helps. */

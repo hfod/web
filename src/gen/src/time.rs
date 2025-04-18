@@ -54,6 +54,10 @@ impl FromStr for Time {
 pub struct Date(chrono::NaiveDate);
 
 impl Date {
+    pub fn today() -> Self {
+        Self(chrono::Local::now().date_naive())
+    }
+
     pub fn display_long(&self) -> String {
         self.0.format(FMT_DATE_LONG).to_string()
     }

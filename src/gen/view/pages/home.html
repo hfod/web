@@ -6,3 +6,26 @@
 {% endif %}
 
 {{ description_html }}
+
+<h3>Upcoming meetings</h3>
+{% if upcoming_meetings.is_empty() %}
+<p>TBD</p>
+{% else %}
+    <div class="records-list">
+        <table>
+            <tr>
+                <th>date</th>
+                <th>time</th>
+                <th>location</th>
+            </tr>
+            {% for meeting in upcoming_meetings %}
+            {% let venue = data.get_venue(meeting.venue_id) %}
+            <tr>
+                <td>{{ meeting.date }}</td>
+                <td>{{ meeting.time }}</td>
+                <td><a href="{{ web_path::venue(venue).display() }}">{{ venue.name }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}
