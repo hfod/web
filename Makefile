@@ -11,7 +11,7 @@ USER_AT_HOST := $(USER)@$(HOST)
 DIR_DATA       := data
 DIR_CACHE      := .cache
 DIR_WEB_LOCAL  := www
-DIR_SERVER     := /var/www/v2.hackfreeordie.org
+DIR_SERVER     := /var/www/hackfreeordie.org
 
 .PHONY: build
 build: web
