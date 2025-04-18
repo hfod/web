@@ -1,5 +1,6 @@
 {
     "name": "Kevin", // Kadow
+    website: "https://manchestermakerspace.org/",
     "affiliated_links": [
         {"url": "https://manchestermakerspace.org"}
     ]
