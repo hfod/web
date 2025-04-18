@@ -32,55 +32,6 @@
 <p><img src={{ std::path::PathBuf::from("/_obj").join(collage_obj_file_name).display() }}></img></p>
 {% endif %}
 
-{#
-{# TODO Uncomment this photo section if/when we go full-bootstrap. #}
-{% if !meeting.photos.is_empty() %}
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            {% for (i, p) in meeting.photos.iter().enumerate() %}
-                <button
-                    type="button"
-                    data-bs-target="#carouselExampleControls"
-                    data-bs-slide-to={{ i }}
-                    aria-label={{ format!("Slide {i}") }}
-                    {% if i == 0 %}
-                        class="active"
-                        aria-current="true"
-                    {% endif %}
-                ></button>
-            {% endfor %}
-        </div>
-
-        <div class="carousel-inner">
-            {% for (i, p) in meeting.photos.iter().enumerate() %}
-                <div
-                    {% if i == 0 %}
-                        class="carousel-item active"
-                    {% else %}
-                        class="carousel-item"
-                    {% endif %}
-                >
-                    {# TODO objects_web_path parameter OR global URL-constructing function(s) #}
-                    <img src={{ format!("/_obj/{}", p.obj_hash) }} class="d-block w-100"></img>
-                    <div class="carousel-caption d-none d-md-block">
-                        {{ p.caption.as_deref().unwrap_or_default() }}
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-{% endif %}
-#}
-
 {% if let Some(recap) = meeting.recap %}
     <h3>Recap</h3>
     <p>{{ recap.text_html }}</p>
