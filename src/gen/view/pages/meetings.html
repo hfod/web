@@ -17,8 +17,8 @@
             <td>{{ row.meeting.date }}</td>
             <td>{{ row.meeting.time }}</td>
             <td>{{ row.meeting.format.to_string() }}</td>
-            <td><a href="/meetings/{{ row.meeting.seq }}">{{ row.meeting.codename }}</a></td>
-            <td><a href="/venues/{{ row.venue.id }}">{{ row.venue.name }}</a></td>
+            <td><a href="{{ web_path::meeting(row.meeting).display() }}">{{ row.meeting.codename }}</a></td>
+            <td><a href="{{ web_path::venue(row.venue).display() }}">{{ row.venue.name }}</a></td>
         </tr>
         {% endfor %}
     </table>

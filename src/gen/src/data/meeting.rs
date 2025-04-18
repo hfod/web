@@ -1,9 +1,4 @@
-use std::{
-    ffi::OsStr,
-    fmt::Display,
-    fs,
-    path::{Path, PathBuf},
-};
+use std::{ffi::OsStr, fmt::Display, fs, path::Path};
 
 use anyhow::{Context, anyhow, bail};
 
@@ -36,7 +31,7 @@ pub struct Meeting {
     pub photos: Vec<Photo>,
 
     #[serde(skip)]
-    pub collage_obj_file_name: Option<PathBuf>,
+    pub collage_obj_hash: Option<String>,
 }
 
 impl Meeting {
@@ -44,7 +39,6 @@ impl Meeting {
     pub fn from_dir(
         cache_dir: &Path,
         dir_path: &Path,
-        objects_web_path: &Path,
     ) -> anyhow::Result<(Self, Vec<Obj>)> {
         let talks_dir_path = dir_path.join("talks");
         let photos_dir_path = dir_path.join("photos");
@@ -130,13 +124,10 @@ impl Meeting {
             }
         }
         if recap_dir_path.try_exists()? {
-            let (recap_doc, mut recap_objects) = Doc::from_dir(
-                &recap_dir_path,
-                objects_web_path,
-            )
-            .context(format!(
-                "Failed to read recap doc from dir: {recap_dir_path:?}"
-            ))?;
+            let (recap_doc, mut recap_objects) =
+                Doc::from_dir(&recap_dir_path).context(format!(
+                    "Failed to read recap doc from dir: {recap_dir_path:?}"
+                ))?;
             selph.recap = Some(recap_doc);
             objects.append(&mut recap_objects);
         }
@@ -149,7 +140,7 @@ impl Meeting {
                 format!("Failed to build collage as {collage_file_path:?}"),
             )?
         {
-            selph.collage_obj_file_name = Some(obj.to_file_name());
+            selph.collage_obj_hash = Some(obj.hash.clone());
             objects.push(obj);
         }
         Ok((selph, objects))

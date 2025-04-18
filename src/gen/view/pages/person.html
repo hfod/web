@@ -37,8 +37,8 @@
 {% if !talks.is_empty() %}
 <h3>Presented</h3>
 <ul>
-{% for (seq, date, talk) in talks %}
-<li><a href="/meetings/{{ seq }}">{{ talk.title }}</a></li>
+{% for (meeting, date, talk) in talks %}
+<li><a href="{{ web_path::meeting(meeting).display() }}">{{ talk.title }}</a></li>
 {% endfor %}
 </ul>
 {% endif %}
@@ -47,7 +47,7 @@
 <h3>Organized</h3>
 <ul>
 {% for meeting in meetings %}
-<li><a href="/meetings/{{ meeting.seq }}">{{ meeting.seq }}: {{ meeting.codename }}</a></li>
+<li><a href="{{ web_path::meeting(meeting).display() }}">{{ meeting.seq }}: {{ meeting.codename }}</a></li>
 {% endfor %}
 </ul>
 {% endif %}

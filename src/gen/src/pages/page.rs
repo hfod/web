@@ -8,9 +8,9 @@ use crate::nav;
 pub struct Page {
     pub web_path: PathBuf,
     // pub title: String,
-    pub css_file_names: Vec<PathBuf>,
-    pub logo_obj_file_name: PathBuf,
-    pub icon_obj_file_name: PathBuf,
+    pub css_web_paths: Vec<PathBuf>,
+    pub logo_obj_web_path: PathBuf,
+    pub icon_obj_web_path: PathBuf,
     pub nav: Vec<nav::Link>,
     pub body: String,
 }

@@ -11,7 +11,7 @@
         </tr>
         {% for row in table %}
         <tr>
-            <td><a href="/people/{{ row.person.id }}">{{ row.person.name }}</a></td>
+            <td><a href="{{ web_path::person(row.person).display() }}">{{ row.person.name }}</a></td>
             <td>{{ row.last_active }}</td>
             <td>
                 {% if let Some(url) = row.person.website %}

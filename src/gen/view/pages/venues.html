@@ -12,10 +12,9 @@
         </tr>
         {% for row in table %}
         <tr>
-            <td><a href="/venues/{{ row.venue.id }}">{{ row.venue.name }}</a></td>
+            <td><a href="{{ web_path::venue(row.venue).display() }}">{{ row.venue.name }}</a></td>
             <td>{{ row.venue.addr.town }}</td>
-            {# TODO Lookup contact name. #}
-            <td><a href="/people/{{ row.contact.id }}">{{ row.contact.name }}</a></td>
+            <td><a href="{{ web_path::person(row.contact).display() }}">{{ row.contact.name }}</a></td>
         </tr>
         {% endfor %}
     </table>

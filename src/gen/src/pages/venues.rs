@@ -1,6 +1,9 @@
 use askama::Template;
 
-use crate::data::{Data, person::Person, venue::Venue};
+use crate::{
+    data::{Data, person::Person, venue::Venue},
+    web_path,
+};
 
 struct Row {
     venue: Venue,
@@ -18,7 +21,7 @@ pub fn build(data: &Data) -> anyhow::Result<String> {
     for venue in data.venues()? {
         rows.push(Row {
             venue: venue.clone(),
-            contact: data.get_person(&venue.contact_id)?,
+            contact: data.get_person(&venue.contact_id).clone(),
         });
     }
     rows.sort_by(|a, b| a.venue.name.cmp(&b.venue.name));

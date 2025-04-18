@@ -12,7 +12,7 @@ Address:
     {% endif %}
     {{ venue.addr.town }}, {{ venue.addr.state }} {{ venue.addr.zipcode }}
     <br/>
-Contact: <a href="/people/{{ contact.id }}">{{ contact.name }}</a><br/>
+Contact: <a href="{{ web_path::person(contact).display() }}">{{ contact.name }}</a><br/>
 </p>
 <hr>
 <p>

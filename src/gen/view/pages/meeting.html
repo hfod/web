@@ -20,16 +20,16 @@
     </tr>
     <tr>
         <td>Location</td>
-        <td><a href="/venues/{{ meeting.venue_id }}">{{ data.get_venue(meeting.venue_id).unwrap().name }}</a></td>
+        <td><a href="{{ web_path::venue(data.get_venue(meeting.venue_id)).display() }}">{{ data.get_venue(meeting.venue_id).name }}</a></td>
     </tr>
     <tr>
         <td>Organizer</td>
-        <td><a href="/people/{{ meeting.organizer_id }}">{{ data.get_person(meeting.organizer_id).unwrap().name }}</a></td>
+        <td><a href="{{ web_path::person(data.get_person(meeting.organizer_id)).display() }}">{{ data.get_person(meeting.organizer_id).name }}</a></td>
     </tr>
 </table>
 
-{% if let Some(collage_obj_file_name) = meeting.collage_obj_file_name %}
-<p><img src={{ std::path::PathBuf::from("/_obj").join(collage_obj_file_name).display() }}></img></p>
+{% if let Some(collage_web_path) = collage_web_path %}
+<p><img src={{ collage_web_path.display() }}></img></p>
 {% endif %}
 
 {% if let Some(recap) = meeting.recap %}
@@ -42,8 +42,9 @@
     <ol>
     {% for talk in meeting.talks %}
         <li>
+            {% let speaker = data.get_person(talk.speaker_id) %}
             <h4>{{ talk.title }}</h4>
-            <p>by <a href="/people/{{ talk.speaker_id }}">{{ data.get_person(talk.speaker_id).unwrap().name }}</a></p>
+            <p>by <a href="{{ web_path::person(speaker).display() }}">{{ speaker.name }}</a></p>
             <p>{{ talk.description }}</p>
 
             {% if let Some(url) = talk.website %}

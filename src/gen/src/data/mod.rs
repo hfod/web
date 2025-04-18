@@ -32,9 +32,10 @@ pub struct Data {
     pub meetings: HashMap<i32, Meeting>,
     pub objects: HashMap<String, Obj>,
     pub home_text: Doc,
-    pub home_collage_obj_file_name: Option<PathBuf>, // TODO Probbaly shouldn't be here? Is it a view?
-    pub logo_obj_file_name: PathBuf, // TODO Probbaly shouldn't be here? Is it a view?
-    pub icon_obj_file_name: PathBuf, // TODO Probbaly shouldn't be here? Is it a view?
+
+    home_collage_obj_hash: Option<String>, // TODO Probbaly shouldn't be here? Is it a view?
+    logo_obj_hash: String, // TODO Probbaly shouldn't be here? Is it a view?
+    icon_obj_hash: String, // TODO Probbaly shouldn't be here? Is it a view?
 
     index_person_organized: HashMap<String, Vec<Meeting>>,
     index_person_presented: HashMap<String, Vec<(i32, Date, Talk)>>,
@@ -42,11 +43,7 @@ pub struct Data {
 }
 
 impl Data {
-    pub fn read(
-        cache_dir: &Path,
-        data_dir: &Path,
-        web_path_objects: &Path,
-    ) -> anyhow::Result<Self> {
+    pub fn read(cache_dir: &Path, data_dir: &Path) -> anyhow::Result<Self> {
         let data_dir = data_dir
             .canonicalize()
             .context(data_dir.display().to_string())?;
@@ -60,13 +57,12 @@ impl Data {
         let venues = read_venues(&venues_dir_path)
             .context(venues_dir_path.display().to_string())?;
         let (meetings, mut objects_from_meetings) =
-            read_meetings(cache_dir, &meetings_dir_path, web_path_objects)
+            read_meetings(cache_dir, &meetings_dir_path)
                 .context(meetings_dir_path.display().to_string())?;
-        let (home_text, home_collage_obj_file_name, mut objects_from_home) =
+        let (home_text, home_collage_obj_hash, mut objects_from_home) =
             read_home(
                 cache_dir,
                 &home_dir_path,
-                web_path_objects,
                 &meetings,
                 &objects_from_meetings
                     .iter()
@@ -149,10 +145,10 @@ impl Data {
                 .collect();
 
         let logo_obj = images::logo(&cache_dir.join("logo.png"))?;
-        let logo_obj_file_name = logo_obj.to_file_name();
+        let logo_obj_hash = logo_obj.hash.clone();
 
         let icon_obj = images::icon(&cache_dir.join("icon.png"))?;
-        let icon_obj_file_name = icon_obj.to_file_name();
+        let icon_obj_hash = icon_obj.hash.clone();
 
         let mut objects = Vec::new();
         objects.append(&mut objects_from_people);
@@ -170,9 +166,9 @@ impl Data {
             meetings,
             objects,
             home_text,
-            home_collage_obj_file_name,
-            logo_obj_file_name,
-            icon_obj_file_name,
+            home_collage_obj_hash,
+            logo_obj_hash,
+            icon_obj_hash,
             index_person_organized,
             index_person_presented,
             index_person_presented_last,
@@ -200,28 +196,40 @@ impl Data {
         Ok(&self.home_text)
     }
 
-    pub fn get_venue(&self, venue_id: &str) -> anyhow::Result<Venue> {
-        let venue = self
-            .venues
+    pub fn get_meeting(&self, seq: i32) -> &Meeting {
+        self.meetings
+            .get(&seq)
+            .unwrap_or_else(|| unreachable!("Bad meeting seq: {seq:?}"))
+    }
+
+    pub fn get_venue(&self, venue_id: &str) -> &Venue {
+        self.venues
             .get(venue_id)
-            .ok_or(anyhow!("Bad venue_id: {venue_id:?}"))?;
-        Ok(venue.clone())
+            .unwrap_or_else(|| unreachable!("Bad venue_id: {venue_id:?}"))
     }
 
-    pub fn get_person(&self, person_id: &str) -> anyhow::Result<Person> {
-        let person = self
-            .people
+    pub fn get_person(&self, person_id: &str) -> &Person {
+        self.people
             .get(person_id)
-            .ok_or(anyhow!("Bad person_id: {person_id:?}"))?;
-        Ok(person.clone())
+            .unwrap_or_else(|| unreachable!("Bad person_id: {person_id:?}"))
     }
 
-    pub fn get_object(&self, object_hash: &str) -> anyhow::Result<Obj> {
-        let object = self
-            .objects
-            .get(object_hash)
-            .ok_or(anyhow!("Bad object hash: {object_hash:?}"))?;
-        Ok(object.clone())
+    pub fn get_obj(&self, object_hash: &str) -> &Obj {
+        self.objects.get(object_hash).unwrap_or_else(|| {
+            unreachable!("Bad object hash: {object_hash:?}")
+        })
+    }
+
+    pub fn get_obj_logo(&self) -> &Obj {
+        self.get_obj(&self.logo_obj_hash)
+    }
+
+    pub fn get_obj_icon(&self) -> &Obj {
+        self.get_obj(&self.icon_obj_hash)
+    }
+
+    pub fn get_obj_home_collage(&self) -> Option<&Obj> {
+        self.home_collage_obj_hash.as_ref().map(|h| self.get_obj(h))
     }
 
     pub fn get_last_talk_date_by(
@@ -235,15 +243,12 @@ impl Data {
         Ok(*date)
     }
 
-    pub fn get_talks_by(
-        &self,
-        person_id: &str,
-    ) -> anyhow::Result<&Vec<(i32, Date, Talk)>> {
-        let dated_talks = self
-            .index_person_presented
+    pub fn get_talks_by(&self, person_id: &str) -> &Vec<(i32, Date, Talk)> {
+        self.index_person_presented
             .get(person_id)
-            .ok_or(anyhow!("No talk dates found for: {person_id:?}"))?;
-        Ok(dated_talks)
+            .unwrap_or_else(|| {
+                unreachable!("No talk dates found for: {person_id:?}")
+            })
     }
 
     pub fn get_meetings_organized_by(
@@ -362,10 +367,9 @@ fn find_meeting_dir_path(
 fn read_home(
     cache_dir: &Path,
     home_dir_path: &Path,
-    web_path_objects: &Path,
     meetings: &HashMap<i32, Meeting>,
     objects: &HashMap<String, Obj>,
-) -> anyhow::Result<(Doc, Option<PathBuf>, Vec<Obj>)> {
+) -> anyhow::Result<(Doc, Option<String>, Vec<Obj>)> {
     let collage_file_path = cache_dir.join("home").join("collage.png");
     let photos: Vec<Vec<u8>> = meetings
         .values()
@@ -373,19 +377,18 @@ fn read_home(
         .filter_map(|p| objects.get(&p.obj_hash))
         .map(|o| o.data.clone())
         .collect();
-    let (home_text, mut objects) =
-        Doc::from_dir(&home_dir_path, web_path_objects)
-            .context(home_dir_path.display().to_string())?;
-    let collage_obj_file_name =
-        match images::collage(&collage_file_path, photos)? {
-            None => None,
-            Some(obj) => {
-                let file_name = obj.to_file_name();
-                objects.push(obj);
-                Some(file_name)
-            }
-        };
-    Ok((home_text, collage_obj_file_name, objects))
+    let (home_text, mut objects) = Doc::from_dir(&home_dir_path)
+        .context(home_dir_path.display().to_string())?;
+    let collage_obj_hash = match images::collage(&collage_file_path, photos)?
+    {
+        None => None,
+        Some(obj) => {
+            let hash = obj.hash.clone();
+            objects.push(obj);
+            Some(hash)
+        }
+    };
+    Ok((home_text, collage_obj_hash, objects))
 }
 
 fn read_people(
@@ -431,7 +434,6 @@ fn read_venues(
 fn read_meetings(
     cache_dir: &Path,
     meetings_dir_path: &Path,
-    objects_web_path: &Path,
 ) -> anyhow::Result<(HashMap<i32, Meeting>, Vec<Obj>)> {
     let meetings_results: Vec<anyhow::Result<(Meeting, Vec<Obj>)>> =
         fs::read_dir(meetings_dir_path)?
@@ -450,11 +452,7 @@ fn read_meetings(
             .filter(|(_, m)| m.is_dir())
             .map(|(e, _)| e.path())
             .map(|meeting_dir_path| {
-                Meeting::from_dir(
-                    &cache_dir,
-                    &meeting_dir_path,
-                    objects_web_path,
-                )
+                Meeting::from_dir(&cache_dir, &meeting_dir_path)
             })
             .collect();
 

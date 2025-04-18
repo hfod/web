@@ -3,6 +3,7 @@ use askama::Template;
 use crate::{
     data::{Data, person::Person},
     time::Date,
+    web_path,
 };
 
 struct Row {

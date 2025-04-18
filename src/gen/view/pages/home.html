@@ -1,8 +1,8 @@
 {# vim:ft=htmldjango:
 #}
 
-{% if let Some(collage_obj_file_name) = collage_obj_file_name %}
-<p><img src={{ std::path::PathBuf::from("/_obj").join(collage_obj_file_name).display() }}></img></p>
+{% if let Some(home_collage_web_path) = home_collage_web_path %}
+<p><img src={{ home_collage_web_path.display() }}></img></p>
 {% endif %}
 
 {{ description_html }}

@@ -11,17 +11,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
         <meta name="generator" content="github.com/hfod/web">
         {# TODO Should icon type be pulled from a variable? #}
-        <link rel="icon" type="image/png" href="{{ std::path::PathBuf::from("/_obj").join(icon_obj_file_name).display() }}" />
-        {% for css_file_obj in css_file_names %}
-        {# TODO URL constructor function #}
-            <link href="{{ std::path::PathBuf::from("/_obj").join(css_file_obj).display() }}" rel="stylesheet" />
+        <link rel="icon" type="image/png" href="{{ icon_obj_web_path.display() }}" />
+        {% for css_web_path in css_web_paths %}
+            <link href="{{ css_web_path.display() }}" rel="stylesheet" />
         {% endfor %}
         <title>HFOD</title> {# TODO Should come from variable. #}
     </head>
     <body>
         <header>
             <div class="branding">
-                <img src="{{ std::path::PathBuf::from("/_obj").join(logo_obj_file_name).display() }}" alt="Glider" class="logo"></img>
+                <img src="{{ logo_obj_web_path.display() }}" alt="Glider" class="logo"></img>
                 <h1>HFOD</h1>
             </div>
 
@@ -40,7 +39,7 @@
 
         <footer>
             <div class="footer-left">
-                <img src={{ std::path::PathBuf::from("/_obj").join(logo_obj_file_name).display() }} alt="Glider" class="footer-logo"></img>
+                <img src={{ logo_obj_web_path.display() }} alt="Glider" class="footer-logo"></img>
                 Hack Free Or Die
             </div>
 
