@@ -9,7 +9,7 @@ struct Row {
 
 #[derive(askama::Template)]
 #[template(path = "meetings.html")]
-pub struct Meetings {
+struct Meetings {
     table: Vec<Row>,
 }
 
@@ -26,4 +26,9 @@ impl Meetings {
         rows.reverse();
         Ok(Self { table: rows }.render()?)
     }
+}
+
+pub fn build(data: &Data) -> anyhow::Result<String> {
+    let html = Meetings::build(data)?;
+    Ok(html)
 }

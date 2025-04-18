@@ -17,6 +17,7 @@ mod tests {
     use rstest::rstest;
 
     #[rstest]
+    #[case("foo", "foo", "/")]
     #[case("foo/bar", "foo", "bar")]
     #[case("foo/bar", "foo", "/bar")]
     #[case("/foo/bar", "/foo", "/bar")]

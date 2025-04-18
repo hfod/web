@@ -1,8 +1,19 @@
-use crate::data::{self, person::Person};
+use askama::Template;
+
+use crate::data::{Data, person::Person, venue::Venue};
 
 #[derive(askama::Template)]
 #[template(path = "venue.html")]
-pub struct Venue {
-    pub venue: data::venue::Venue,
+struct VenuePage<'a> {
+    pub venue: &'a Venue,
     pub contact: Person,
+}
+
+pub fn build(data: &Data, venue: &Venue) -> anyhow::Result<String> {
+    let html = VenuePage {
+        venue,
+        contact: data.get_person(&venue.contact_id)?,
+    }
+    .render()?;
+    Ok(html)
 }

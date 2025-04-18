@@ -15,10 +15,11 @@ use std::{
 
 use anyhow::Context;
 use askama::Template;
+use page::Page;
 
 use crate::{
-    data::{Data, meeting::Meeting, obj::Obj, person::Person, venue::Venue},
-    nav, path,
+    data::{Data, meeting::Meeting, obj::Obj},
+    path,
 };
 
 macro_rules! link {
@@ -29,8 +30,6 @@ macro_rules! link {
         }
     };
 }
-
-const STR_INDEX_HTML: &str = "index.html";
 
 pub fn generate(
     cache_dir: &Path,
@@ -44,29 +43,20 @@ pub fn generate(
     let web_path_venues = web_path_root.join("venues");
     let web_path_people = web_path_root.join("people");
 
-    let artifact_path_root = artifacts_dir;
-    let artifact_path_objects =
-        path::reroot(&artifact_path_root, &web_path_objects)?;
-    let artifact_path_meetings =
-        path::reroot(&artifact_path_root, &web_path_meetings)?;
-    let artifact_path_venues =
-        path::reroot(&artifact_path_root, &web_path_venues)?;
-    let artifact_path_people =
-        path::reroot(&artifact_path_root, &web_path_people)?;
-
     let nav = vec![
+        link!("~/README", &web_path_root),
+        link!("/var/log/meetings/", &web_path_meetings),
+        link!("/dev/speakers/", &web_path_people),
+        link!("/etc/hosts/", &web_path_venues),
+        // Other ideas:
         // link!("~/README.html", &web_path_root),
         // link!("~/README.md", &web_path_root),
-        link!("~/README", &web_path_root),
         // link!("README", &web_path_root),
-        link!("/var/log/meetings/", &web_path_meetings),
         // link!("/var/log/", &web_path_meetings),
         // link!("/meetings", &web_path_meetings),
         // link!("/dev/venues/", &web_path_venues),
         // link!("/dev/people/", &web_path_people),
-        link!("/dev/speakers/", &web_path_people),
         // link!("/mnt/venues/", &web_path_venues),
-        link!("/etc/hosts/", &web_path_venues),
     ];
 
     tracing::info!("Reading data.");
@@ -81,290 +71,61 @@ pub fn generate(
     let css_file_names: Vec<PathBuf> =
         [css_obj.clone()].iter().map(|o| o.to_file_name()).collect();
 
-    // TODO Separate steps more legibly:
-    //      1. reading data
-    //      2. indexing data
-    //      3. building views (including collages?)
-    //      4. building pages
-    //      5. writing files
-
-    tracing::info!("Writing pages.");
-    write_objects(&artifact_path_objects, data.objects()?)?;
-    // FIXME Injecting CSS like that is repetitively stupid. Should be a single step.
-    write_people(
-        css_file_names.clone(),
-        &artifact_path_people,
-        &web_path_people,
-        &nav[..],
-        &data,
-    )?;
-    write_venues(
-        css_file_names.clone(),
-        &artifact_path_venues,
-        &web_path_venues,
-        &nav[..],
-        &data,
-    )?;
-    write_meetings(
-        css_file_names.clone(),
-        &artifact_path_meetings,
-        &web_path_meetings,
-        &nav[..],
-        &data,
-    )?;
-    write_home(
-        css_file_names.clone(),
-        &artifact_path_root,
-        &web_path_root,
-        &nav[..],
-        &data,
-    )?;
-
-    Ok(())
-}
-
-#[tracing::instrument(skip_all)]
-fn write_objects<'a, I>(
-    artifacts_dir: &Path,
-    objects: I,
-) -> anyhow::Result<()>
-where
-    I: Iterator<Item = &'a Obj> + 'a,
-{
-    fs::create_dir_all(&artifacts_dir)
-        .context(format!("Failed to create directory: {artifacts_dir:?}"))?;
-    for obj in objects {
-        let obj_file_path = artifacts_dir.join(&obj.to_file_name());
-        // let obj_file_path = obj_file_path.with_extension(&obj.ext);
-        fs::write(&obj_file_path, &obj.data).context(format!(
-            "Failed to write object file: {obj_file_path:?}"
-        ))?;
-    }
-    Ok(())
-}
-
-#[tracing::instrument(skip_all)]
-fn write_meetings<'a>(
-    css_file_names: Vec<PathBuf>,
-    artifacts_dir: &Path,
-    web_path: &Path,
-    nav: &[nav::Link],
-    data: &Data,
-) -> anyhow::Result<()> {
-    let file_path = artifacts_dir.join(STR_INDEX_HTML);
-    let page = page::Page {
-        logo_obj_file_name: data.logo_obj_file_name.clone(),
-        icon_obj_file_name: data.icon_obj_file_name.clone(),
-        css_file_names: css_file_names.clone(),
-        web_path: web_path.to_owned(),
-        nav: nav.to_owned(),
-        body: meetings::Meetings::build(data)?,
-    }
-    .render()?;
-    if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent)
-            .context(format!("Failed to create directory: {parent:?}"))?;
-    }
-    fs::write(&file_path, page)
-        .context(format!("Failed to write HTML file: {file_path:?}"))?;
-    for meeting in data.meetings()? {
-        let seq = meeting.seq.to_string();
-        write_meeting(
-            css_file_names.clone(),
-            &artifacts_dir.join(&seq),
-            &web_path.join(&seq),
-            nav,
-            meeting,
-            data,
+    let mut files: Vec<(PathBuf, Vec<u8>)> = Vec::new();
+    for obj in data.objects()? {
+        let path = path::reroot(
+            &artifacts_dir,
+            &web_path_objects.join(obj.to_file_name()),
         )?;
+        let data = obj.data.clone();
+        files.push((path, data));
     }
-    Ok(())
-}
 
-fn write_meeting(
-    css_file_names: Vec<PathBuf>,
-    artifacts_dir: &Path,
-    web_path: &Path,
-    nav: &[nav::Link],
-    meeting: &Meeting,
-    data: &Data,
-) -> anyhow::Result<()> {
-    let file_path = artifacts_dir.join(STR_INDEX_HTML);
-    let page = page::Page {
-        logo_obj_file_name: data.logo_obj_file_name.clone(),
-        icon_obj_file_name: data.icon_obj_file_name.clone(),
-        css_file_names,
-        web_path: web_path.to_owned(),
-        nav: nav.to_owned(),
-        body: meeting::Meeting { meeting, data }.render()?,
+    tracing::info!("Building page bodies.");
+    let mut pages: Vec<(PathBuf, String)> = Vec::new();
+    pages.push((web_path_root.clone(), home::build(&data)?));
+    pages.push((web_path_meetings.clone(), meetings::build(&data)?));
+    for meeting @ Meeting { seq, .. } in data.meetings()? {
+        let web_path_meeting = web_path_meetings.join(seq.to_string());
+        pages.push((web_path_meeting, meeting::build(&data, meeting)?));
     }
-    .render()?;
-    if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent)
-            .context(format!("Failed to create directory: {parent:?}"))?;
-    }
-    fs::write(&file_path, page)
-        .context(format!("Failed to write HTML file: {file_path:?}"))?;
-    Ok(())
-}
-
-#[tracing::instrument(skip_all)]
-fn write_people(
-    css_file_names: Vec<PathBuf>,
-    artifacts_dir: &Path,
-    web_path: &Path,
-    nav: &[nav::Link],
-    data: &Data,
-) -> anyhow::Result<()> {
-    // let mut people: Vec<Person> = people.cloned().collect();
-    // people.sort_by_key(|p| p.name.clone()); // TODO Possible to avoid this .clone()?
-    let file_path = artifacts_dir.join(STR_INDEX_HTML);
-    let page = page::Page {
-        logo_obj_file_name: data.logo_obj_file_name.clone(),
-        icon_obj_file_name: data.icon_obj_file_name.clone(),
-        css_file_names: css_file_names.clone(),
-        web_path: web_path.to_owned(),
-        nav: nav.to_owned(),
-        body: people::People::build(data)?,
-    }
-    .render()?;
-    if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent)
-            .context(format!("Failed to create directory: {parent:?}"))?;
-    }
-    fs::write(&file_path, page)
-        .context(format!("Failed to write HTML file: {file_path:?}"))?;
+    pages.push((web_path_people.clone(), people::build(&data)?));
     for person in data.people()? {
-        write_person(
-            css_file_names.clone(),
-            &artifacts_dir.join(&person.id),
-            nav,
-            person.clone(),
-            data,
-        )?;
+        let web_path_person = web_path_people.join(&person.id);
+        pages.push((web_path_person, person::build(&data, person)?));
     }
-    Ok(())
-}
-
-fn write_person(
-    css_file_names: Vec<PathBuf>,
-    dir: &Path,
-    nav: &[nav::Link],
-    person: Person,
-    data: &Data,
-) -> anyhow::Result<()> {
-    let file_path = dir.join(STR_INDEX_HTML);
-    let page = page::Page {
-        logo_obj_file_name: data.logo_obj_file_name.clone(),
-        icon_obj_file_name: data.icon_obj_file_name.clone(),
-        css_file_names,
-        web_path: PathBuf::from("/people").join(&person.id),
-        nav: nav.to_owned(),
-        body: person::Person::build(person, data)?,
-    }
-    .render()?;
-    if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent)
-            .context(format!("Failed to create directory: {parent:?}"))?;
-    }
-    fs::write(&file_path, page)
-        .context(format!("Failed to write HTML file: {file_path:?}"))?;
-    Ok(())
-}
-
-#[tracing::instrument(skip_all)]
-fn write_venues(
-    css_file_names: Vec<PathBuf>,
-    artifacts_dir: &Path,
-    web_path: &Path,
-    nav: &[nav::Link],
-    data: &Data,
-) -> anyhow::Result<()> {
-    let file_path = artifacts_dir.join(STR_INDEX_HTML);
-    let page = page::Page {
-        logo_obj_file_name: data.logo_obj_file_name.clone(),
-        icon_obj_file_name: data.icon_obj_file_name.clone(),
-        css_file_names: css_file_names.clone(),
-        web_path: web_path.to_owned(),
-        nav: nav.to_owned(),
-        body: venues::Venues::build(data)?,
-    }
-    .render()?;
-    if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent)
-            .context(format!("Failed to create directory: {parent:?}"))?;
-    }
-    fs::write(&file_path, page)
-        .context(format!("Failed to write HTML file: {file_path:?}"))?;
+    pages.push((web_path_venues.clone(), venues::build(&data)?));
     for venue in data.venues()? {
-        write_venue(
-            css_file_names.clone(),
-            &artifacts_dir.join(&venue.id),
-            web_path.join(&venue.id),
-            nav,
-            venue.clone(),
-            data.get_person(&venue.contact_id)?,
-            data,
-        )?;
+        let web_path_venue = web_path_venues.join(&venue.id);
+        pages.push((web_path_venue, venue::build(&data, venue)?));
     }
-    Ok(())
-}
 
-fn write_venue(
-    css_file_names: Vec<PathBuf>,
-    dir: &Path,
-    web_path: PathBuf,
-    nav: &[nav::Link],
-    venue: Venue,
-    contact: Person,
-    data: &Data,
-) -> anyhow::Result<()> {
-    let file_path = dir.join(STR_INDEX_HTML);
-    let page = page::Page {
-        logo_obj_file_name: data.logo_obj_file_name.clone(),
-        icon_obj_file_name: data.icon_obj_file_name.clone(),
-        css_file_names,
-        web_path,
-        nav: nav.to_owned(),
-        body: venue::Venue { venue, contact }.render()?,
-    }
-    .render()?;
-    if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent)
-            .context(format!("Failed to create directory: {parent:?}"))?;
-    }
-    fs::write(&file_path, page)
-        .context(format!("Failed to write HTML file: {file_path:?}"))?;
-    Ok(())
-}
-
-#[tracing::instrument(skip_all)]
-fn write_home(
-    css_file_names: Vec<PathBuf>,
-    artifacts_dir: &Path,
-    web_path: &Path,
-    nav: &[nav::Link],
-    data: &Data,
-) -> anyhow::Result<()> {
-    let file_path = artifacts_dir.join(STR_INDEX_HTML);
-    let page = page::Page {
-        logo_obj_file_name: data.logo_obj_file_name.clone(),
-        icon_obj_file_name: data.icon_obj_file_name.clone(),
-        css_file_names,
-        web_path: web_path.to_owned(),
-        nav: nav.to_owned(),
-        body: home::Home {
-            description_html: data.home()?.text_html.clone(),
-            collage_obj_file_name: data.home_collage_obj_file_name.clone(),
+    tracing::info!("Building final pages.");
+    for (web_path, body) in pages {
+        let path =
+            path::reroot(&artifacts_dir, &web_path)?.join("index.html");
+        let data = Page {
+            logo_obj_file_name: data.logo_obj_file_name.clone(),
+            icon_obj_file_name: data.icon_obj_file_name.clone(),
+            css_file_names: css_file_names.clone(),
+            nav: nav.clone(),
+            web_path,
+            body,
         }
-        .render()?,
+        .render()?
+        .into_bytes();
+        files.push((path, data));
     }
-    .render()?;
-    if let Some(parent) = file_path.parent() {
-        fs::create_dir_all(parent)
-            .context(format!("Failed to create directory: {parent:?}"))?;
+
+    tracing::info!("Writing files.");
+    for (path, data) in files {
+        if let Some(parent) = &path.parent() {
+            fs::create_dir_all(parent)
+                .context(format!("Failed to create directory: {parent:?}"))?;
+        }
+        fs::write(&path, data)
+            .context(format!("Failed to write file: {path:?}"))?;
     }
-    fs::write(&file_path, page)
-        .context(format!("Failed to write HTML file: {file_path:?}"))?;
+
     Ok(())
 }
