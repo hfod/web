@@ -5,9 +5,8 @@ New Hampshire's premier
 [hacker](https://datatracker.ietf.org/doc/html/rfc1392#page-21)
 meetup.
 
-For those of us who make things and delight in having an intimate understanding
-of internal workings of complex systems. Software, computers, electronics, and
-other interesting things.
+For people who delight in having an intimate understanding of internal workings
+of complex systems. Software, computers, electronics, and more.
 
 Inspired by [NYC Hack && Tell](https://hackandtell.org/), we originally set out
 to do monthly [lightning talk](https://en.wikipedia.org/wiki/Lightning_talk)
