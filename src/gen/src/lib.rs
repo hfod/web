@@ -1,6 +1,7 @@
 pub mod data;
 pub mod images;
 pub mod md;
+pub mod minify;
 pub mod nav;
 pub mod pages;
 pub mod path;

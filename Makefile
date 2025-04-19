@@ -19,11 +19,18 @@ build: web
 .PHONY: web
 web:
 	mkdir -p $(DIR_WEB_LOCAL)
-	RUST_BACKTRACE=1 cargo run --release --bin hfod-web-gen -- --in $(DIR_DATA) --out $(DIR_WEB_LOCAL) gen
+	RUST_BACKTRACE=1 cargo run --release --bin hfod-web-gen -- \
+		--in $(DIR_DATA) \
+		--out $(DIR_WEB_LOCAL) \
+		gen \
+			--minify
 
 .PHONY: serve
 serve:
-	RUST_BACKTRACE=1 cargo run --bin hfod-web-srv -- -l debug --addr 127.0.0.1:8080 --web-dir $(DIR_WEB_LOCAL)
+	RUST_BACKTRACE=1 cargo run --bin hfod-web-srv -- \
+		-l debug \
+		--addr 127.0.0.1:8080 \
+		--web-dir $(DIR_WEB_LOCAL)
 
 .PHONY: rebuild
 rebuild: clean

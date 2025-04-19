@@ -19,7 +19,7 @@ use page::Page;
 
 use crate::{
     data::{Data, obj::Obj},
-    path, web_path,
+    minify, path, web_path,
 };
 
 macro_rules! link {
@@ -35,6 +35,7 @@ pub fn generate(
     cache_dir: &Path,
     data_dir: &Path,
     artifacts_dir: &Path,
+    minify: bool,
 ) -> anyhow::Result<()> {
     let nav = vec![
         link!("~/README", web_path::home()),
@@ -46,11 +47,20 @@ pub fn generate(
     tracing::info!("Reading data.");
     let mut data = Data::read(cache_dir, data_dir)?;
 
-    let css_obj = Obj::new(
-        include_str!("../../view/lib/style.css").as_bytes().to_vec(),
-        OsString::from("css"),
-    );
-    data.objects.insert(css_obj.hash.clone(), css_obj.clone());
+    // TODO Perhaps CSS files should be read at runtime?
+    let css_sheets = vec![include_str!("../../view/lib/style.css")];
+    let mut css_web_paths = Vec::new();
+    for sheet in css_sheets {
+        let sheet = if minify {
+            tracing::info!("Minifying CSS.");
+            minify::css(sheet)?
+        } else {
+            sheet.to_string()
+        };
+        let obj = Obj::new(sheet.as_bytes().to_vec(), OsString::from("css"));
+        css_web_paths.push(web_path::object(&obj));
+        data.objects.insert(obj.hash.clone(), obj.clone());
+    }
 
     let mut files: Vec<(PathBuf, Vec<u8>)> = Vec::new();
     for obj in data.objects()? {
@@ -85,13 +95,19 @@ pub fn generate(
         let data = Page {
             logo_obj_web_path: web_path::object(data.get_obj_logo()),
             icon_obj_web_path: web_path::object(data.get_obj_icon()),
-            css_web_paths: vec![web_path::object(&css_obj)],
+            css_web_paths: &css_web_paths[..],
             nav: nav.clone(),
             web_path,
             body,
         }
         .render()?
         .into_bytes();
+        let data = if minify {
+            tracing::info!(file_path = ?path, "Minifying HTML.");
+            minify::html(&data[..])?
+        } else {
+            data
+        };
         files.push((path, data));
     }
 

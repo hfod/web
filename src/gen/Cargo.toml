@@ -10,8 +10,10 @@ anyhow = { workspace = true }
 askama = { workspace = true }
 chrono = { workspace = true }
 clap = { workspace = true }
+css-minify = { workspace = true }
 image = { workspace = true }
 infer = { workspace = true }
+minify-html = { workspace = true }
 pulldown-cmark = { workspace = true }
 rand = { workspace = true }
 rayon = { workspace = true }

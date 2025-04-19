@@ -28,7 +28,10 @@ struct Cli {
 #[derive(clap::Subcommand, Debug)]
 enum Cmd {
     /// Generate the web site.
-    Gen,
+    Gen {
+        #[clap(short, long)]
+        minify: bool,
+    },
 
     /// Create a new data record.
     New {
@@ -65,11 +68,12 @@ fn main() -> anyhow::Result<()> {
     let _span_guard = span.enter();
     tracing::debug!(?cli, "Starting.");
     match &cli.command {
-        Cmd::Gen => {
+        Cmd::Gen { minify } => {
             hfod_web_gen::pages::generate(
                 &cli.cache_dir,
                 &cli.input_dir,
                 &cli.output_dir,
+                *minify,
             )?;
         }
         Cmd::New {
