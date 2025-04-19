@@ -9,7 +9,7 @@ Hack Free Or Die website
 Have photos to add?
 -------------------
 
-Submit a PR adding your photo files to `data/meetings/$date/photos/`.
+Submit a PR adding your photo files to `data/meetings/${date}--${seq}/photos/`.
 
 Given a photo file `foo.jpeg`, its caption, if any, shall go into text file `foo.txt`.
 
