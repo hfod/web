@@ -1,0 +1,8 @@
+{
+    speaker_id: "lisa",
+    title: "PiHole and self-hosted DNS",
+    description: "Using PiHole to control DNS resolution, monitoring ads and tracking requests from apps as well as potentially blacklisting sites and providing fine-grained parental controls.",
+    references: [
+        {url: "https://pi-hole.net/"}
+    ]
+}

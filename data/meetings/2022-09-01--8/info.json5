@@ -1,0 +1,9 @@
+{
+    seq: 8,
+    format: "ShowAndTell",
+    codename: "Think and Swim",
+    date: "2022-09-01",
+    time: "19:00",
+    venue_id: "manchester-makerspace",
+    organizer_id: "siraaj-khandkar",
+}

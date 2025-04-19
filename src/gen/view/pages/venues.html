@@ -1,0 +1,21 @@
+{# vim:ft=htmldjango:
+#}
+<h2>Hosts</h2>
+<p>Venues which have hosted at least one meeting.</p>
+<div class="records-list">
+    <table>
+        <tr>
+            <th>name</th>
+            <th>town</th>
+            <th>contact</th>
+            {# TODO Number of meetings hosted. #}
+        </tr>
+        {% for row in table %}
+        <tr>
+            <td><a href="{{ web_path::venue(row.venue).display() }}">{{ row.venue.name }}</a></td>
+            <td>{{ row.venue.addr.town }}</td>
+            <td><a href="{{ web_path::person(row.contact).display() }}">{{ row.contact.name }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

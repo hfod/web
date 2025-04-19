@@ -1,0 +1,9 @@
+{
+    seq: 11,
+    format: "ShowAndTell",
+    codename: "AoC Kickoff",
+    date: "2022-12-01",
+    time: "19:00",
+    venue_id: "manchester-makerspace",
+    organizer_id: "siraaj-khandkar",
+}

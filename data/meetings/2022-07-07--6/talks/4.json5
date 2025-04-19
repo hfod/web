@@ -1,0 +1,9 @@
+{
+    speaker_id: "jonathan-hales",
+    title: "Machine Learning for Drug Discovery",
+    description: "",
+    references: [
+        {url: "https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system"},
+        {url: "https://postera.ai/"}
+    ]
+}

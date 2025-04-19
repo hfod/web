@@ -1,0 +1,12 @@
+{
+    speaker_id: "siraaj-khandkar",
+    title: "Linked Lists in Rust",
+    description: "",
+    artifacts: [
+        {url: "https://github.com/xandkar/lru-exercise"},
+    ],
+    references: [
+        {url: "https://en.wikipedia.org/wiki/Page_replacement_algorithm#Least_recently_used"},
+    ]
+}
+

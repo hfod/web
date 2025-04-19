@@ -1,0 +1,12 @@
+{
+    speaker_id: "siraaj-khandkar",
+    title: "pista: a hacker's status bar",
+    description: "Piped status: the ii of status bars! Asynchronously reads lines from N FIFOs and routes to corresponding N slots on the bar.",
+    artifacts: [{url: "https://github.com/xandkar/pista"}],
+    references: [
+        {name: "dwm", url: "https://dwm.suckless.org/"},
+        {name: "ii", url: "https://tools.suckless.org/ii/"},
+        {name: "early experiments", url: "https://github.com/xandkar/khatus"},
+        {name: "current status monitors", url: "https://github.com/xandkar/stamon"}
+    ],
+}

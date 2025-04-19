@@ -1,0 +1,11 @@
+{
+    seq: 14,
+    format: "Talk",
+    // codename: "Invited talk: Fare on The Essence of OOP",
+    codename: "Prototype OO in Two Functions",
+    date: "2023-03-13",
+    time: "18:30",
+    venue_id: "red-oak-hanover",
+    organizer_id: "siraaj-khandkar",
+    registration_url: "https://www.meetup.com/hack-free-or-die/events/291843757",
+}

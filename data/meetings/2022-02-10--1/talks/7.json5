@@ -1,0 +1,10 @@
+{
+    speaker_id: "grant-peret",
+    title: "Cat Alley: Creation of an Entryway",
+    description: "An overview of the aesthetic modelling, design, and loading requirements to build a cantilevered entry way sign.",
+    artifacts: [{url: "https://github.com/RavenGrant/CatAlley"}],
+    references: [
+        {name: "Atlas Obscura",      url: "https://www.atlasobscura.com/places/cat-alley"},
+        {name: "Hidden New England", url: "https://hiddennewengland.com/2019/01/19/cat-alley-manchester-nh/"}
+    ],
+}

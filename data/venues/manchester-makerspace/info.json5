@@ -1,0 +1,14 @@
+{
+    name: "Manchester Makerspace",
+    website: "https://manchestermakerspace.org",
+    addr: {
+        building: "36",
+        street: "Old Granite St",
+        town: "Manchester",
+        state: "NH",
+        zipcode: "03101",
+        country: "USA",
+        google_maps_embed_url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2918.609093458723!2d-71.46651978372435!3d42.98650747914976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24ed838cd5e57%3A0x511bc564be09b62b!2sManchester%20Makerspace!5e0!3m2!1sen!2sus!4v1647814467210!5m2!1sen!2sus",
+    },
+    contact_id: "kevin"
+}

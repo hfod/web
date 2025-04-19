@@ -1,0 +1,8 @@
+{
+    speaker_id: "perry-e-metzger",
+    title: "Radio hacking",
+    description: "",
+    references: [
+        {url: "https://www.usenix.org/legacy/event/sec11/tech/full_papers/Clark.pdf"}
+    ]
+}

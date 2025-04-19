@@ -1,0 +1,8 @@
+{
+    speaker_id: "siraaj-khandkar",
+    title: "gg: the gitter of gits",
+    description: "A tool to locate, compare and cross-reference all your git repositories accross machines.",
+    artifacts: [
+        {url: "https://github.com/xandkar/gg/"}
+    ]
+}

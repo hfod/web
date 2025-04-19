@@ -1,0 +1,27 @@
+{# vim:ft=htmldjango:
+#}
+<h2>{{ venue.name }}</h2>
+<p>
+{% if let Some(url) = venue.website %}
+Website: <a href="{{ url }}">{{ url }}</a><br/>
+{% endif %}
+Address:
+    {{ venue.addr.building }} {{ venue.addr.street }},
+    {% if let Some(room) = venue.addr.room %}
+        {{ room }},
+    {% endif %}
+    {{ venue.addr.town }}, {{ venue.addr.state }} {{ venue.addr.zipcode }}
+    <br/>
+Contact: <a href="{{ web_path::person(contact).display() }}">{{ contact.name }}</a><br/>
+</p>
+<hr>
+<p>
+    <iframe
+        width=600
+        height=450
+        style="border:0"
+        loading=lazy
+        allowfullscreen
+        src="{{ venue.addr.google_maps_embed_url }}"
+    >
+</p>

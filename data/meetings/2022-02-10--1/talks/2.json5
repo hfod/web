@@ -1,0 +1,7 @@
+{
+    speaker_id: "jeff-nelson",
+    title: "RaspiBLitz w/ pay server",
+    description: "Raspberry pi setup running raspiblitz with other services like pay server and exlplorers.",
+    artifacts: [{url: "https://github.com/rootzoll/raspiblitz"}],
+    references: [] // TODO Links to all component artifacts.
+}

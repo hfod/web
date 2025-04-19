@@ -1,0 +1,9 @@
+{
+    speaker_id: "siraaj-khandkar",
+    title: "Parallelizing blockchain deserialization",
+    description: "",
+    artifacts: [
+        {url: "https://github.com/helium/blockchain-core/pull/1334"},
+        {url: "https://github.com/helium/blockchain-core/pull/1389"}
+    ]
+}

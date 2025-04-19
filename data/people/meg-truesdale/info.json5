@@ -1,0 +1,9 @@
+{
+    "name": "Meg Truesdale",
+    "email": "megtruesdale@gmail.com",
+    "email_show": true,
+    website: "https://megtruesdale.itch.io/",
+    "affiliated_links": [
+        {"url": "https://github.com/megtruesdale"}
+    ]
+}

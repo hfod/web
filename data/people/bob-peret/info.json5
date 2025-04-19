@@ -1,0 +1,10 @@
+{
+    "name": "Bob Peret",
+    "email": "bobperet@gmail.com",
+    "email_show": false,
+    website: "https://www.ravenlabsnh.com/",
+    "affiliated_links": [
+        {"url": "https://www.ravenlabsnh.com/"},
+        {"url": "https://www.linkedin.com/in/bob-peret-74683a1/"}
+    ]
+}

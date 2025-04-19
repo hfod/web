@@ -1,0 +1,24 @@
+{# vim:ft=htmldjango:
+#}
+<h2>Speakers</h2>
+<p>People who have given at least one talk (most-recent on top).</p>
+<div class="records-list">
+    <table>
+        <tr>
+            <th>name</th>
+            {#<th>last talk</th> #}
+            <th>website</th>
+        </tr>
+        {% for row in table %}
+        <tr>
+            <td><a href="{{ web_path::person(row.person).display() }}">{{ row.person.name }}</a></td>
+            {# <td>{{ row.last_talk.1.title }}</td> #}
+            <td>
+                {% if let Some(url) = row.person.website %}
+                    <a href="{{ url }}">{{ url }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

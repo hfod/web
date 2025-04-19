@@ -1,0 +1,77 @@
+{# vim:ft=htmldjango:
+#}
+
+<h2>Meeting {{ meeting.seq }}: {{ meeting.codename }}</h2>
+
+<table class="properties">
+    <!--
+    <tr>
+        <th>property</th>
+        <th>value</th>
+    </tr>
+    -->
+    <tr>
+        <td>Date</td>
+        <td>{{ meeting.date.display_long() }}</td>
+    </tr>
+    <tr>
+        <td>Time</td>
+        <td>{{ meeting.time }}</td>
+    </tr>
+    <tr>
+        <td>Location</td>
+        <td><a href="{{ web_path::venue(data.get_venue(meeting.venue_id)).display() }}">{{ data.get_venue(meeting.venue_id).name }}</a></td>
+    </tr>
+    <tr>
+        <td>Organizer</td>
+        <td><a href="{{ web_path::person(data.get_person(meeting.organizer_id)).display() }}">{{ data.get_person(meeting.organizer_id).name }}</a></td>
+    </tr>
+</table>
+
+{% if let Some(collage_web_path) = collage_web_path %}
+<p><img src={{ collage_web_path.display() }}></img></p>
+{% endif %}
+
+{% if let Some(recap) = meeting.recap %}
+    <h3>Recap</h3>
+    <p>{{ recap.text_html }}</p>
+{% endif %}
+
+{% if !meeting.talks.is_empty() %}
+    <h3>Talks</h3>
+    <ol>
+    {% for talk in meeting.talks %}
+        <li>
+            {% let speaker = data.get_person(talk.speaker_id) %}
+            <h4>{{ talk.title }}</h4>
+            <p>by <a href="{{ web_path::person(speaker).display() }}">{{ speaker.name }}</a></p>
+            <p>{{ talk.description }}</p>
+
+            {% if let Some(url) = talk.website %}
+                <h5>Website</h5>
+                <ul>
+                    <li><a href="{{ url }}">{{ url }}</a></li>
+                </ul>
+            {% endif %}
+
+            {% if !talk.artifacts.is_empty() %}
+                <h5>Artifacts</h5>
+                <ul>
+                {% for link in talk.artifacts %}
+                    <li><a href="{{ link.url }}">{{ link.name.as_ref().unwrap_or(link.url) }}</a></li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if !talk.references.is_empty() %}
+                <h5>References</h5>
+                <ul>
+                {% for link in talk.references %}
+                    <li><a href="{{ link.url }}">{{ link.name.as_ref().unwrap_or(link.url) }}</a></li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ol>
+{% endif %}

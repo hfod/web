@@ -1,0 +1,8 @@
+{
+    speaker_id: "bill-sanders",
+    title: "",
+    description: "Website that allows users to input song lyrics with notes and change those notes based on a guitar capo moving up or down.",
+    artifacts: [
+        {url: ""}
+    ]
+}

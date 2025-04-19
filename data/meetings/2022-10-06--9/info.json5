@@ -1,0 +1,9 @@
+{
+    seq: 9,
+    format: "ShowAndTell",
+    codename: "Modem",
+    date: "2022-10-06",
+    time: "19:00",
+    venue_id: "manchester-makerspace",
+    organizer_id: "siraaj-khandkar",
+}

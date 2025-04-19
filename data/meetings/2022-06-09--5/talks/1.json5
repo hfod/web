@@ -1,0 +1,8 @@
+{
+    speaker_id: "kyle-roucis",
+    title: "A game written in experimental style of C - functional!",
+    description: "Every structure update, instead of mutation would create a new copy of the structure. It worked surprisingly well!",
+    artifacts: [
+        {url: "https://github.com/kroucis/stupid-pong"}
+    ]
+}

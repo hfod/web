@@ -1,0 +1,5 @@
+{
+    speaker_id: "kyle-roucis",
+    title: "Porting Swift code to Android",
+    description: "How I adapted a game written in Swift to run on Android with no chnages to the game engine.",
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Kyle Roucis",
+    "email": "kyle@kyleroucis.com",
+    "email_show": true,
+    "website": "https://www.kyleroucis.com",
+    "affiliated_links": [
+        {"url": "https://github.com/kroucis"},
+        {"url": "https://www.bigbytestudios.com/"},
+        {"url": "https://www.seedsofearth.com/"}
+    ]
+}

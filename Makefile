@@ -8,28 +8,22 @@ HOST         := hackfreeordie.org
 PORT         := 22222
 USER_AT_HOST := $(USER)@$(HOST)
 
-DIR_EMAIL      := email
+DIR_DATA       := data
+DIR_CACHE      := .cache
 DIR_WEB_LOCAL  := www
 DIR_SERVER     := /var/www/hackfreeordie.org
 
-CMD_GENERATE := ./generate
-
 .PHONY: build
-build: web email
+build: web
 
 .PHONY: web
 web:
 	mkdir -p $(DIR_WEB_LOCAL)
-	$(CMD_GENERATE) -o $(DIR_WEB_LOCAL) web
-
-.PHONY: email
-email:
-	mkdir -p $(DIR_EMAIL)
-	$(CMD_GENERATE) -o $(DIR_EMAIL) email
+	RUST_BACKTRACE=1 cargo run --release --bin hfod-web-gen -- --in $(DIR_DATA) --out $(DIR_WEB_LOCAL) gen
 
 .PHONY: serve
 serve:
-	./serve --dev --port 8080 $(DIR_WEB_LOCAL)
+	RUST_BACKTRACE=1 cargo run --bin hfod-web-srv -- -l debug --addr 127.0.0.1:8080 --web-dir $(DIR_WEB_LOCAL)
 
 .PHONY: rebuild
 rebuild: clean
@@ -37,7 +31,8 @@ rebuild: clean
 
 .PHONY: clean
 clean:
-	rm -rf $(DIR_WEB_LOCAL) $(DIR_EMAIL)
+	rm -rf $(DIR_WEB_LOCAL)
+	rm -rf $(DIR_CACHE)
 
 .PHONY: preview
 preview: rebuild

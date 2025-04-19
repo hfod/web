@@ -1,0 +1,8 @@
+{
+    speaker_id: "bob-peret",
+    title: "Analog Data & Signal Processing",
+    description: "",
+    references: [
+        {url: "https://en.wikipedia.org/wiki/Analog_signal_processing"},
+    ]
+}

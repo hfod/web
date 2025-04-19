@@ -1,0 +1,9 @@
+{
+    speaker_id: "thaddeus-hughes",
+    title: "EveryCalc",
+    description: "Online analysis tools for common tasks",
+    website: "http://everycalc.thadhughes.xyz/",
+    artifacts: [
+        {url: "https://github.com/Thaddeus-Maximus/everycalc"}
+    ]
+}

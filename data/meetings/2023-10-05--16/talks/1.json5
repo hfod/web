@@ -1,0 +1,9 @@
+{
+    speaker_id: "kyle-roucis",
+    title: "Metal REPL",
+    description: "Kyle introduced us to basic ideas behind Apple's GPU API - Metal, while showcasing the sandbox he made for live experimentation with it.",
+    references: [
+        {url: "https://en.wikipedia.org/wiki/Metal_(API)"},
+        {url: "https://developer.apple.com/metal/"}
+    ]
+}

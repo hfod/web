@@ -1,0 +1,9 @@
+{
+    speaker_id: "jeff-nelson",
+    title: "Pi Bramble",
+    description: "A cluster or Rasberry Pi's managed by kubernetes to deploy a drupal website.",
+    references: [
+        {url: "https://github.com/geerlingguy/raspberry-pi-dramble"},
+        {url: "https://www.pidramble.com/"}
+    ]
+}

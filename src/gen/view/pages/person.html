@@ -1,0 +1,53 @@
+{# vim:ft=htmldjango:
+#}
+<h2>{{ person.name }}</h2>
+{# TODO Other person info, like contact and avatar, etc. #}
+
+<table class="properties">
+    <!--
+    <tr>
+        <th>property</th>
+        <th>value</th>
+    </tr>
+    -->
+    {% if let Some(url) = person.website %}
+        <tr>
+            <td>Website</td>
+            <td><a href="{{ url }}">{{ url }}</a></td>
+        </tr>
+    {% endif %}
+
+    {% if person.email_show %}
+        {% if let Some(addr) = person.email %}
+        <tr>
+            <td>Email</td>
+            <td><a href="mailto:{{ addr }}">{{ addr }}</a></td>
+        </tr>
+        {% endif %}
+    {% endif %}
+
+    {% if let Some(link) = person.signal %}
+        <tr>
+            <td>Signal</td>
+            <td><a href="{{ link.url }}">{{ link.name.as_ref().unwrap_or(link.url) }}</a></td>
+        </tr>
+    {% endif %}
+</table>
+
+{% if !talks.is_empty() %}
+<h3>Presented</h3>
+<ul>
+{% for (meeting, date, talk) in talks %}
+<li><a href="{{ web_path::meeting(meeting).display() }}">{{ talk.title }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if let Some(meetings) = organized %}
+<h3>Organized</h3>
+<ul>
+{% for meeting in meetings %}
+<li><a href="{{ web_path::meeting(meeting).display() }}">{{ meeting.seq }}: {{ meeting.codename }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}

@@ -1,0 +1,9 @@
+{
+    seq: 12,
+    format: "ShowAndTell",
+    codename: "Siraaj Needs a Break",
+    date: "2023-02-02",
+    time: "19:00",
+    venue_id: "manchester-makerspace",
+    organizer_id: "kyle-roucis",
+}

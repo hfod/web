@@ -1,0 +1,10 @@
+{
+    seq: 20,
+    format: "ShowAndTell",
+    codename: "Beast",
+    date: "2024-06-06",
+    time: "18:00",
+    venue_id: "manchester-makerspace",
+    organizer_id: "kevin",
+    registration_url: "https://www.meetup.com/hack-free-or-die/events/301443931/",
+}

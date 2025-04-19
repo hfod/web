@@ -1,0 +1,13 @@
+{
+    speaker_id: "siraaj-khandkar",
+    title: "tt: a more-unixy twtxt client",
+    description: "twtxt is a dead-simple, peer-to-peer micro-blogging network/protocol. tt is a client which supports multiple peer lists and crawling to discover new peers.",
+    artifacts: [
+        {url: "https://github.com/xandkar/tt"}
+    ],
+    references: [
+        {name: "tt-discovered peer directory", url: "https://xandkar.net/twtxt/peers/"},
+        {name: "tt-collected nick usage stats", url: "https://xandkar.net/twtxt/nicks/"},
+        {name: "the original twtxt client", url: "https://github.com/buckket/twtxt"}
+    ],
+}

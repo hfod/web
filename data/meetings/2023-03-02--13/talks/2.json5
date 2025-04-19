@@ -1,0 +1,12 @@
+{
+    speaker_id: "meg-truesdale",
+    title: "3D 2048 game with a twist",
+    description: "Meg realized that plain old 2048 is boring, so the natural solution is to make it 3d and only movable by a ball. Implemented in C# and Unity game engine.",
+    artifacts: [
+        {url: "https://github.com/megtruesdale/2048Game"}
+    ],
+    references: [
+        {url: "https://en.wikipedia.org/wiki/2048_(video_game)"},
+        {url: "https://en.wikipedia.org/wiki/Unity_(game_engine)"}
+    ]
+}

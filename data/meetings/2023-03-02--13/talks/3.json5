@@ -1,0 +1,12 @@
+{
+    speaker_id: "wayne-kenney",
+    title: "Remote shell via Twitter and aNotepad",
+    description: "Wayne was fed up with corporate firewalls blocking port 22 and preventing good old ssh, so he decided to Hack The Planet and send commands via Twitter (a local bot listens for tweets and executes them as commands, forwarding the output to an internet pasting service), but then Twitter closed their API, so ... he wrote his own Twitter clone!",
+    artifacts: [
+        {url: "https://github.com/LogicPy/Python/tree/master/TORB"}
+    ],
+    references: [
+        {url: "https://anotepad.com/"},
+        {url: "https://en.wikipedia.org/wiki/Hackers_(film)"}
+    ]
+}

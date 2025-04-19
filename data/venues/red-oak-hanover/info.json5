@@ -1,0 +1,16 @@
+{
+    // name: "Red Oak Coworking Offices",
+    name: "Red Oak Coworking",
+    website: "https://redoakcoworking.com",
+    addr: {
+        building: "66",
+        street: "Hanover St",
+        room: "Suite 200",
+        town: "Manchester",
+        state: "NH",
+        zipcode: "03101",
+        country: "USA",
+        google_maps_embed_url: "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1933.9391187294636!2d-71.46238682768785!3d42.98960320228865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24f2480bf4587%3A0xec5c87bd4c8bc022!2sRed%20Oak%20Coworking%20Offices!5e0!3m2!1sen!2sus!4v1677192211322!5m2!1sen!2sus",
+    },
+    contact_id: "siraaj-khandkar"
+}

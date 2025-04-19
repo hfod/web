@@ -1,0 +1,11 @@
+{
+    seq: 10,
+    format: "MeetAndGreet",
+    codename: "Sake",
+    date: "2022-11-03",
+    time: "19:00",
+    organizer_id: "siraaj-khandkar",
+
+    // XXX We were actually in Kisaki, not Makerspace, but does that count as proper hosting?
+    venue_id: "manchester-makerspace",
+}
