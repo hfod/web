@@ -155,7 +155,7 @@ img {
 /* TODO Test if we really need this - if it really helps. */
 @media (max-width: 600px) {
     .records-list td, th {
-        font-size: 0.5rem;
+        /* font-size: 0.5rem; */
         padding: 0.3em;
     }
 }
