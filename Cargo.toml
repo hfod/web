@@ -1,5 +1,5 @@
 [workspace.package]
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Siraaj Khandkar <siraaj@khandkar.net>"]
 license = "GPL-3.0-or-later"
 edition = "2024"
@@ -28,7 +28,7 @@ rstest = "0.16.0"
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json5 = "0.2.1"
 sha2 = "0.10.8"
-tokio = { version = "1.37.0", features = ["full", "tracing"] }
+tokio = { version = "1.44.2", features = ["full", "tracing"] }
 tower-http = { version = "0.5.2", features = ["fs", "trace"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
