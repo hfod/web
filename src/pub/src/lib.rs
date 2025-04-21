@@ -1,5 +1,4 @@
 pub mod conf;
-pub mod path;
 
 use std::{ffi::OsStr, path::Path, process};
 

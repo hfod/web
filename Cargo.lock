@@ -863,6 +863,7 @@ dependencies = [
  "chrono",
  "clap",
  "css-minify",
+ "hfod-web-lib",
  "image",
  "infer",
  "minify-html",
@@ -879,12 +880,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "hfod-web-lib"
+version = "0.3.0"
+dependencies = [
+ "anyhow",
+ "directories",
+ "rstest",
+]
+
+[[package]]
 name = "hfod-web-pub"
 version = "0.3.0"
 dependencies = [
  "anyhow",
  "clap",
- "directories",
+ "hfod-web-lib",
  "serde",
  "serde_json5",
  "tracing",

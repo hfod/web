@@ -2,6 +2,16 @@ use std::path::{Component, Path, PathBuf};
 
 use anyhow::anyhow;
 
+pub fn reroot(parent: &Path, child: &Path) -> anyhow::Result<PathBuf> {
+    let child = if child.is_absolute() {
+        child.strip_prefix("/")?
+    } else {
+        assert!(child.is_relative());
+        child
+    };
+    Ok(parent.join(child))
+}
+
 pub fn expand_tilde<P: AsRef<Path>>(path: P) -> anyhow::Result<PathBuf> {
     let base_dirs = directories::BaseDirs::new().ok_or_else(|| {
         anyhow!("Could not determine user's base directories.")
@@ -25,6 +35,31 @@ pub fn expand_tilde<P: AsRef<Path>>(path: P) -> anyhow::Result<PathBuf> {
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
+
+    use rstest::rstest;
+
+    #[rstest]
+    #[case("foo", "foo", "/")]
+    #[case("foo/bar", "foo", "bar")]
+    #[case("foo/bar", "foo", "/bar")]
+    #[case("/foo/bar", "/foo", "/bar")]
+    #[case("/foo/bar", "/foo", "bar")]
+    #[case("/a/b/c/d/e", "/a/b", "/c/d/e")]
+    fn reroot(
+        #[case] expect: &str,
+        #[case] parent: &str,
+        #[case] child: &str,
+    ) {
+        macro_rules! p {
+            ($path:expr) => {
+                PathBuf::from($path)
+            };
+        }
+        assert_eq!(
+            p!(expect),
+            super::reroot(&p!(parent), &p!(child)).unwrap()
+        );
+    }
 
     #[test]
     fn expand_tilde() {

@@ -3,6 +3,8 @@ use std::path::PathBuf;
 use clap::Parser;
 use tracing::{Level, level_filters::LevelFilter};
 
+use hfod_web_lib as hfod;
+
 use hfod_web_pub::conf::Conf;
 
 #[derive(Parser, Debug)]
@@ -25,7 +27,7 @@ fn main() -> anyhow::Result<()> {
     let span = tracing::info_span!(env!("CARGO_PKG_NAME"));
     let _span_guard = span.enter();
     tracing::info!(?cli, "Starting.");
-    let conf_path = hfod_web_pub::path::expand_tilde(&cli.conf)?;
+    let conf_path = hfod::path::expand_tilde(&cli.conf)?;
     let conf = Conf::from_file(&conf_path)?;
     tracing::info!(?conf, "Executing.");
     hfod_web_pub::run(&conf.remote, &cli.local_dir)?;

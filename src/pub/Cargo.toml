@@ -8,7 +8,7 @@ edition.workspace = true
 [dependencies]
 anyhow = { workspace = true }
 clap = { workspace = true }
-directories = { workspace = true }
+hfod-web-lib = { path = "../lib" }
 serde = { workspace = true }
 serde_json5 = { workspace = true }
 tracing = { workspace = true }

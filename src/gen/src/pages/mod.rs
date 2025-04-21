@@ -17,9 +17,11 @@ use anyhow::Context;
 use askama::Template;
 use page::Page;
 
+use hfod_web_lib as hfod;
+
 use crate::{
     data::{Data, obj::Obj},
-    minify, path, web_path,
+    minify, web_path,
 };
 
 macro_rules! link {
@@ -64,7 +66,8 @@ pub fn generate(
 
     let mut files: Vec<(PathBuf, Vec<u8>)> = Vec::new();
     for obj in data.objects()? {
-        let path = path::reroot(&artifacts_dir, &web_path::object(obj))?;
+        let path =
+            hfod::path::reroot(&artifacts_dir, &web_path::object(obj))?;
         let data = obj.data.clone();
         files.push((path, data));
     }
@@ -91,7 +94,7 @@ pub fn generate(
     tracing::info!("Building final pages.");
     for (web_path, body) in pages {
         let path =
-            path::reroot(&artifacts_dir, &web_path)?.join("index.html");
+            hfod::path::reroot(&artifacts_dir, &web_path)?.join("index.html");
         let data = Page {
             logo_obj_web_path: web_path::object(data.get_obj_logo()),
             icon_obj_web_path: web_path::object(data.get_obj_icon()),

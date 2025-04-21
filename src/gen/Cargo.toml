@@ -11,6 +11,7 @@ askama = { workspace = true }
 chrono = { workspace = true }
 clap = { workspace = true }
 css-minify = { workspace = true }
+hfod-web-lib = { path = "../lib" }
 image = { workspace = true }
 infer = { workspace = true }
 minify-html = { workspace = true }
