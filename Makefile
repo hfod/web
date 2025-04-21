@@ -2,26 +2,19 @@ N_CPUS := $(shell nproc 2> /dev/null || gnproc 2> /dev/null || sysctl -n hw.ncpu
 
 MAKEFLAGS := --no-builtin-rules -j $(N_CPUS)
 
-USER         := armenfirman
-GROUP        := www-data
-HOST         := hackfreeordie.org
-PORT         := 22222
-USER_AT_HOST := $(USER)@$(HOST)
-
 DIR_DATA       := data
 DIR_CACHE      := .cache
-DIR_WEB_LOCAL  := www
-DIR_SERVER     := /var/www/hackfreeordie.org
+DIR_ARTIFACTS  := www
 
 .PHONY: build
 build: web
 
 .PHONY: web
 web:
-	mkdir -p $(DIR_WEB_LOCAL)
+	mkdir -p $(DIR_ARTIFACTS)
 	RUST_BACKTRACE=1 cargo run --release --bin hfod-web-gen -- \
 		--in $(DIR_DATA) \
-		--out $(DIR_WEB_LOCAL) \
+		--out $(DIR_ARTIFACTS) \
 		gen \
 			--minify
 
@@ -30,7 +23,7 @@ serve:
 	RUST_BACKTRACE=1 cargo run --bin hfod-web-srv -- \
 		-l debug \
 		--addr 127.0.0.1:8080 \
-		--web-dir $(DIR_WEB_LOCAL)
+		--web-dir $(DIR_ARTIFACTS)
 
 .PHONY: rebuild
 rebuild: clean_artifacts clean_cache
@@ -38,7 +31,7 @@ rebuild: clean_artifacts clean_cache
 
 .PHONY: clean_artifacts
 clean_artifacts:
-	rm -rf $(DIR_WEB_LOCAL)
+	rm -rf $(DIR_ARTIFACTS)
 
 .PHONY: clean_cache
 clean_cache:
@@ -50,23 +43,14 @@ preview: rebuild
 
 .PHONY: publish
 publish:
-	rsync \
-		-avz \
-		--delete \
-		--omit-dir-times \
-		--copy-links \
-		./$(DIR_WEB_LOCAL) \
-		-e 'ssh -p $(PORT)' \
-		$(USER_AT_HOST):$(DIR_SERVER)
-	ssh -p $(PORT) $(USER_AT_HOST) chown -R $(USER):$(GROUP) $(DIR_SERVER)
-	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX $(DIR_SERVER)
+	RUST_BACKTRACE=1 cargo run --bin hfod-web-pub -- $(DIR_ARTIFACTS)
 
 .PHONY: TODO
 TODO:
 	@grep \
 		--exclude=Makefile \
 		--exclude-dir=view \
-		--exclude-dir=$(DIR_WEB_LOCAL) \
+		--exclude-dir=$(DIR_ARTIFACTS) \
 		--exclude-dir=.git \
 		--color=always \
 		-rIHn TODO .
