@@ -61,10 +61,6 @@ publish:
 	ssh -p $(PORT) $(USER_AT_HOST) chown -R $(USER):$(GROUP) $(DIR_SERVER)
 	ssh -p $(PORT) $(USER_AT_HOST) chmod -R a+rX $(DIR_SERVER)
 
-.PHONY: deps
-deps:
-	raco pkg install --skip-installed --auto gregor markdown text-block
-
 .PHONY: TODO
 TODO:
 	@grep \
