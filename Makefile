@@ -33,12 +33,15 @@ serve:
 		--web-dir $(DIR_WEB_LOCAL)
 
 .PHONY: rebuild
-rebuild: clean
+rebuild: clean_artifacts clean_cache
 	$(MAKE) build
 
-.PHONY: clean
-clean:
+.PHONY: clean_artifacts
+clean_artifacts:
 	rm -rf $(DIR_WEB_LOCAL)
+
+.PHONY: clean_cache
+clean_cache:
 	rm -rf $(DIR_CACHE)
 
 .PHONY: preview
