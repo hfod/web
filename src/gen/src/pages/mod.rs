@@ -42,8 +42,8 @@ pub fn generate(
     let nav = vec![
         link!("~/README", web_path::home()),
         link!("/var/log/meetings/", web_path::meetings()),
-        link!("/dev/speakers/", web_path::people()),
-        link!("/etc/hosts/", web_path::venues()),
+        // link!("/dev/speakers/", web_path::people()),
+        // link!("/etc/hosts/", web_path::venues()),
     ];
 
     tracing::info!("Reading data.");
