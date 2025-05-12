@@ -20,13 +20,16 @@ fn upload(remote: &conf::Remote, local_dir: &Path) -> anyhow::Result<()> {
         .arg("--omit-dir-times")
         .arg("--copy-links")
         .args(["--rsh", &format!("ssh -p {}", remote.port)])
+        .arg(local_dir)
         .arg(format!(
             "{}@{}:{}",
             remote.user,
             remote.host,
             remote.dir.display()
-        ))
-        .arg(local_dir);
+        ));
+    let prog = cmd.get_program();
+    let args: Vec<&OsStr> = cmd.get_args().collect();
+    tracing::debug!(?prog, ?args, "Executing command.");
     let status = cmd.status()?;
     if !status.success() {
         bail!("rsync failed: {status:?}");

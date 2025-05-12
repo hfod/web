@@ -1,5 +1,5 @@
 [workspace.package]
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Siraaj Khandkar <siraaj@khandkar.net>"]
 license = "GPL-3.0-or-later"
 edition = "2024"

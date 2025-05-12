@@ -43,7 +43,7 @@ preview: rebuild
 
 .PHONY: publish
 publish:
-	RUST_BACKTRACE=1 cargo run --bin hfod-web-pub -- $(DIR_ARTIFACTS)
+	RUST_BACKTRACE=1 cargo run --bin hfod-web-pub -- -l debug $(DIR_ARTIFACTS)
 
 .PHONY: TODO
 TODO:
