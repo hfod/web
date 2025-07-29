@@ -16,6 +16,8 @@
             <tr>
                 <th>date</th>
                 <th>time</th>
+                <th>format</th>
+                <th>title</th>
                 <th>location</th>
             </tr>
             {% for meeting in upcoming_meetings %}
@@ -23,6 +25,8 @@
             <tr>
                 <td>{{ meeting.date }}</td>
                 <td>{{ meeting.time }}</td>
+                <td>{{ meeting.format.to_string() }}</td>
+                <td><a href="{{ web_path::meeting(meeting).display() }}">{{ meeting.codename }}</a></td>
                 <td><a href="{{ web_path::venue(venue).display() }}">{{ venue.name }}</a></td>
             </tr>
             {% endfor %}
