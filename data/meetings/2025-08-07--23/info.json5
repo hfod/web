@@ -1,0 +1,10 @@
+{
+    seq: 23,
+    format: "Talk",
+    codename: "malloc performance",
+    date: "2025-08-07",
+    time: "19:00",
+    venue_id: "red-oak-hanover",
+    organizer_id: "siraaj-khandkar",
+    registration_url: "https://www.meetup.com/hack-free-or-die/events/310244695/",
+}

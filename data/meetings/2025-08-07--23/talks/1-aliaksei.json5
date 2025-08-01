@@ -1,0 +1,11 @@
+{
+    speaker_id: "aliaksei",
+    title: "malloc performance",
+    description: "Why memory allocation performance matters and how do modern implementations achieve it?",
+    artifacts: [
+    ],
+    references: [
+        {name: "gperftools", url: "https://github.com/gperftools/gperftools"},
+    ]
+}
+
